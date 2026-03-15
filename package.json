@@ -1,0 +1,22 @@
+{
+  "name": "ha-home-dashboard-strategy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "home-assistant-frontend-types": "^2026.1.28",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.0"
+  },
+  "private": true,
+  "dependencies": {
+    "home-assistant-js-websocket": "^9.6.0",
+    "lit": "^3.3.2"
+  }
+}
