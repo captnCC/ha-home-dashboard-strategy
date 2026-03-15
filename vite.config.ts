@@ -18,8 +18,9 @@ export default defineConfig(({ mode }) => {
         build: {
             lib: {
                 entry: "src/index.ts",
-                formats: ["es"],
-                fileName: "ha-home-dashboard-strategy"
+                formats: ["iife"],
+                name: "HomeDashboardStrategy",
+                fileName: (format) => `ha-home-dashboard-strategy.js`
             },
             rolldownOptions: {
                 external: [

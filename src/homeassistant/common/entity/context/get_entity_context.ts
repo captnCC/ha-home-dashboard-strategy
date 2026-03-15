@@ -1,0 +1,66 @@
+import type {HassEntity} from "home-assistant-js-websocket";
+import {
+    EntityRegistryDisplayEntry,
+    EntityRegistryEntry,
+    ExtEntityRegistryEntry
+} from "home-assistant-frontend-types/frontend/data/entity_registry";
+import {DeviceRegistryEntry} from "home-assistant-frontend-types/frontend/data/device_registry";
+import {AreaRegistryEntry} from "home-assistant-frontend-types/frontend/data/area/area_registry";
+import {FloorRegistryEntry} from "home-assistant-frontend-types/frontend/data/floor_registry";
+import {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
+
+
+interface EntityContext {
+    entity: EntityRegistryDisplayEntry | null;
+    device: DeviceRegistryEntry | null;
+    area: AreaRegistryEntry | null;
+    floor: FloorRegistryEntry | null;
+}
+
+export const getEntityContext = (
+    stateObj: HassEntity,
+    entities: HomeAssistant["entities"],
+    devices: HomeAssistant["devices"],
+    areas: HomeAssistant["areas"],
+    floors: HomeAssistant["floors"]
+): EntityContext => {
+    const entry = entities[stateObj.entity_id] as
+        | EntityRegistryDisplayEntry
+        | undefined;
+
+    if (!entry) {
+        return {
+            entity: null,
+            device: null,
+            area: null,
+            floor: null,
+        };
+    }
+    return getEntityEntryContext(entry, entities, devices, areas, floors);
+};
+
+export const getEntityEntryContext = (
+    entry:
+        | EntityRegistryDisplayEntry
+        | EntityRegistryEntry
+        | ExtEntityRegistryEntry,
+    entities: HomeAssistant["entities"],
+    devices: HomeAssistant["devices"],
+    areas: HomeAssistant["areas"],
+    floors: HomeAssistant["floors"]
+): EntityContext => {
+    const entity = entities[entry.entity_id];
+    const deviceId = entry?.device_id;
+    const device = deviceId ? devices[deviceId] : undefined;
+    const areaId = entry?.area_id || device?.area_id;
+    const area = areaId ? areas[areaId] : undefined;
+    const floorId = area?.floor_id;
+    const floor = floorId ? floors[floorId] : undefined;
+
+    return {
+        entity: entity,
+        device: device || null,
+        area: area || null,
+        floor: floor || null,
+    };
+};
