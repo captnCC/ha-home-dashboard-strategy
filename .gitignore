@@ -16,3 +16,5 @@ yarn-error.log*
 dist/
 mise.toml
 package-lock.json
+
+.DS_Store
