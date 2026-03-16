@@ -8,80 +8,80 @@ import {EntityBadgeConfig} from "home-assistant-frontend-types/frontend/panels/l
 import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
 
 export type WallboardLightsViewStrategyConfig = {
-    type: "custom:wallboard-lights";
-    areas?: Record<string, AreaConfig>;
+  type: "custom:wallboard-lights";
+  areas?: Record<string, AreaConfig>;
 } & HasLightsConfig["lights"];
 
 
 class WallboardLightsViewStrategy extends HTMLElement {
-    static async generate(config: WallboardLightsViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
+  static async generate(config: WallboardLightsViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
 
-        const allEntities = Object.keys(hass.states);
+    const allEntities = Object.keys(hass.states);
 
-        const areas = mapAreas<LovelaceCardConfig>(hass, config.areas || {}, (area) => {
-            const computeTileCard = computeAreaTileCardConfig(hass, area.name);
+    const areas = mapAreas<LovelaceCardConfig>(hass, config.areas || {}, (area) => {
+      const computeTileCard = computeAreaTileCardConfig(hass, area.name);
 
-            const areaFilter = generateEntityFilter(hass, {
-                area: area.area_id,
-                domain: ["light"],
-            });
+      const areaFilter = generateEntityFilter(hass, {
+        area: area.area_id,
+        domain: ["light"],
+      });
 
-            const lightIds = allEntities.filter(areaFilter);
+      const lightIds = allEntities.filter(areaFilter);
 
-            if (lightIds.length === 0) return null;
+      if (lightIds.length === 0) return null;
 
-            const cards = extendLastCard(lightIds.map(computeTileCard));
+      const cards = extendLastCard(lightIds.map(computeTileCard));
 
-            const badges: EntityBadgeConfig[] = [];
-            const areaConf = config.areas ? config.areas[area.area_id] : undefined;
-            const allLights = areaConf?.lights?.all;
-            if (allLights) {
-                badges.push(computeBadge(allLights));
-            }
+      const badges: EntityBadgeConfig[] = [];
+      const areaConf = config.areas ? config.areas[area.area_id] : undefined;
+      const allLights = areaConf?.lights?.all;
+      if (allLights) {
+        badges.push(computeBadge(allLights));
+      }
 
-            return {
-                type: "grid",
-                cards: [
-                    {
-                        type: "heading",
-                        heading_style: 'title',
-                        heading: area.name,
-                        icon: area.icon,
-                        tap_action: {
-                            action: "navigate",
-                            navigation_path: `areas-${area.area_id}?historyBack=1`,
-                        },
-                        badges,
-                    },
-                    ...cards,
-                ],
-            };
-        });
-
-
-        const badges: EntityBadgeConfig[] = []
-
-        if (config.all) {
-            badges.push(computeBadge(config.all));
-        }
-
-        return {
-            type: "sections",
-            header: {
-                card: {
-                    type: "markdown",
-                    content: `# <ha-icon icon="mdi:home-lightbulb-outline"></ha-icon> Lights`,
-                    text_only: true,
-                },
-                layout: "responsive",
-                badges_position: "bottom",
-                badges_wrap: "scroll",
+      return {
+        type: "grid",
+        cards: [
+          {
+            type: "heading",
+            heading_style: "title",
+            heading: area.name,
+            icon: area.icon,
+            tap_action: {
+              action: "navigate",
+              navigation_path: `areas-${area.area_id}?historyBack=1`,
             },
             badges,
-            max_columns: 3,
-            sections: [...areas],
-        };
+          },
+          ...cards,
+        ],
+      };
+    });
+
+
+    const badges: EntityBadgeConfig[] = [];
+
+    if (config.all) {
+      badges.push(computeBadge(config.all));
     }
+
+    return {
+      type: "sections",
+      header: {
+        card: {
+          type: "markdown",
+          content: "# <ha-icon icon=\"mdi:home-lightbulb-outline\"></ha-icon> Lights",
+          text_only: true,
+        },
+        layout: "responsive",
+        badges_position: "bottom",
+        badges_wrap: "scroll",
+      },
+      badges,
+      max_columns: 3,
+      sections: [...areas],
+    };
+  }
 }
 
 

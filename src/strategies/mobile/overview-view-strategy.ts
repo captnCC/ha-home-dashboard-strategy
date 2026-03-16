@@ -13,10 +13,10 @@ import {AreaConfig} from "../config";
 export interface MobileOverviewViewStrategyConfig {
   type: "custom:mobile-overview";
   areas?: Record<string, AreaConfig>;
-  badges?: EntityBadgeConfig[]
+  badges?: EntityBadgeConfig[];
   lights?: {
-    all?: string
-  }
+    all?: string;
+  };
 }
 
 class MobileOverviewViewStrategy extends  HTMLElement {
@@ -90,11 +90,11 @@ const computeAreasSection = function (hass: HomeAssistant, configs: Record<strin
     const features =
       overviewCards.length !== 10
         ? [
-            {
-              type: "area-controls",
-              controls: ["light", "fan"],
-            },
-          ]
+          {
+            type: "area-controls",
+            controls: ["light", "fan"],
+          },
+        ]
         : [];
 
     return {
@@ -152,7 +152,7 @@ const computePlayingSection = function (
       show_entity_picture: true,
       vertical: false,
       features_position: "inline",
-      state_content: ["media_artist", "media_title", 'media_album_name'],
+      state_content: ["media_artist", "media_title", "media_album_name"],
       visibility: [
         {
           condition: "state",

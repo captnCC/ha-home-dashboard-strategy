@@ -2,11 +2,10 @@ import type { HomeAssistant } from "home-assistant-frontend-types/frontend/types
 import type { LovelaceConfig } from "home-assistant-frontend-types/frontend/data/lovelace/config/types";
 import type { LovelaceViewRawConfig } from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
 import type { Config } from "../config";
-import {WallboardOverviewViewStrategyConfig} from "./wallboard-overview-view-strategy";
 
 export type WallboardDashboardStrategyConfig = {
   type: "custom:wallboard";
-} & Config
+} & Config;
 
 class WallboardDashboardStrategy extends  HTMLElement {
   static async generate(
@@ -69,7 +68,7 @@ class WallboardDashboardStrategy extends  HTMLElement {
         theme: config.theme,
       },
       ...areas,
-    ]
+    ];
 
     return {
       views

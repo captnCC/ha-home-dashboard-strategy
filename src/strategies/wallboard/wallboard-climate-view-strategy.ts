@@ -1,12 +1,16 @@
-import type { LovelaceViewConfig } from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
-import { computeAreaTileCardConfig, mapAreas } from "../helpers/cards";
-import type { LovelaceBadgeConfig } from "home-assistant-frontend-types/frontend/data/lovelace/config/badge";
-import type { HomeAssistant } from "home-assistant-frontend-types/frontend/types";
+import type {LovelaceViewConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
+import {computeAreaTileCardConfig, mapAreas} from "../helpers/cards";
+import type {LovelaceBadgeConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/badge";
+import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
 import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
 
+export type WallboardClimateViewStrategyConfig = {
+  type: "custom:wallboard-climate";
+};
+
 class WallboardClimateViewStrategy extends HTMLElement {
-  static async generate(_config: any, hass: HomeAssistant): Promise<LovelaceViewConfig> {
-    const sections = mapAreas(hass, {},(area) => {
+  static async generate(_config: WallboardClimateViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
+    const sections = mapAreas(hass, {}, (area) => {
 
       const computeTileCard = computeAreaTileCardConfig(hass, area.name);
       const devicesFilter = generateEntityFilter(hass, {
@@ -24,26 +28,26 @@ class WallboardClimateViewStrategy extends HTMLElement {
       const devices = allEntities.filter(devicesFilter).map(computeTileCard);
       const sensors = allEntities.filter(sensorFilter).map(computeTileCard);
 
-      if(devices.length + sensors.length === 0) return null
+      if (devices.length + sensors.length === 0) return null;
 
 
       const badges: LovelaceBadgeConfig[] = [];
 
-      if(area.temperature_entity_id){
+      if (area.temperature_entity_id) {
         badges.push({
           type: "entity",
           entity: area.temperature_entity_id,
           state_color: true,
-          tap_action: {action: 'more-info'}
+          tap_action: {action: "more-info"}
         });
       }
 
-      if(area.humidity_entity_id){
+      if (area.humidity_entity_id) {
         badges.push({
           type: "entity",
           entity: area.humidity_entity_id,
           state_color: true,
-          tap_action: {action: 'more-info'}
+          tap_action: {action: "more-info"}
         });
       }
 
@@ -73,7 +77,7 @@ class WallboardClimateViewStrategy extends HTMLElement {
       header: {
         card: {
           type: "markdown",
-          content: `# <ha-icon icon="mdi:home-thermometer-outline"></ha-icon> Climate`,
+          content: "# <ha-icon icon=\"mdi:home-thermometer-outline\"></ha-icon> Climate",
           text_only: true,
         },
         layout: "start",

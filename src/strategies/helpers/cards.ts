@@ -18,25 +18,25 @@ export const mapAreas = <T>(
 
 export const computeAreaTileCardConfig =
   (hass: HomeAssistant, prefix: string) =>
-  (entity: string): LovelaceCardConfig => {
-    const stateObj = hass.states[entity];
-    const name = computeStateName(stateObj);
-    const domain = computeDomain(entity);
-    const strippedName = stripDomainSuffix(
-      stripAreaPrefix(name, prefix),
-      domain
-    );
+    (entity: string): LovelaceCardConfig => {
+      const stateObj = hass.states[entity];
+      const name = computeStateName(stateObj);
+      const domain = computeDomain(entity);
+      const strippedName = stripDomainSuffix(
+        stripAreaPrefix(name, prefix),
+        domain
+      );
 
-    const features = computeTileFeatures(domain);
+      const features = computeTileFeatures(domain);
 
-    return {
-      type: "tile",
-      entity: entity,
-      name: strippedName,
-      features_position: "bottom",
-      features,
+      return {
+        type: "tile",
+        entity: entity,
+        name: strippedName,
+        features_position: "bottom",
+        features,
+      };
     };
-  };
 
 const stripAreaPrefix = (name: string, area: string) =>
   name.replace(new RegExp(`^${area} `, "i"), "");

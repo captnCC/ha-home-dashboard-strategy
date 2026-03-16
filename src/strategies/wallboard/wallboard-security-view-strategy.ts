@@ -2,7 +2,7 @@ import type { LovelaceViewConfig } from "home-assistant-frontend-types/frontend/
 import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
 
 class WallboardSecurityViewStrategy extends  HTMLElement {
-  static async generate(_config: {}, _hass: HomeAssistant): Promise<LovelaceViewConfig> {
+  static async generate(_config: object, _hass: HomeAssistant): Promise<LovelaceViewConfig> {
     return {
       type: "sections",
       sections: []

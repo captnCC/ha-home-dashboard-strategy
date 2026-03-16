@@ -5,7 +5,7 @@ import type { Config } from "../config";
 
 export type MobileDashboardStrategyConfig = {
   type: "custom:mobile";
-} & Config
+} & Config;
 
 class DashboardStrategy extends  HTMLElement {
   static async generate(
