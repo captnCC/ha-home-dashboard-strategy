@@ -21,7 +21,66 @@ A dashboard strategy for Home Assistant.
 
 ## Configuration
 
+Both `wallboard` and `mobile` strategies share the same configuration options.
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `theme` | `string` | The theme to use for the dashboard. |
+| `overview` | `object` | Configuration for the overview page. |
+| `areas` | `object` | Configuration for individual areas. Keyed by area ID. |
+
+### Overview Configuration
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `lights` | `object` | Configuration for the lights view. |
+| `badges` | `list` | List of badges to display on the overview page. |
+
+### Area Configuration
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `hidden` | `boolean` | Whether to hide the area from the dashboard. |
+| `lights` | `object` | Configuration for the lights view of this area. |
+| `badges` | `list` | List of badges to display for this area. |
+
+### Lights Configuration
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `all` | `string` | Entity ID of a group containing all lights in the area/overview. |
+
+### Example
+
 ```yaml
 strategy:
   type: custom:wallboard
+  theme: "Caule Black"
+  overview:
+    badges:
+      - entity: sensor.temperature
+    lights:
+      all: light.all_lights
+  areas:
+    living_room:
+      badges:
+        - entity: binary_sensor.motion
+      lights:
+        all: light.living_room_lights
+    bedroom:
+      hidden: true
+```
+
+### Wallboard
+
+```yaml
+strategy:
+  type: custom:wallboard
+```
+
+### Mobile
+
+```yaml
+strategy:
+  type: custom:mobile
 ```
