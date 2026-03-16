@@ -98,6 +98,7 @@ export const computeTileFeatures = (domain: string, deviceClass: string | null =
 export const extendLastCard = (cards: LovelaceCardConfig[], odd = true) => {
   if (!!(cards.length % 2) === odd) {
     cards[cards.length - 1].grid_options = { columns: 'full' }
+    cards[cards.length - 1].features_position = 'inline'
   }
   return cards
 }
