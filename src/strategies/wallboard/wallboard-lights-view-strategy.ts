@@ -2,15 +2,15 @@ import type {LovelaceViewConfig,} from "home-assistant-frontend-types/frontend/d
 import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
 import {computeAreaTileCardConfig, extendLastCard, mapAreas,} from "../helpers/cards";
 import type {LovelaceCardConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/card";
-import type {AreaConfig, LightsConfig} from "../config";
+import type {AreaConfig, HasLightsConfig} from "../config";
 import {computeBadge} from "../helpers/badges";
 import {EntityBadgeConfig} from "home-assistant-frontend-types/frontend/panels/lovelace/badges/types";
 import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
 
 export type WallboardLightsViewStrategyConfig = {
-    type: "wallboard-lights";
+    type: "custom:wallboard-lights";
     areas?: Record<string, AreaConfig>;
-} & LightsConfig;
+} & HasLightsConfig["lights"];
 
 
 class WallboardLightsViewStrategy extends HTMLElement {
