@@ -113,3 +113,7 @@ const computeDeviceClassSuffix = (deviceClass: string) => {
 
   return [deviceClass]
 }
+
+export const generateCardSort = (order: Record<string, number> = {}) => {
+  return (a: string, b: string) => ((order?.[b] ?? 0) - (order?.[a] ?? 0))
+}

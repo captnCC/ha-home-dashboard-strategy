@@ -7,7 +7,7 @@ import { type AreaConfig, type HasLightsConfig } from '../config'
 
 import { computeBadge } from './badges'
 import { tapNavigate } from './navigate'
-import { computeAreaTileCardConfig, extendLastCard, mapAreas } from './cards'
+import { computeAreaTileCardConfig, extendLastCard, generateCardSort, mapAreas } from './cards'
 import { areaPath } from './area'
 
 export const computeLightBadges = (hass: HomeAssistant, config: HasLightsConfig['lights'] = {}) => {
@@ -20,7 +20,7 @@ export const computeLightBadges = (hass: HomeAssistant, config: HasLightsConfig[
 
 export const computeLightAreas = (hass: HomeAssistant, areas: Record<string, AreaConfig> = {}) => {
   const states = Object.keys(hass.states)
-  return mapAreas<LovelaceCardConfig>(hass, areas, (area) => {
+  return mapAreas<LovelaceCardConfig>(hass, areas, (area, _id, config) => {
     const computeTileCard = computeAreaTileCardConfig(hass, area.name)
 
     const areaFilter = generateEntityFilter(hass, {
@@ -28,11 +28,11 @@ export const computeLightAreas = (hass: HomeAssistant, areas: Record<string, Are
       domain: ['light'],
     })
 
-    const lightIds = states.filter(areaFilter)
+    const cards = extendLastCard(
+      states.filter(areaFilter).sort(generateCardSort(config.lights?.order)).map(computeTileCard)
+    )
 
-    if (lightIds.length === 0) return null
-
-    const cards = extendLastCard(lightIds.map(computeTileCard))
+    if (cards.length === 0) return null
 
     const badges: EntityBadgeConfig[] = []
     const areaConf = areas[area.area_id] ?? undefined

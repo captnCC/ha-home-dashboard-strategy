@@ -6,7 +6,7 @@ import { type EntityBadgeConfig } from 'home-assistant-frontend-types/frontend/p
 import { generateEntityFilter } from '../../homeassistant/common/entity/entity_filter'
 import { type AreaConfig, type OverviewConfig } from '../config'
 
-import { computeAreaTileCardConfig, mapAreas } from './cards'
+import { computeAreaTileCardConfig, generateCardSort, mapAreas } from './cards'
 import { computeBadge } from './badges'
 import { areaPath } from './area'
 import { navigate } from './navigate'
@@ -114,9 +114,12 @@ export const computeAreasSection = function (hass: HomeAssistant, configs: Recor
       domain: ['light'],
     })
 
+    const sort = generateCardSort(config.lights?.order)
+
     const overviewCards = size === 'large'
       ? Object.keys(hass.states)
           .filter(filter)
+          .sort(sort)
           .map(
             entity => ({
               ...cardCompute(entity),

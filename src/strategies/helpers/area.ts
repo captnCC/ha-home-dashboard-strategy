@@ -3,11 +3,11 @@ import { type AreaRegistryEntry } from 'home-assistant-frontend-types/frontend/d
 import { type LovelaceBadgeConfig } from 'home-assistant-frontend-types/frontend/data/lovelace/config/badge'
 import { type EntityBadgeConfig } from 'home-assistant-frontend-types/frontend/panels/lovelace/badges/types'
 
-import { type AreaConfig, type HasLightsConfig } from '../config'
+import { type AreaConfig, type HasLightsConfig, type LightsConfig } from '../config'
 import { generateEntityFilter } from '../../homeassistant/common/entity/entity_filter'
 
 import { tapNavigate } from './navigate'
-import { computeAreaTileCardConfig, extendLastCard } from './cards'
+import { computeAreaTileCardConfig, extendLastCard, generateCardSort } from './cards'
 import { computeBadge } from './badges'
 
 const lightsHeading = (config: NonNullable<HasLightsConfig['lights']>) => {
@@ -27,7 +27,7 @@ const lightsHeading = (config: NonNullable<HasLightsConfig['lights']>) => {
   })
 }
 
-const computeLightCards = (hass: HomeAssistant, area: AreaRegistryEntry) => {
+const computeLightCards = (hass: HomeAssistant, area: AreaRegistryEntry, config: LightsConfig = {}) => {
   const computeTileCard = computeAreaTileCardConfig(hass, area.name)
 
   const areaFilter = generateEntityFilter(hass, {
@@ -35,19 +35,22 @@ const computeLightCards = (hass: HomeAssistant, area: AreaRegistryEntry) => {
     domain: ['light'],
   })
 
-  const allEntities = Object.keys(hass.states)
-
-  return allEntities.filter(areaFilter).map(computeTileCard)
+  return Object.keys(hass.states)
+    .filter(areaFilter)
+    .sort(generateCardSort(config.order))
+    .map(computeTileCard)
 }
 
-export const computeLightSection = (hass: HomeAssistant, area: AreaRegistryEntry, config: NonNullable<HasLightsConfig['lights']>) => {
-  const cards = extendLastCard(computeLightCards(hass, area))
-
+export const computeLightSection = (hass: HomeAssistant, area: AreaRegistryEntry, config: LightsConfig) => {
+  const cards = extendLastCard(computeLightCards(hass, area, config))
   if (cards.length === 0) return []
   return [
     {
       type: 'grid',
-      cards: [lightsHeading(config), ...cards],
+      cards: [
+        lightsHeading(config),
+        ...cards,
+      ],
     },
   ]
 }
@@ -111,8 +114,9 @@ const computeMediaCards = (hass: HomeAssistant, area: AreaRegistryEntry) => {
     domain: ['media_player'],
   })
 
-  const allEntities = Object.keys(hass.states)
-  return allEntities.filter(areaFilter).map(computeTileCard)
+  return Object.keys(hass.states)
+    .filter(areaFilter)
+    .map(computeTileCard)
 }
 
 export const computeMediaSection = (hass: HomeAssistant, area: AreaRegistryEntry) => {
@@ -122,7 +126,10 @@ export const computeMediaSection = (hass: HomeAssistant, area: AreaRegistryEntry
   return [
     {
       type: 'grid',
-      cards: [mediaHeading(), ...cards],
+      cards: [
+        mediaHeading(),
+        ...cards,
+      ],
     },
   ]
 }
@@ -167,11 +174,9 @@ export const computeBadges = (hass: HomeAssistant, area: AreaRegistryEntry, conf
   badges.push(
     ...states.filter(sceneFilter).map(computeBadge),
     ...states.filter(scriptFilter).map(computeBadge),
+    ...(config.badges ?? []),
   )
 
-  if (config.badges) {
-    badges.push(...config.badges)
-  }
   return badges
 }
 

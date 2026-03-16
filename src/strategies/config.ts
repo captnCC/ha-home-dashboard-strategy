@@ -4,10 +4,13 @@ export type HasAreasConfig = {
   areas?: Record<string, AreaConfig>
 }
 
+export type LightsConfig = {
+  all?: string
+  order?: Record<string, number>
+}
+
 export type HasLightsConfig = {
-  lights?: {
-    all?: string
-  }
+  lights?: LightsConfig
 }
 
 export type HasBadgesConfig = {

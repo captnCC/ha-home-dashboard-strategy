@@ -9,7 +9,8 @@
   - [x] Batteries
 - [x] Custom sizing for area cards on mobile
 - [ ] Sorts for areas
-- [ ] Sorts for lights, climate etc
+- [x] Sorts for lights
+- [ ] Sorts for climate etc
 - [ ] Multi Floor Support
 - [ ] Summary per Home
     - [ ] Lights
@@ -26,6 +27,7 @@
   - [ ] Climate
   - [ ] Media
   - [ ] Security
+- [ ] Add covers support
 - [ ] Add security section for areas
 - [ ] Add security overview
 - [ ] Improved masonary/grid layout
