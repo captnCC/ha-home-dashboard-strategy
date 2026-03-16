@@ -4,11 +4,9 @@
 - [x] Fix vertical card stack area card borders
 - [x] Add area scenes badges
 - [x] Add media overview 
-- [ ] Add utilities pages
-  - [ ] Vacuums
-  - [ ] Batteries
-- [ ] Add security section for areas
-- [ ] Add security overview
+- [x] Add utilities pages
+  - [x] Vacuums
+  - [x] Batteries
 - [ ] Multi Floor Support
 - [ ] Summary per Home
     - [ ] Lights
@@ -25,6 +23,8 @@
   - [ ] Climate
   - [ ] Media
   - [ ] Security
+- [ ] Add security section for areas
+- [ ] Add security overview
 - [ ] Custom sizing for area cards on mobile
 - [ ] Improved masonary/grid layout
 - [ ] Visual Editor

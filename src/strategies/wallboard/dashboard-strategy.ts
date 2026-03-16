@@ -8,6 +8,7 @@ import * as lights from "./lights-view-strategy";
 import * as climate from "./climate-view-strategy";
 import * as security from "./security-view-strategy";
 import * as media from "./media-view-strategy";
+import * as utilities from "./utilities-view-strategy";
 
 export type WallboardDashboardStrategyConfig = {
   type: "custom:wallboard";
@@ -29,6 +30,7 @@ class DashboardStrategy extends  HTMLElement {
       climate.registerView(config),
       security.registerView(config),
       media.registerView(config),
+      utilities.registerView(config),
       ...areas,
     ];
 
