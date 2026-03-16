@@ -8,6 +8,8 @@ import { type AreaConfig, type OverviewConfig } from '../config'
 
 import { computeAreaTileCardConfig, mapAreas } from './cards'
 import { computeBadge } from './badges'
+import { areaPath } from './area'
+import { navigate } from './navigate'
 
 export const computeBadges = function (hass: HomeAssistant, config: OverviewConfig): EntityBadgeConfig[] {
   const states = Object.keys(hass.states)
@@ -141,7 +143,7 @@ export const computeAreasSection = function (hass: HomeAssistant, configs: Recor
           display_type: 'compact',
           alert_classes: ['motion', 'moisture'],
           sensor_classes: ['temperature', 'humidity'],
-          navigation_path: `areas-${areaId}?historyBack=1`,
+          navigation_path: navigate(areaPath(areaId)),
           card_mod: {
             style: `
               ha-card {
