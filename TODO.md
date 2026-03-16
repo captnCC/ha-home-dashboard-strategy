@@ -3,9 +3,12 @@
 - [x] Weather Support on the overview page
 - [x] Fix vertical card stack area card borders
 - [x] Add room scenes badges
+- [x] Add media overview 
+- [ ] Add utilities pages
+  - [ ] Vacuums
+  - [ ] Batteries
 - [ ] Add security section for rooms
 - [ ] Add security overview
-- [ ] Add media overview
 - [ ] Multi Floor Support
 - [ ] Summary per Home
     - [ ] Lights
@@ -23,8 +26,5 @@
   - [ ] Media
   - [ ] Security
 - [ ] Custom sizing for area cards on mobile
-- [ ] Add utilities pages
-  - [ ] Vacuums
-  - [ ] Batteries
 - [ ] Improved masonary/grid layout
 - [ ] Visual Editor

@@ -149,6 +149,10 @@ const mediaHeading = () => ({
   heading: "Media",
   heading_style: "subtitle",
   icon: "mdi:play",
+  tap_action: {
+    action: "navigate",
+    navigation_path: "media?historyBack=1"
+  },
 });
 
 const computeMediaCards = (hass: HomeAssistant, area: AreaRegistryEntry) => {

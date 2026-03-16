@@ -67,6 +67,15 @@ class DashboardStrategy extends  HTMLElement {
         },
         theme: config.theme,
       },
+      {
+        icon: "mdi:play",
+        path: "media",
+        title: "Media",
+        strategy: {
+          type: "custom:wallboard-media",
+        },
+        theme: config.theme,
+      },
       ...areas,
     ];
 
