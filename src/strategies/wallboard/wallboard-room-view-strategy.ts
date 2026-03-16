@@ -36,6 +36,10 @@ class WallboardRoomViewStrategy extends  HTMLElement {
 
     const badges = computeBadges(hass, area);
 
+    if(config.badges){
+      badges.push(...config.badges);
+    }
+
     const sections = [
       ...computeLightSection(hass, area, config.lights || {}),
       ...computeClimateSection(hass, area),

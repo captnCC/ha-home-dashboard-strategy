@@ -13,6 +13,7 @@ import {AreaConfig} from "../config";
 export interface WallboardOverviewViewStrategyConfig {
   type: "wallboard-overview";
   areas?: Record<string, AreaConfig>;
+  badges?: EntityBadgeConfig[]
   lights?: {
     all?: string
   }
@@ -47,7 +48,11 @@ class WallboardOverviewViewStrategy extends  HTMLElement {
       ...states.filter(scriptFilter).map(computeBadge)
     );
 
-    
+    if(config.badges){
+      badges.push(...config.badges);
+    }
+
+
     return {
       type: "sections",
       max_columns: 4,

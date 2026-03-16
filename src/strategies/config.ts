@@ -1,16 +1,20 @@
-
+import {EntityBadgeConfig} from "home-assistant-frontend-types/frontend/panels/lovelace/badges/types";
 
 export interface LightsConfig {
-  all?: string
+    all?: string
 }
 
 export interface AreaConfig {
-  hidden?: boolean
-  lights?: LightsConfig
+    hidden?: boolean
+    lights?: LightsConfig
+    badges?: EntityBadgeConfig[]
 }
 
-export interface WallboardConfig {
-  lights?: LightsConfig
-  areas?: Record<string, AreaConfig>
-  theme?: string
+export interface Config {
+    theme?: string
+    overview?: {
+        lights?: LightsConfig
+        badges?: EntityBadgeConfig[]
+    }
+    areas?: Record<string, AreaConfig>
 }
