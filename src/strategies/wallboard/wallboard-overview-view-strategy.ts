@@ -101,12 +101,12 @@ const computeHeaderCard = function (weather: string | null): LovelaceCardConfig 
         round_temperature: false,
         card_mod: {
           style: `
-                        ha-card {
-                          background: none;
-                          box-shadow: none;
-                          border: none;
-                        }
-                      }`
+            ha-card {
+              background: none;
+              box-shadow: none;
+              border: none;
+            }
+          }`
         }
       }
     ]
@@ -147,6 +147,7 @@ const computeAreasSection = function (hass: HomeAssistant, configs: Record<strin
     return {
       type: "custom:vertical-stack-in-card",
       column_span: 2,
+
       cards: [
         {
           type: "area",
@@ -157,6 +158,15 @@ const computeAreasSection = function (hass: HomeAssistant, configs: Record<strin
           alert_classes: ["motion", "moisture"],
           sensor_classes: ["temperature", "humidity"],
           navigation_path: `areas-${areaId}?historyBack=1`,
+          card_mod: {
+            style: `
+              ha-card {
+                background: none;
+                box-shadow: none;
+                border: none;
+              }
+            }`
+          },
         },
         ...overviewCards,
       ],

@@ -110,6 +110,15 @@ const computeAreasSection = function (hass: HomeAssistant, configs: Record<strin
           alert_classes: ["motion", "moisture"],
           sensor_classes: ["temperature", "humidity"],
           navigation_path: `areas-${areaId}?historyBack=1`,
+          card_mod: {
+            style: `
+              ha-card {
+                background: none;
+                box-shadow: none;
+                border: none;
+              }
+            }`
+          },
         },
         ...overviewCards,
       ],
