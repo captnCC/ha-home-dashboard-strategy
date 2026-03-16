@@ -3,7 +3,7 @@ import type { LovelaceConfig } from "home-assistant-frontend-types/frontend/data
 import type { LovelaceViewRawConfig } from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
 import type { Config } from "../config";
 import * as overview from "./overview-view-strategy";
-import * as room from "./room-view-strategy";
+import * as area from "./area-view-strategy";
 import * as lights from "./lights-view-strategy";
 import * as climate from "./climate-view-strategy";
 import * as security from "./security-view-strategy";
@@ -20,7 +20,7 @@ class DashboardStrategy extends  HTMLElement {
   ): Promise<LovelaceConfig> {
 
     const areas: LovelaceViewRawConfig[] = Object.values(hass.areas).map(
-      (area) => room.registerView(config, area)
+      (a) => area.registerView(config, a)
     );
 
     const views: LovelaceViewRawConfig[] = [

@@ -9,6 +9,8 @@ import {type Config, HasAreasConfig, HasLightsConfig} from "../config";
 import {computeBadge} from "../helpers/badges";
 import {EntityBadgeConfig} from "home-assistant-frontend-types/frontend/panels/lovelace/badges/types";
 import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
+import {tapNavigate} from "../helpers/navigate";
+import {areaPath} from "./area-view-strategy";
 
 export type WallboardLightsViewStrategyConfig = {
   type: "custom:wallboard-lights";
@@ -17,7 +19,6 @@ export type WallboardLightsViewStrategyConfig = {
 const icon = "mdi:lightbulb-group";
 
 export const registerView = function (config: Config): LovelaceStrategyViewConfig {
-
   const strategy: WallboardLightsViewStrategyConfig = {
     type: "custom:wallboard-lights",
     areas: config.areas,
@@ -26,9 +27,9 @@ export const registerView = function (config: Config): LovelaceStrategyViewConfi
 
   return {
     icon,
+    strategy,
     path: "lights",
     title: "Lights",
-    strategy,
     theme: config.theme,
   };
 };
@@ -67,10 +68,7 @@ class LightsViewStrategy extends HTMLElement {
             heading_style: "title",
             heading: area.name,
             icon: area.icon,
-            tap_action: {
-              action: "navigate",
-              navigation_path: `areas-${area.area_id}?historyBack=1`,
-            },
+            tap_action: tapNavigate(areaPath(area.area_id)),
             badges,
           },
           ...cards,

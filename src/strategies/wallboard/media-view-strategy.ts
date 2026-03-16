@@ -1,8 +1,13 @@
-import type {LovelaceStrategyViewConfig, LovelaceViewConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
+import type {
+  LovelaceStrategyViewConfig,
+  LovelaceViewConfig
+} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
 import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
 import {computeAreaTileCardConfig, extendLastCard, mapAreas} from "../helpers/cards";
 import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
 import {Config, HasAreasConfig} from "../config";
+import {tapNavigate} from "../helpers/navigate";
+import {areaPath} from "./area-view-strategy";
 
 export type WallboardMediaViewStrategyConfig = {
   type: "custom:wallboard-media";
@@ -11,14 +16,16 @@ export type WallboardMediaViewStrategyConfig = {
 const icon = "mdi:play";
 
 export const registerView = function (config: Config): LovelaceStrategyViewConfig {
+  const strategy: WallboardMediaViewStrategyConfig = {
+    type: "custom:wallboard-media",
+    areas: config.areas,
+  };
+
   return {
     icon,
+    strategy,
     path: "media",
     title: "Media",
-    strategy: {
-      type: "custom:wallboard-media",
-      areas: config.areas,
-    },
     theme: config.theme,
   };
 };
@@ -56,10 +63,7 @@ class MediaViewStrategy extends HTMLElement {
             heading: area.name,
             heading_style: "title",
             icon: area.icon,
-            tap_action: {
-              action: "navigate",
-              navigation_path: `areas-${area.area_id}?historyBack=1`,
-            },
+            tap_action: tapNavigate(areaPath(area.area_id)),
           },
           ...extendLastCard(devices),
         ],

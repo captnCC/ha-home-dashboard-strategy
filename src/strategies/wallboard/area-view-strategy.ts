@@ -11,29 +11,34 @@ import {computeBadge} from "../helpers/badges";
 import {AreaConfig, Config, HasLightsConfig} from "../config";
 import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
 import {EntityBadgeConfig} from "home-assistant-frontend-types/frontend/panels/lovelace/badges/types";
+import {tapNavigate} from "../helpers/navigate";
 
-export type WallboardRoomViewStrategyConfig = {
-  type: "custom:wallboard-room";
+export type WallboardAreaViewStrategyConfig = {
+  type: "custom:wallboard-area";
   area: string;
 } & AreaConfig;
 
+export const areaPath = (areaId: string) => `areas-${areaId}`;
+
 export const registerView = function (config: Config, area: AreaRegistryEntry): LovelaceStrategyViewConfig {
+  const strategy: WallboardAreaViewStrategyConfig = {
+    type: "custom:wallboard-area",
+    area: area.area_id,
+    ...config.areas?.[area.area_id],
+  };
+
   return {
+    strategy,
     path: `areas-${area.area_id}`,
     title: area.name,
     subview: true,
     theme: config.theme,
-    strategy: {
-      type: "custom:wallboard-room",
-      area: area.area_id,
-      ...config.areas?.[area.area_id],
-    },
   };
 };
 
-class RoomViewStrategy extends HTMLElement {
+class AreaViewStrategy extends HTMLElement {
   static async generate(
-    config: WallboardRoomViewStrategyConfig,
+    config: WallboardAreaViewStrategyConfig,
     hass: HomeAssistant
   ): Promise<LovelaceViewConfig> {
     const area = hass.areas[config.area];
@@ -83,7 +88,7 @@ const lightsHeading = (config: NonNullable<HasLightsConfig["lights"]>) => {
     heading: "Lights",
     heading_style: "subtitle",
     icon: "mdi:lightbulb-group",
-    tap_action: {action: "navigate", navigation_path: "lights?historyBack=1"},
+    tap_action: tapNavigate("lights"),
     badges
   });
 };
@@ -118,7 +123,7 @@ const climateHeading = () => ({
   heading: "Climate",
   heading_style: "subtitle",
   icon: "mdi:home-thermometer",
-  tap_action: {action: "navigate", navigation_path: "climate?historyBack=1"},
+  tap_action: tapNavigate("climate"),
 });
 
 const computeClimateCards = (hass: HomeAssistant, area: AreaRegistryEntry) => {
@@ -164,10 +169,7 @@ const mediaHeading = () => ({
   heading: "Media",
   heading_style: "subtitle",
   icon: "mdi:play",
-  tap_action: {
-    action: "navigate",
-    navigation_path: "media?historyBack=1"
-  },
+  tap_action: tapNavigate("media"),
 });
 
 const computeMediaCards = (hass: HomeAssistant, area: AreaRegistryEntry) => {
@@ -243,4 +245,4 @@ const computeBadges = (hass: HomeAssistant, area: AreaRegistryEntry, config: Are
 };
 
 
-customElements.define("ll-strategy-view-wallboard-room", RoomViewStrategy);
+customElements.define("ll-strategy-view-wallboard-area", AreaViewStrategy);

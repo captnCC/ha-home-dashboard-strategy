@@ -2,12 +2,12 @@
 
 - [x] Weather Support on the overview page
 - [x] Fix vertical card stack area card borders
-- [x] Add room scenes badges
+- [x] Add area scenes badges
 - [x] Add media overview 
 - [ ] Add utilities pages
   - [ ] Vacuums
   - [ ] Batteries
-- [ ] Add security section for rooms
+- [ ] Add security section for areas
 - [ ] Add security overview
 - [ ] Multi Floor Support
 - [ ] Summary per Home
@@ -20,7 +20,7 @@
   - [ ] Climate
   - [ ] Media
   - [ ] Security
-- [ ] Summary per room
+- [ ] Summary per area
   - [ ] Lights 
   - [ ] Climate
   - [ ] Media

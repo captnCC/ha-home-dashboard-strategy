@@ -133,7 +133,7 @@ const computeAreasSection = function (hass: HomeAssistant, configs: Record<strin
     cards: [
       {
         type: "heading",
-        heading: "Rooms",
+        heading: "Areas",
         heading_style: "title",
         icon: "mdi:floor-plan",
       },

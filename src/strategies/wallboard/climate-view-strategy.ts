@@ -4,22 +4,27 @@ import type {LovelaceBadgeConfig} from "home-assistant-frontend-types/frontend/d
 import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
 import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
 import {Config, HasAreasConfig} from "../config";
+import {tapNavigate} from "../helpers/navigate";
+import {areaPath} from "./area-view-strategy";
 
 export type WallboardClimateViewStrategyConfig = {
   type: "custom:wallboard-climate";
 } & HasAreasConfig;
 
-const icon = "mdi:thermometer";
+export const icon = "mdi:thermometer";
+export const path = "climate";
 
 export const registerView = function (config: Config): LovelaceStrategyViewConfig {
+  const strategy: WallboardClimateViewStrategyConfig = {
+    type: "custom:wallboard-climate",
+    areas: config.areas,
+  };
+
   return {
     icon,
-    path: "climate",
+    strategy,
+    path,
     title: "Climate",
-    strategy: {
-      type: "custom:wallboard-climate",
-      areas: config.areas,
-    },
     theme: config.theme,
   };
 };
@@ -75,11 +80,7 @@ class ClimateViewStrategy extends HTMLElement {
             heading: area.name,
             heading_style: "title",
             icon: area.icon,
-            navigation_path: `areas-${area.area_id}`,
-            tap_action: {
-              action: "navigate",
-              navigation_path: `areas-${area.area_id}?historyBack=1`,
-            },
+            tap_action: tapNavigate(areaPath(area.area_id)),
             badges,
           },
           ...devices,

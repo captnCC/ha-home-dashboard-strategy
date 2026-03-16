@@ -20,7 +20,7 @@ class DashboardStrategy extends  HTMLElement {
         subview: true,
         theme: config.theme,
         strategy: {
-          type: "custom:wallboard-room",
+          type: "custom:wallboard-area",
           area: areaId,
           ...config.areas?.[areaId],
         },

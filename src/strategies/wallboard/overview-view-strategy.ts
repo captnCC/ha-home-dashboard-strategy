@@ -6,7 +6,8 @@ import {EntityBadgeConfig} from "home-assistant-frontend-types/frontend/panels/l
 import {StateCondition} from "home-assistant-frontend-types/frontend/panels/lovelace/common/validate-condition";
 import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
 import {AreaConfig, Config, HasAreasConfig, OverviewConfig} from "../config";
-
+import {navigate} from "../helpers/navigate";
+import {areaPath} from "./area-view-strategy";
 
 export type WallboardOverviewViewStrategyConfig = {
   type: "custom:wallboard-overview";
@@ -168,7 +169,7 @@ const computeAreasSection = function (hass: HomeAssistant, configs: Record<strin
           display_type: "compact",
           alert_classes: ["motion", "moisture"],
           sensor_classes: ["temperature", "humidity"],
-          navigation_path: `areas-${areaId}?historyBack=1`,
+          navigation_path: navigate(areaPath(areaId)),
           card_mod: {
             style: `
               ha-card {
@@ -191,7 +192,7 @@ const computeAreasSection = function (hass: HomeAssistant, configs: Record<strin
     cards: [
       {
         type: "heading",
-        heading: "Rooms",
+        heading: "Areas",
         heading_style: "title",
         icon: "mdi:floor-plan",
       },
