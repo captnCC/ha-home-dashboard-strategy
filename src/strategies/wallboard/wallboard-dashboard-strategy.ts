@@ -46,6 +46,7 @@ class WallboardDashboardStrategy extends  HTMLElement {
           strategy: {
             type: "custom:wallboard-lights",
             areas: config.areas,
+            ...config.overview?.lights
           },
           theme: config.theme,
         },
