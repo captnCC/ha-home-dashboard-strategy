@@ -13,12 +13,11 @@ export type WallboardOverviewViewStrategyConfig = OverviewConfig & HasAreasConfi
   type: "custom:wallboard-overview";
 };
 
-class WallboardOverviewViewStrategy extends HTMLElement {
+class OverviewViewStrategy extends HTMLElement {
   static async generate(
     config: WallboardOverviewViewStrategyConfig,
     hass: HomeAssistant
   ): Promise<LovelaceViewConfig> {
-    console.log(config);
     const states = Object.keys(hass.states);
 
     const badges: EntityBadgeConfig[] = [];
@@ -249,4 +248,4 @@ const computePlayingSection = function (
   };
 };
 
-customElements.define("ll-strategy-view-wallboard-overview", WallboardOverviewViewStrategy);
+customElements.define("ll-strategy-view-wallboard-overview", OverviewViewStrategy);

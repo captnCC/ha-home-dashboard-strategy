@@ -16,7 +16,7 @@ export type WallboardRoomViewStrategyConfig = {
   area: string;
 } & AreaConfig;
 
-class WallboardRoomViewStrategy extends HTMLElement {
+class RoomViewStrategy extends HTMLElement {
   static async generate(
     config: WallboardRoomViewStrategyConfig,
     hass: HomeAssistant
@@ -212,4 +212,4 @@ const computeBadges = (hass: HomeAssistant, area: AreaRegistryEntry) => {
   badges.push(...sceneBadges);
   return badges;
 };
-customElements.define("ll-strategy-view-wallboard-room", WallboardRoomViewStrategy);
+customElements.define("ll-strategy-view-wallboard-room", RoomViewStrategy);

@@ -1,6 +1,6 @@
-import "./wallboard-dashboard-strategy";
-import "./wallboard-room-view-strategy";
-import "./wallboard-lights-view-strategy";
-import "./wallboard-climate-view-strategy";
-import "./wallboard-overview-view-strategy";
-import "./wallboard-security-view-strategy";
+import "./dashboard-strategy";
+import "./room-view-strategy";
+import "./lights-view-strategy";
+import "./climate-view-strategy";
+import "./overview-view-strategy";
+import "./security-view-strategy";

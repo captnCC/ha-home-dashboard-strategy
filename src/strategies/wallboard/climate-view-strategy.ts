@@ -8,7 +8,7 @@ export type WallboardClimateViewStrategyConfig = {
   type: "custom:wallboard-climate";
 };
 
-class WallboardClimateViewStrategy extends HTMLElement {
+class ClimateViewStrategy extends HTMLElement {
   static async generate(_config: WallboardClimateViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
     const sections = mapAreas(hass, {}, (area) => {
 
@@ -91,4 +91,4 @@ class WallboardClimateViewStrategy extends HTMLElement {
 }
 
 
-customElements.define("ll-strategy-view-wallboard-climate", WallboardClimateViewStrategy);
+customElements.define("ll-strategy-view-wallboard-climate", ClimateViewStrategy);

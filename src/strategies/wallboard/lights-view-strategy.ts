@@ -13,7 +13,7 @@ export type WallboardLightsViewStrategyConfig = {
 } & HasLightsConfig["lights"];
 
 
-class WallboardLightsViewStrategy extends HTMLElement {
+class LightsViewStrategy extends HTMLElement {
   static async generate(config: WallboardLightsViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
 
     const allEntities = Object.keys(hass.states);
@@ -85,4 +85,4 @@ class WallboardLightsViewStrategy extends HTMLElement {
 }
 
 
-customElements.define("ll-strategy-view-wallboard-lights", WallboardLightsViewStrategy);
+customElements.define("ll-strategy-view-wallboard-lights", LightsViewStrategy);

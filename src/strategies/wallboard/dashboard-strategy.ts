@@ -7,7 +7,7 @@ export type WallboardDashboardStrategyConfig = {
   type: "custom:wallboard";
 } & Config;
 
-class WallboardDashboardStrategy extends  HTMLElement {
+class DashboardStrategy extends  HTMLElement {
   static async generate(
     config: WallboardDashboardStrategyConfig,
     hass: HomeAssistant
@@ -76,4 +76,4 @@ class WallboardDashboardStrategy extends  HTMLElement {
   }
 }
 
-customElements.define("ll-strategy-dashboard-wallboard", WallboardDashboardStrategy);
+customElements.define("ll-strategy-dashboard-wallboard", DashboardStrategy);
