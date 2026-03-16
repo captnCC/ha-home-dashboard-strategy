@@ -1,5 +1,7 @@
 import { defineConfig, loadEnv } from "vite";
 
+const moduleName = 'ha-home-dashboard-strategy'
+
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), "");
     const target = env.VITE_TARGET || "http://localhost:8123";
@@ -7,20 +9,31 @@ export default defineConfig(({ mode }) => {
     return {
         plugins: [
             {
-                name: 'sw-hot-reload',
+                name: 'home-assistant',
                 handleHotUpdate(context) {
                     context.server.ws.send({
                         type: 'full-reload'
                     });
-                }
-            }
+                },
+                configureServer(server) {
+                    server.middlewares.use(`/hacsfiles/${moduleName}/${moduleName}.js`, (req, res) => {
+                        res.writeHead(200, { 'Content-Type': 'application/javascript' });
+                        res.end(`console.log("${moduleName} has been substituted by vite")`);
+                    });
+                    server.middlewares.use(`/sw-modern.js`, (req, res) => {
+                        res.writeHead(200, { 'Content-Type': 'application/javascript' });
+                        res.end(`console.log("Service Worker has been substituted by vite")`);
+                    });
+
+                },
+            },
         ],
         build: {
             lib: {
                 entry: "src/index.ts",
                 formats: ["iife"],
                 name: "HomeDashboardStrategy",
-                fileName: (format) => `ha-home-dashboard-strategy.js`
+                fileName: (format) => `${moduleName}.js`
             },
             rolldownOptions: {
                 external: [
@@ -38,7 +51,7 @@ export default defineConfig(({ mode }) => {
               path: '/@vite/hmr'
             },
             proxy: {
-                "/api": {
+                "/api/websocket": {
                     target,
                     changeOrigin: true,
                     secure: false,
@@ -48,7 +61,7 @@ export default defineConfig(({ mode }) => {
                     target,
                     changeOrigin: true,
                     secure: false,
-                    ws: true,
+                    ws: false,
                     selfHandleResponse: true,
                     headers: {
                         "accept-encoding": "identity",
