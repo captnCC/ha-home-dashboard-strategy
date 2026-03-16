@@ -34,7 +34,7 @@ class RoomViewStrategy extends HTMLElement {
       badges_wrap: "wrap",
     };
 
-    const badges = computeBadges(hass, area);
+    const badges = computeBadges(hass, area, config);
 
     if (config.badges) {
       badges.push(...config.badges);
@@ -175,7 +175,7 @@ const computeMediaSection = (hass: HomeAssistant, area: AreaRegistryEntry) => {
   ];
 };
 
-const computeBadges = (hass: HomeAssistant, area: AreaRegistryEntry) => {
+const computeBadges = (hass: HomeAssistant, area: AreaRegistryEntry, config: AreaConfig) => {
   const badges: LovelaceBadgeConfig[] = [];
 
   if (area.temperature_entity_id) {
@@ -205,11 +205,23 @@ const computeBadges = (hass: HomeAssistant, area: AreaRegistryEntry) => {
     domain: ["scene"],
   });
 
-  const sceneBadges = Object.keys(hass.states)
-    .filter(sceneFilter)
-    .map(computeBadge);
+  const scriptFilter = generateEntityFilter(hass, {
+    area: area.area_id,
+    domain: ["script"],
+  });
 
-  badges.push(...sceneBadges);
+  const states = Object.keys(hass.states);
+
+  badges.push(
+    ...states.filter(sceneFilter).map(computeBadge),
+    ...states.filter(scriptFilter).map(computeBadge),
+  );
+
+  if (config.badges) {
+    badges.push(...config.badges);
+  }
   return badges;
 };
+
+
 customElements.define("ll-strategy-view-wallboard-room", RoomViewStrategy);

@@ -2,7 +2,7 @@
 
 - [x] Weather Support on the overview page
 - [x] Fix vertical card stack area card borders
-- [ ] Add room scenes badges
+- [x] Add room scenes badges
 - [ ] Add security section for rooms
 - [ ] Add security overview
 - [ ] Add media overview
