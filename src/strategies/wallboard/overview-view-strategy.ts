@@ -8,6 +8,7 @@ import {generateEntityFilter} from "../../homeassistant/common/entity/entity_fil
 import {AreaConfig, Config, HasAreasConfig, OverviewConfig} from "../config";
 import {navigate} from "../helpers/navigate";
 import {areaPath} from "./area-view-strategy";
+import {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
 
 export type WallboardOverviewViewStrategyConfig = {
   type: "custom:wallboard-overview";

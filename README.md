@@ -4,6 +4,11 @@ A dashboard strategy for Home Assistant.
 
 ## Installation
 
+### Requirements
+
+- [Vertical Stack In Card](https://github.com/ofekashery/vertical-stack-in-card/tree/master)
+- [Lovelace Card Mod](https://github.com/thomasloven/lovelace-card-mod)
+
 ### HACS (Recommended)
 
 1. Open HACS in Home Assistant.
