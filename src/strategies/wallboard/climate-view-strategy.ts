@@ -3,10 +3,11 @@ import {computeAreaTileCardConfig, mapAreas} from "../helpers/cards";
 import type {LovelaceBadgeConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/badge";
 import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
 import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
+import {HasAreasConfig} from "../config";
 
 export type WallboardClimateViewStrategyConfig = {
   type: "custom:wallboard-climate";
-};
+} & HasAreasConfig;
 
 class ClimateViewStrategy extends HTMLElement {
   static async generate(_config: WallboardClimateViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {

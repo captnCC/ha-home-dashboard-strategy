@@ -9,9 +9,9 @@ import {generateEntityFilter} from "../../homeassistant/common/entity/entity_fil
 import {AreaConfig, HasAreasConfig, OverviewConfig} from "../config";
 
 
-export type WallboardOverviewViewStrategyConfig = OverviewConfig & HasAreasConfig & {
+export type WallboardOverviewViewStrategyConfig = {
   type: "custom:wallboard-overview";
-};
+} & OverviewConfig & HasAreasConfig;
 
 class OverviewViewStrategy extends HTMLElement {
   static async generate(

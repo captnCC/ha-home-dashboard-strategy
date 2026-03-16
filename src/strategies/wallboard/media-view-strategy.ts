@@ -2,10 +2,11 @@ import type {LovelaceViewConfig} from "home-assistant-frontend-types/frontend/da
 import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
 import {computeAreaTileCardConfig, extendLastCard, mapAreas} from "../helpers/cards";
 import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
+import {HasAreasConfig} from "../config";
 
 export type WallboardMediaViewStrategyConfig = {
   type: "custom:wallboard-media";
-};
+} & HasAreasConfig;
 
 
 class MediaViewStrategy extends HTMLElement {

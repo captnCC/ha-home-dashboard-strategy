@@ -55,6 +55,7 @@ class DashboardStrategy extends  HTMLElement {
         title: "Climate",
         strategy: {
           type: "custom:wallboard-climate",
+          areas: config.areas,
         },
         theme: config.theme,
       },
@@ -64,6 +65,7 @@ class DashboardStrategy extends  HTMLElement {
         title: "Security",
         strategy: {
           type: "custom:wallboard-security",
+          areas: config.areas,
         },
         theme: config.theme,
       },
@@ -73,6 +75,7 @@ class DashboardStrategy extends  HTMLElement {
         title: "Media",
         strategy: {
           type: "custom:wallboard-media",
+          areas: config.areas,
         },
         theme: config.theme,
       },
