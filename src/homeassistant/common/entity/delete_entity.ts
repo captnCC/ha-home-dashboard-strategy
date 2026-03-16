@@ -1,14 +1,14 @@
-import type { ConfigEntry } from "../../data/config_entries";
-import { deleteConfigEntry } from "../../data/config_entries";
-import type { EntityRegistryEntry } from "../../data/entity/entity_registry";
-import { removeEntityRegistryEntry } from "../../data/entity/entity_registry";
-import { HELPERS_CRUD } from "../../data/helpers_crud";
-import type { IntegrationManifest } from "../../data/integration";
-import type { Helper } from "../../panels/config/helpers/const";
-import { isHelperDomain } from "../../panels/config/helpers/const";
-import type { HomeAssistant } from "../../types";
-import { isComponentLoaded } from "../config/is_component_loaded";
-import { computeDomain } from "./compute_domain";
+import type { ConfigEntry } from '../../data/config_entries'
+import { deleteConfigEntry } from '../../data/config_entries'
+import type { EntityRegistryEntry } from '../../data/entity/entity_registry'
+import { removeEntityRegistryEntry } from '../../data/entity/entity_registry'
+import { HELPERS_CRUD } from '../../data/helpers_crud'
+import type { IntegrationManifest } from '../../data/integration'
+import type { Helper } from '../../panels/config/helpers/const'
+import { isHelperDomain } from '../../panels/config/helpers/const'
+import type { HomeAssistant } from '../../types'
+import { isComponentLoaded } from '../config/is_component_loaded'
+import { computeDomain } from './compute_domain'
 
 export const isDeletableEntity = (
   hass: HomeAssistant,
@@ -16,33 +16,33 @@ export const isDeletableEntity = (
   manifests: IntegrationManifest[],
   entityRegistry: EntityRegistryEntry[],
   configEntries: ConfigEntry[],
-  fetchedHelpers: Helper[]
+  fetchedHelpers: Helper[],
 ): boolean => {
-  const restored = !!hass.states[entity_id]?.attributes.restored;
+  const restored = !!hass.states[entity_id]?.attributes.restored
   if (restored) {
-    return true;
+    return true
   }
 
-  const domain = computeDomain(entity_id);
-  const entityRegEntry = entityRegistry.find((e) => e.entity_id === entity_id);
+  const domain = computeDomain(entity_id)
+  const entityRegEntry = entityRegistry.find(e => e.entity_id === entity_id)
   if (isHelperDomain(domain)) {
     return !!(
-      isComponentLoaded(hass, domain) &&
-      entityRegEntry &&
-      fetchedHelpers.some((e) => e.id === entityRegEntry.unique_id)
-    );
+      isComponentLoaded(hass, domain)
+      && entityRegEntry
+      && fetchedHelpers.some(e => e.id === entityRegEntry.unique_id)
+    )
   }
 
-  const configEntryId = entityRegEntry?.config_entry_id;
+  const configEntryId = entityRegEntry?.config_entry_id
   if (!configEntryId) {
-    return false;
+    return false
   }
-  const configEntry = configEntries.find((e) => e.entry_id === configEntryId);
+  const configEntry = configEntries.find(e => e.entry_id === configEntryId)
   return (
-    manifests.find((m) => m.domain === configEntry?.domain)
-      ?.integration_type === "helper"
-  );
-};
+    manifests.find(m => m.domain === configEntry?.domain)
+      ?.integration_type === 'helper'
+  )
+}
 
 export const deleteEntity = (
   hass: HomeAssistant,
@@ -50,42 +50,42 @@ export const deleteEntity = (
   manifests: IntegrationManifest[],
   entityRegistry: EntityRegistryEntry[],
   configEntries: ConfigEntry[],
-  fetchedHelpers: Helper[]
+  fetchedHelpers: Helper[],
 ) => {
   // This function assumes the entity_id already was validated by isDeletableEntity and does not repeat all those checks.
-  const domain = computeDomain(entity_id);
-  const entityRegEntry = entityRegistry.find((e) => e.entity_id === entity_id);
+  const domain = computeDomain(entity_id)
+  const entityRegEntry = entityRegistry.find(e => e.entity_id === entity_id)
   if (isHelperDomain(domain)) {
     if (isComponentLoaded(hass, domain)) {
       if (
-        entityRegEntry &&
-        fetchedHelpers.some((e) => e.id === entityRegEntry.unique_id)
+        entityRegEntry
+        && fetchedHelpers.some(e => e.id === entityRegEntry.unique_id)
       ) {
-        HELPERS_CRUD[domain].delete(hass, entityRegEntry.unique_id);
-        return;
+        HELPERS_CRUD[domain].delete(hass, entityRegEntry.unique_id)
+        return
       }
     }
-    const stateObj = hass.states[entity_id];
+    const stateObj = hass.states[entity_id]
     if (!stateObj?.attributes.restored) {
-      return;
+      return
     }
-    removeEntityRegistryEntry(hass, entity_id);
-    return;
+    removeEntityRegistryEntry(hass, entity_id)
+    return
   }
 
-  const configEntryId = entityRegEntry?.config_entry_id;
+  const configEntryId = entityRegEntry?.config_entry_id
   const configEntry = configEntryId
-    ? configEntries.find((e) => e.entry_id === configEntryId)
-    : undefined;
+    ? configEntries.find(e => e.entry_id === configEntryId)
+    : undefined
   const isHelperEntryType = configEntry
-    ? manifests.find((m) => m.domain === configEntry.domain)
-        ?.integration_type === "helper"
-    : false;
+    ? manifests.find(m => m.domain === configEntry.domain)
+      ?.integration_type === 'helper'
+    : false
 
   if (isHelperEntryType) {
-    deleteConfigEntry(hass, configEntryId!);
-    return;
+    deleteConfigEntry(hass, configEntryId!)
+    return
   }
 
-  removeEntityRegistryEntry(hass, entity_id);
-};
+  removeEntityRegistryEntry(hass, entity_id)
+}

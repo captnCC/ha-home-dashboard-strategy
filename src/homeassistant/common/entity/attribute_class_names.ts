@@ -1,16 +1,16 @@
-import type { HassEntity } from "home-assistant-js-websocket";
+import type { HassEntity } from 'home-assistant-js-websocket'
 
 export const attributeClassNames = (
   stateObj: HassEntity,
-  attributes: string[]
+  attributes: string[],
 ): string => {
   if (!stateObj) {
-    return "";
+    return ''
   }
   return attributes
-    .map((attribute) =>
-      attribute in stateObj.attributes ? "has-" + attribute : ""
+    .map(attribute =>
+      attribute in stateObj.attributes ? 'has-' + attribute : '',
     )
-    .filter((attr) => attr !== "")
-    .join(" ");
-};
+    .filter(attr => attr !== '')
+    .join(' ')
+}

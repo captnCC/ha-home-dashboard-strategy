@@ -1,1 +1,1 @@
-export const webComponentsSupported = "attachShadow" in Element.prototype;
+export const webComponentsSupported = 'attachShadow' in Element.prototype

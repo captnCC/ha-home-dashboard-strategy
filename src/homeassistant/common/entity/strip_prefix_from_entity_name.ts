@@ -1,4 +1,4 @@
-const SUFFIXES = [" ", ": ", " - "];
+const SUFFIXES = [' ', ': ', ' - ']
 
 /**
  * Strips a device name from an entity name.
@@ -8,26 +8,26 @@ const SUFFIXES = [" ", ": ", " - "];
  */
 export const stripPrefixFromEntityName = (
   entityName: string,
-  prefix: string
+  prefix: string,
 ) => {
-  const lowerCasedEntityName = entityName.toLowerCase();
-  const lowerCasedPrefix = prefix.toLowerCase();
+  const lowerCasedEntityName = entityName.toLowerCase()
+  const lowerCasedPrefix = prefix.toLowerCase()
   for (const suffix of SUFFIXES) {
-    const lowerCasedPrefixWithSuffix = `${lowerCasedPrefix}${suffix}`;
+    const lowerCasedPrefixWithSuffix = `${lowerCasedPrefix}${suffix}`
 
     if (lowerCasedEntityName.startsWith(lowerCasedPrefixWithSuffix)) {
-      const newName = entityName.substring(lowerCasedPrefixWithSuffix.length);
+      const newName = entityName.substring(lowerCasedPrefixWithSuffix.length)
       if (newName.length) {
         // If first word already has an upper case letter (e.g. from brand name)
         // leave as-is, otherwise capitalize the first word.
-        return hasUpperCase(newName.substr(0, newName.indexOf(" ")))
+        return hasUpperCase(newName.substr(0, newName.indexOf(' ')))
           ? newName
-          : newName[0].toUpperCase() + newName.slice(1);
+          : newName[0].toUpperCase() + newName.slice(1)
       }
     }
   }
 
-  return undefined;
-};
+  return undefined
+}
 
-const hasUpperCase = (str: string): boolean => str.toLowerCase() !== str;
+const hasUpperCase = (str: string): boolean => str.toLowerCase() !== str

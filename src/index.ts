@@ -1,4 +1,4 @@
-import "./strategies/wallboard/dashboard-strategy";
-import "./strategies/mobile/dashboard-strategy";
+import './strategies/wallboard/dashboard-strategy'
+import './strategies/mobile/dashboard-strategy'
 
-console.log("Home Dashboard Loaded");
+console.log('Home Dashboard Loaded')

@@ -2,30 +2,31 @@ import type {
   LovelaceStrategyViewConfig,
   LovelaceViewConfig,
   LovelaceViewHeaderConfig,
-} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
-import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
-import type {AreaRegistryEntry} from "home-assistant-frontend-types/frontend/data/area/area_registry";
-import {computeAreaTileCardConfig, extendLastCard} from "../helpers/cards";
-import type {LovelaceBadgeConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/badge";
-import {computeBadge} from "../helpers/badges";
-import {AreaConfig, Config, HasLightsConfig} from "../config";
-import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
-import {EntityBadgeConfig} from "home-assistant-frontend-types/frontend/panels/lovelace/badges/types";
-import {tapNavigate} from "../helpers/navigate";
+} from 'home-assistant-frontend-types/frontend/data/lovelace/config/view'
+import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
+import type { AreaRegistryEntry } from 'home-assistant-frontend-types/frontend/data/area/area_registry'
+import type { LovelaceBadgeConfig } from 'home-assistant-frontend-types/frontend/data/lovelace/config/badge'
+import { type EntityBadgeConfig } from 'home-assistant-frontend-types/frontend/panels/lovelace/badges/types'
+
+import { computeAreaTileCardConfig, extendLastCard } from '../helpers/cards'
+import { computeBadge } from '../helpers/badges'
+import { type AreaConfig, type Config, type HasLightsConfig } from '../config'
+import { generateEntityFilter } from '../../homeassistant/common/entity/entity_filter'
+import { tapNavigate } from '../helpers/navigate'
 
 export type WallboardAreaViewStrategyConfig = {
-  type: "custom:wallboard-area";
-  area: string;
-} & AreaConfig;
+  type: 'custom:wallboard-area'
+  area: string
+} & AreaConfig
 
-export const areaPath = (areaId: string) => `areas-${areaId}`;
+export const areaPath = (areaId: string) => `areas-${areaId}`
 
 export const registerView = function (config: Config, area: AreaRegistryEntry): LovelaceStrategyViewConfig {
   const strategy: WallboardAreaViewStrategyConfig = {
-    type: "custom:wallboard-area",
+    type: 'custom:wallboard-area',
     area: area.area_id,
     ...config.areas?.[area.area_id],
-  };
+  }
 
   return {
     strategy,
@@ -33,216 +34,215 @@ export const registerView = function (config: Config, area: AreaRegistryEntry): 
     title: area.name,
     subview: true,
     theme: config.theme,
-  };
-};
+  }
+}
 
 class AreaViewStrategy extends HTMLElement {
   static async generate(
     config: WallboardAreaViewStrategyConfig,
-    hass: HomeAssistant
+    hass: HomeAssistant,
   ): Promise<LovelaceViewConfig> {
-    const area = hass.areas[config.area];
+    const area = hass.areas[config.area]
 
     const header: LovelaceViewHeaderConfig = {
       card: {
-        type: "markdown",
+        type: 'markdown',
         content: `# <ha-icon icon="${area.icon}"></ha-icon> ${area.name}`,
         text_only: true,
       },
-      layout: "start",
-      badges_position: "bottom",
-      badges_wrap: "wrap",
-    };
+      layout: 'start',
+      badges_position: 'bottom',
+      badges_wrap: 'wrap',
+    }
 
-    const badges = computeBadges(hass, area, config);
+    const badges = computeBadges(hass, area, config)
 
     if (config.badges) {
-      badges.push(...config.badges);
+      badges.push(...config.badges)
     }
 
     const sections = [
       ...computeLightSection(hass, area, config.lights || {}),
       ...computeClimateSection(hass, area),
       ...computeMediaSection(hass, area),
-    ];
+    ]
 
     return {
-      type: "sections",
+      type: 'sections',
       max_columns: 3,
       header,
       badges,
       sections,
-    };
+    }
   }
 }
 
-const lightsHeading = (config: NonNullable<HasLightsConfig["lights"]>) => {
-  const badges: EntityBadgeConfig[] = [];
-  const allLights = config.all;
+const lightsHeading = (config: NonNullable<HasLightsConfig['lights']>) => {
+  const badges: EntityBadgeConfig[] = []
+  const allLights = config.all
   if (allLights) {
-    badges.push(computeBadge(allLights));
+    badges.push(computeBadge(allLights))
   }
 
   return ({
-    type: "heading",
-    heading: "Lights",
-    heading_style: "subtitle",
-    icon: "mdi:lightbulb-group",
-    tap_action: tapNavigate("lights"),
-    badges
-  });
-};
+    type: 'heading',
+    heading: 'Lights',
+    heading_style: 'subtitle',
+    icon: 'mdi:lightbulb-group',
+    tap_action: tapNavigate('lights'),
+    badges,
+  })
+}
 
 const computeLightCards = (hass: HomeAssistant, area: AreaRegistryEntry) => {
-  const computeTileCard = computeAreaTileCardConfig(hass, area.name);
+  const computeTileCard = computeAreaTileCardConfig(hass, area.name)
 
   const areaFilter = generateEntityFilter(hass, {
     area: area.area_id,
-    domain: ["light"],
-  });
+    domain: ['light'],
+  })
 
-  const allEntities = Object.keys(hass.states);
+  const allEntities = Object.keys(hass.states)
 
-  return allEntities.filter(areaFilter).map(computeTileCard);
-};
+  return allEntities.filter(areaFilter).map(computeTileCard)
+}
 
-const computeLightSection = (hass: HomeAssistant, area: AreaRegistryEntry, config: NonNullable<HasLightsConfig["lights"]>) => {
-  const cards = extendLastCard(computeLightCards(hass, area));
+const computeLightSection = (hass: HomeAssistant, area: AreaRegistryEntry, config: NonNullable<HasLightsConfig['lights']>) => {
+  const cards = extendLastCard(computeLightCards(hass, area))
 
-  if (cards.length === 0) return [];
+  if (cards.length === 0) return []
   return [
     {
-      type: "grid",
+      type: 'grid',
       cards: [lightsHeading(config), ...cards],
     },
-  ];
-};
+  ]
+}
 
 const climateHeading = () => ({
-  type: "heading",
-  heading: "Climate",
-  heading_style: "subtitle",
-  icon: "mdi:home-thermometer",
-  tap_action: tapNavigate("climate"),
-});
+  type: 'heading',
+  heading: 'Climate',
+  heading_style: 'subtitle',
+  icon: 'mdi:home-thermometer',
+  tap_action: tapNavigate('climate'),
+})
 
 const computeClimateCards = (hass: HomeAssistant, area: AreaRegistryEntry) => {
-  const computeTileCard = computeAreaTileCardConfig(hass, area.name);
+  const computeTileCard = computeAreaTileCardConfig(hass, area.name)
 
   const devicesFilter = generateEntityFilter(hass, {
     area: area.area_id,
-    domain: ["climate", "fan"],
-  });
+    domain: ['climate', 'fan'],
+  })
 
   const sensorFilter = generateEntityFilter(hass, {
     area: area.area_id,
-    domain: ["sensor"],
-    device_class: ["temperature", "humidity", "pm25", "co2", "aqi"],
-  });
+    domain: ['sensor'],
+    device_class: ['temperature', 'humidity', 'pm25', 'co2', 'aqi'],
+  })
 
-  const allEntities = Object.keys(hass.states);
+  const allEntities = Object.keys(hass.states)
   return extendLastCard(
     [
       ...allEntities.filter(devicesFilter),
       ...allEntities.filter(sensorFilter),
-    ].map(computeTileCard)
-  );
-};
+    ].map(computeTileCard),
+  )
+}
 
 const computeClimateSection = (
   hass: HomeAssistant,
-  area: AreaRegistryEntry
+  area: AreaRegistryEntry,
 ) => {
-  const cards = extendLastCard(computeClimateCards(hass, area));
+  const cards = extendLastCard(computeClimateCards(hass, area))
 
-  if (cards.length === 0) return [];
+  if (cards.length === 0) return []
   return [
     {
-      type: "grid",
+      type: 'grid',
       cards: [climateHeading(), ...cards],
     },
-  ];
-};
+  ]
+}
 
 const mediaHeading = () => ({
-  type: "heading",
-  heading: "Media",
-  heading_style: "subtitle",
-  icon: "mdi:play",
-  tap_action: tapNavigate("media"),
-});
+  type: 'heading',
+  heading: 'Media',
+  heading_style: 'subtitle',
+  icon: 'mdi:play',
+  tap_action: tapNavigate('media'),
+})
 
 const computeMediaCards = (hass: HomeAssistant, area: AreaRegistryEntry) => {
-  const computeTileCard = computeAreaTileCardConfig(hass, area.name);
+  const computeTileCard = computeAreaTileCardConfig(hass, area.name)
 
   const areaFilter = generateEntityFilter(hass, {
     area: area.area_id,
-    domain: ["media_player"],
-  });
+    domain: ['media_player'],
+  })
 
-  const allEntities = Object.keys(hass.states);
-  return allEntities.filter(areaFilter).map(computeTileCard);
-};
+  const allEntities = Object.keys(hass.states)
+  return allEntities.filter(areaFilter).map(computeTileCard)
+}
 
 const computeMediaSection = (hass: HomeAssistant, area: AreaRegistryEntry) => {
-  const cards = computeMediaCards(hass, area);
+  const cards = computeMediaCards(hass, area)
 
-  if (cards.length === 0) return [];
+  if (cards.length === 0) return []
   return [
     {
-      type: "grid",
+      type: 'grid',
       cards: [mediaHeading(), ...cards],
     },
-  ];
-};
+  ]
+}
 
 const computeBadges = (hass: HomeAssistant, area: AreaRegistryEntry, config: AreaConfig) => {
-  const badges: LovelaceBadgeConfig[] = [];
+  const badges: LovelaceBadgeConfig[] = []
 
   if (area.temperature_entity_id) {
     badges.push({
-      type: "entity",
+      type: 'entity',
       show_name: true,
       show_state: true,
       show_icon: true,
       entity: area.temperature_entity_id,
-      name: "Temperature",
-    });
+      name: 'Temperature',
+    })
   }
 
   if (area.humidity_entity_id) {
     badges.push({
-      type: "entity",
+      type: 'entity',
       show_name: true,
       show_state: true,
       show_icon: true,
       entity: area.humidity_entity_id,
-      name: "Humidity",
-    });
+      name: 'Humidity',
+    })
   }
 
   const sceneFilter = generateEntityFilter(hass, {
     area: area.area_id,
-    domain: ["scene"],
-  });
+    domain: ['scene'],
+  })
 
   const scriptFilter = generateEntityFilter(hass, {
     area: area.area_id,
-    domain: ["script"],
-  });
+    domain: ['script'],
+  })
 
-  const states = Object.keys(hass.states);
+  const states = Object.keys(hass.states)
 
   badges.push(
     ...states.filter(sceneFilter).map(computeBadge),
     ...states.filter(scriptFilter).map(computeBadge),
-  );
+  )
 
   if (config.badges) {
-    badges.push(...config.badges);
+    badges.push(...config.badges)
   }
-  return badges;
-};
+  return badges
+}
 
-
-customElements.define("ll-strategy-view-wallboard-area", AreaViewStrategy);
+customElements.define('ll-strategy-view-wallboard-area', AreaViewStrategy)

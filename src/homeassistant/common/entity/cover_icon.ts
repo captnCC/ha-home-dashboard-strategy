@@ -4,29 +4,29 @@ import {
   mdiArrowDown,
   mdiArrowExpandHorizontal,
   mdiArrowUp,
-} from "@mdi/js";
-import type { HassEntity } from "home-assistant-js-websocket";
+} from '@mdi/js'
+import type { HassEntity } from 'home-assistant-js-websocket'
 
 export const computeOpenIcon = (stateObj: HassEntity): string => {
   switch (stateObj.attributes.device_class) {
-    case "awning":
-    case "door":
-    case "gate":
-    case "curtain":
-      return mdiArrowExpandHorizontal;
+    case 'awning':
+    case 'door':
+    case 'gate':
+    case 'curtain':
+      return mdiArrowExpandHorizontal
     default:
-      return mdiArrowUp;
+      return mdiArrowUp
   }
-};
+}
 
 export const computeCloseIcon = (stateObj: HassEntity): string => {
   switch (stateObj.attributes.device_class) {
-    case "awning":
-    case "door":
-    case "gate":
-    case "curtain":
-      return mdiArrowCollapseHorizontal;
+    case 'awning':
+    case 'door':
+    case 'gate':
+    case 'curtain':
+      return mdiArrowCollapseHorizontal
     default:
-      return mdiArrowDown;
+      return mdiArrowDown
   }
-};
+}

@@ -1,51 +1,51 @@
-import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
+import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
 import type {
   LovelaceStrategyViewConfig,
-  LovelaceViewConfig
-} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
-import {Config, HasAreasConfig, HasBadgesConfig, HasLightsConfig} from "../config";
-import {computeAreasSection, computeBadges, computePlayingSection} from "../helpers/overview";
+  LovelaceViewConfig,
+} from 'home-assistant-frontend-types/frontend/data/lovelace/config/view'
+
+import { type Config, type HasAreasConfig, type HasBadgesConfig, type HasLightsConfig } from '../config'
+import { computeAreasSection, computeBadges, computePlayingSection } from '../helpers/overview'
 
 export type MobileOverviewViewStrategyConfig = {
-  type: "custom:mobile-overview";
-} & HasAreasConfig & HasLightsConfig & HasBadgesConfig;
+  type: 'custom:mobile-overview'
+} & HasAreasConfig & HasLightsConfig & HasBadgesConfig
 
 export const registerView = function (config: Config): LovelaceStrategyViewConfig {
   const strategy: MobileOverviewViewStrategyConfig = {
-    type: "custom:mobile-overview",
+    type: 'custom:mobile-overview',
     areas: config.areas,
     ...config.overview,
-  };
+  }
 
   return {
     strategy,
-    icon: "mdi:home",
-    path: "overview",
+    icon: 'mdi:home',
+    path: 'overview',
     theme: config.theme,
-  };
-};
+  }
+}
 
 class MobileOverviewViewStrategy extends HTMLElement {
   static async generate(
     config: MobileOverviewViewStrategyConfig,
-    hass: HomeAssistant
+    hass: HomeAssistant,
   ): Promise<LovelaceViewConfig> {
-
     return {
-      type: "sections",
+      type: 'sections',
       max_columns: 1,
       header: {
-        layout: "responsive",
-        badges_position: "bottom",
-        badges_wrap: "scroll",
+        layout: 'responsive',
+        badges_position: 'bottom',
+        badges_wrap: 'scroll',
       },
       badges: computeBadges(hass, config),
       sections: [
         computePlayingSection(hass),
         computeAreasSection(hass, config.areas || {}),
       ],
-    };
+    }
   }
 }
 
-customElements.define("ll-strategy-view-mobile-overview", MobileOverviewViewStrategy);
+customElements.define('ll-strategy-view-mobile-overview', MobileOverviewViewStrategy)

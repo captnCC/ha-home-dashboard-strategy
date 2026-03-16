@@ -1,84 +1,84 @@
-import type {LovelaceStrategyViewConfig, LovelaceViewConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
-import {computeAreaTileCardConfig, mapAreas} from "../helpers/cards";
-import type {LovelaceBadgeConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/badge";
-import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
-import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
-import {Config, HasAreasConfig} from "../config";
-import {tapNavigate} from "../helpers/navigate";
-import {areaPath} from "./area-view-strategy";
+import type { LovelaceStrategyViewConfig, LovelaceViewConfig } from 'home-assistant-frontend-types/frontend/data/lovelace/config/view'
+import type { LovelaceBadgeConfig } from 'home-assistant-frontend-types/frontend/data/lovelace/config/badge'
+import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
+
+import { computeAreaTileCardConfig, mapAreas } from '../helpers/cards'
+import { generateEntityFilter } from '../../homeassistant/common/entity/entity_filter'
+import { type Config, type HasAreasConfig } from '../config'
+import { tapNavigate } from '../helpers/navigate'
+
+import { areaPath } from './area-view-strategy'
 
 export type WallboardClimateViewStrategyConfig = {
-  type: "custom:wallboard-climate";
-} & HasAreasConfig;
+  type: 'custom:wallboard-climate'
+} & HasAreasConfig
 
-export const icon = "mdi:thermometer";
-export const path = "climate";
+export const icon = 'mdi:thermometer'
+export const path = 'climate'
 
 export const registerView = function (config: Config): LovelaceStrategyViewConfig {
   const strategy: WallboardClimateViewStrategyConfig = {
-    type: "custom:wallboard-climate",
+    type: 'custom:wallboard-climate',
     areas: config.areas,
-  };
+  }
 
   return {
     icon,
     strategy,
     path,
-    title: "Climate",
+    title: 'Climate',
     theme: config.theme,
-  };
-};
+  }
+}
 
 class ClimateViewStrategy extends HTMLElement {
   static async generate(_config: WallboardClimateViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
     const sections = mapAreas(hass, {}, (area) => {
-
-      const computeTileCard = computeAreaTileCardConfig(hass, area.name);
+      const computeTileCard = computeAreaTileCardConfig(hass, area.name)
       const devicesFilter = generateEntityFilter(hass, {
         area: area.area_id,
-        domain: ["climate", "fan"],
-      });
+        domain: ['climate', 'fan'],
+      })
 
       const sensorFilter = generateEntityFilter(hass, {
         area: area.area_id,
-        domain: ["sensor"],
-        device_class: ["temperature", "humidity", "pm25", "co2", "aqi"],
-      });
+        domain: ['sensor'],
+        device_class: ['temperature', 'humidity', 'pm25', 'co2', 'aqi'],
+      })
 
-      const allEntities = Object.keys(hass.states);
-      const devices = allEntities.filter(devicesFilter).map(computeTileCard);
-      const sensors = allEntities.filter(sensorFilter).map(computeTileCard);
+      const allEntities = Object.keys(hass.states)
+      const devices = allEntities.filter(devicesFilter).map(computeTileCard)
+      const sensors = allEntities.filter(sensorFilter).map(computeTileCard)
 
-      if (devices.length + sensors.length === 0) return null;
+      if (devices.length + sensors.length === 0) return null
 
-
-      const badges: LovelaceBadgeConfig[] = [];
+      const badges: LovelaceBadgeConfig[] = []
 
       if (area.temperature_entity_id) {
         badges.push({
-          type: "entity",
+          type: 'entity',
           entity: area.temperature_entity_id,
           state_color: true,
-          tap_action: {action: "more-info"}
-        });
+          tap_action: { action: 'more-info' },
+        })
       }
 
       if (area.humidity_entity_id) {
         badges.push({
-          type: "entity",
+          type: 'entity',
           entity: area.humidity_entity_id,
           state_color: true,
-          tap_action: {action: "more-info"}
-        });
+          tap_action: { action: 'more-info' },
+        })
       }
 
       return {
-        type: "grid",
+        type: 'grid',
         cards: [
           {
-            type: "heading",
+            type: 'heading',
             heading: area.name,
-            heading_style: "title",
+            heading_style: 'title',
             icon: area.icon,
             tap_action: tapNavigate(areaPath(area.area_id)),
             badges,
@@ -86,26 +86,25 @@ class ClimateViewStrategy extends HTMLElement {
           ...devices,
           ...sensors,
         ],
-      };
-    });
+      }
+    })
 
     return {
-      type: "sections",
+      type: 'sections',
       header: {
         card: {
-          type: "markdown",
+          type: 'markdown',
           content: `# <ha-icon icon="${icon}"></ha-icon> Climate`,
           text_only: true,
         },
-        layout: "start",
-        badges_position: "bottom",
-        badges_wrap: "wrap",
+        layout: 'start',
+        badges_position: 'bottom',
+        badges_wrap: 'wrap',
       },
       max_columns: 3,
       sections,
-    };
+    }
   }
 }
 
-
-customElements.define("ll-strategy-view-wallboard-climate", ClimateViewStrategy);
+customElements.define('ll-strategy-view-wallboard-climate', ClimateViewStrategy)

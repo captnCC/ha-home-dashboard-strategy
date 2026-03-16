@@ -1,61 +1,59 @@
 import type {
   LovelaceStrategyViewConfig,
-  LovelaceViewConfig
-} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
-import type {LovelaceCardConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/card";
-import {Config, HasAreasConfig, OverviewConfig} from "../config";
-import {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
+  LovelaceViewConfig,
+} from 'home-assistant-frontend-types/frontend/data/lovelace/config/view'
+import type { LovelaceCardConfig } from 'home-assistant-frontend-types/frontend/data/lovelace/config/card'
+import { type HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
 
-import {computeAreasSection, computeBadges, computePlayingSection} from "../helpers/overview";
+import { computeAreasSection, computeBadges, computePlayingSection } from '../helpers/overview'
+import { type Config, type HasAreasConfig, type OverviewConfig } from '../config'
 
 export type WallboardOverviewViewStrategyConfig = {
-  type: "custom:wallboard-overview";
-} & OverviewConfig & HasAreasConfig;
+  type: 'custom:wallboard-overview'
+} & OverviewConfig & HasAreasConfig
 
 export const registerView = function (config: Config): LovelaceStrategyViewConfig {
   return {
-    icon: "mdi:home",
-    path: "overview",
+    icon: 'mdi:home',
+    path: 'overview',
     strategy: {
-      type: "custom:wallboard-overview",
+      type: 'custom:wallboard-overview',
       areas: config.areas,
       ...config.overview,
     },
     theme: config.theme,
-  };
-};
+  }
+}
 
 class OverviewViewStrategy extends HTMLElement {
   static async generate(
     config: WallboardOverviewViewStrategyConfig,
-    hass: HomeAssistant
+    hass: HomeAssistant,
   ): Promise<LovelaceViewConfig> {
-
-
     return {
-      type: "sections",
+      type: 'sections',
       max_columns: 4,
       header: {
         card: computeHeaderCard(config.weather || null),
-        layout: "responsive",
-        badges_position: "bottom",
-        badges_wrap: "scroll",
+        layout: 'responsive',
+        badges_position: 'bottom',
+        badges_wrap: 'scroll',
       },
       badges: computeBadges(hass, config),
       sections: [
         computePlayingSection(hass),
         computeAreasSection(hass, config.areas || {}),
       ],
-    };
+    }
   }
 }
 
 const computeHeaderCard = function (weather: string | null): LovelaceCardConfig {
   const clock = {
-    type: "clock",
-    clock_style: "digital",
-    clock_size: "large",
-    time_format: "24",
+    type: 'clock',
+    clock_style: 'digital',
+    clock_size: 'large',
+    time_format: '24',
     show_seconds: true,
     no_background: true,
     card_mod: {
@@ -65,14 +63,14 @@ const computeHeaderCard = function (weather: string | null): LovelaceCardConfig 
             }
           `,
     },
-  };
+  }
 
   if (weather === null) {
-    return clock;
+    return clock
   }
 
   return {
-    type: "grid",
+    type: 'grid',
     square: false,
     columns: 2,
     cards: [
@@ -80,9 +78,9 @@ const computeHeaderCard = function (weather: string | null): LovelaceCardConfig 
       {
         show_current: false,
         show_forecast: true,
-        type: "weather-forecast",
+        type: 'weather-forecast',
         entity: weather,
-        forecast_type: "hourly",
+        forecast_type: 'hourly',
         round_temperature: false,
         card_mod: {
           style: `
@@ -91,11 +89,11 @@ const computeHeaderCard = function (weather: string | null): LovelaceCardConfig 
               box-shadow: none;
               border: none;
             }
-          }`
-        }
-      }
-    ]
-  };
-};
+          }`,
+        },
+      },
+    ],
+  }
+}
 
-customElements.define("ll-strategy-view-wallboard-overview", OverviewViewStrategy);
+customElements.define('ll-strategy-view-wallboard-overview', OverviewViewStrategy)

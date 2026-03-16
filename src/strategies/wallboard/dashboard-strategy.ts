@@ -1,28 +1,29 @@
-import type { HomeAssistant } from "home-assistant-frontend-types/frontend/types";
-import type { LovelaceConfig } from "home-assistant-frontend-types/frontend/data/lovelace/config/types";
-import type { LovelaceViewRawConfig } from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
-import type { Config } from "../config";
-import * as overview from "./overview-view-strategy";
-import * as area from "./area-view-strategy";
-import * as lights from "./lights-view-strategy";
-import * as climate from "./climate-view-strategy";
-import * as security from "./security-view-strategy";
-import * as media from "./media-view-strategy";
-import * as utilities from "./utilities-view-strategy";
+import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
+import type { LovelaceConfig } from 'home-assistant-frontend-types/frontend/data/lovelace/config/types'
+import type { LovelaceViewRawConfig } from 'home-assistant-frontend-types/frontend/data/lovelace/config/view'
+
+import type { Config } from '../config'
+
+import * as overview from './overview-view-strategy'
+import * as area from './area-view-strategy'
+import * as lights from './lights-view-strategy'
+import * as climate from './climate-view-strategy'
+import * as security from './security-view-strategy'
+import * as media from './media-view-strategy'
+import * as utilities from './utilities-view-strategy'
 
 export type WallboardDashboardStrategyConfig = {
-  type: "custom:wallboard";
-} & Config;
+  type: 'custom:wallboard'
+} & Config
 
-class DashboardStrategy extends  HTMLElement {
+class DashboardStrategy extends HTMLElement {
   static async generate(
     config: WallboardDashboardStrategyConfig,
-    hass: HomeAssistant
+    hass: HomeAssistant,
   ): Promise<LovelaceConfig> {
-
     const areas: LovelaceViewRawConfig[] = Object.values(hass.areas).map(
-      (a) => area.registerView(config, a)
-    );
+      a => area.registerView(config, a),
+    )
 
     const views: LovelaceViewRawConfig[] = [
       overview.registerView(config),
@@ -32,12 +33,12 @@ class DashboardStrategy extends  HTMLElement {
       media.registerView(config),
       utilities.registerView(config),
       ...areas,
-    ];
+    ]
 
     return {
-      views
-    };
+      views,
+    }
   }
 }
 
-customElements.define("ll-strategy-dashboard-wallboard", DashboardStrategy);
+customElements.define('ll-strategy-dashboard-wallboard', DashboardStrategy)

@@ -1,91 +1,90 @@
 import type {
   LovelaceStrategyViewConfig,
-  LovelaceViewConfig
-} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
-import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
-import {computeAreaTileCardConfig, extendLastCard, mapAreas} from "../helpers/cards";
-import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
-import {Config, HasAreasConfig} from "../config";
-import {tapNavigate} from "../helpers/navigate";
-import {areaPath} from "./area-view-strategy";
+  LovelaceViewConfig,
+} from 'home-assistant-frontend-types/frontend/data/lovelace/config/view'
+import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
+
+import { computeAreaTileCardConfig, extendLastCard, mapAreas } from '../helpers/cards'
+import { generateEntityFilter } from '../../homeassistant/common/entity/entity_filter'
+import { type Config, type HasAreasConfig } from '../config'
+import { tapNavigate } from '../helpers/navigate'
+
+import { areaPath } from './area-view-strategy'
 
 export type WallboardMediaViewStrategyConfig = {
-  type: "custom:wallboard-media";
-} & HasAreasConfig;
+  type: 'custom:wallboard-media'
+} & HasAreasConfig
 
-const icon = "mdi:play";
+const icon = 'mdi:play'
 
 export const registerView = function (config: Config): LovelaceStrategyViewConfig {
   const strategy: WallboardMediaViewStrategyConfig = {
-    type: "custom:wallboard-media",
+    type: 'custom:wallboard-media',
     areas: config.areas,
-  };
+  }
 
   return {
     icon,
     strategy,
-    path: "media",
-    title: "Media",
+    path: 'media',
+    title: 'Media',
     theme: config.theme,
-  };
-};
+  }
+}
 
 class MediaViewStrategy extends HTMLElement {
   static async generate(_config: WallboardMediaViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
-
     const sections = mapAreas(hass, {}, (area) => {
-
-      const computeTileCard = computeAreaTileCardConfig(hass, area.name);
+      const computeTileCard = computeAreaTileCardConfig(hass, area.name)
       const devicesFilter = generateEntityFilter(hass, {
         area: area.area_id,
-        domain: ["media_player"],
-      });
+        domain: ['media_player'],
+      })
 
-      const states = Object.keys(hass.states);
+      const states = Object.keys(hass.states)
       const devices = states
         .filter(devicesFilter)
         .map(computeTileCard)
-        .map((card) => ({
+        .map(card => ({
           ...card,
           show_entity_picture: true,
           vertical: false,
-          features_position: "bottom",
-          state_content: ["media_artist", "media_title", "media_album_name"],
-        }));
+          features_position: 'bottom',
+          state_content: ['media_artist', 'media_title', 'media_album_name'],
+        }))
 
-      if (devices.length === 0) return null;
+      if (devices.length === 0) return null
 
       return {
-        type: "grid",
+        type: 'grid',
         cards: [
           {
-            type: "heading",
+            type: 'heading',
             heading: area.name,
-            heading_style: "title",
+            heading_style: 'title',
             icon: area.icon,
             tap_action: tapNavigate(areaPath(area.area_id)),
           },
           ...extendLastCard(devices),
         ],
-      };
-    });
+      }
+    })
     return {
-      type: "sections",
+      type: 'sections',
       header: {
         card: {
-          type: "markdown",
+          type: 'markdown',
           content: `# <ha-icon icon="${icon}"></ha-icon> Media`,
           text_only: true,
         },
-        layout: "start",
-        badges_position: "bottom",
-        badges_wrap: "wrap",
+        layout: 'start',
+        badges_position: 'bottom',
+        badges_wrap: 'wrap',
       },
       max_columns: 3,
       sections,
-    };
+    }
   }
 }
 
-
-customElements.define("ll-strategy-view-wallboard-media", MediaViewStrategy);
+customElements.define('ll-strategy-view-wallboard-media', MediaViewStrategy)
