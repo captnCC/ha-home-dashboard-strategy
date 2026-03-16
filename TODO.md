@@ -7,6 +7,9 @@
 - [x] Add utilities pages
   - [x] Vacuums
   - [x] Batteries
+- [x] Custom sizing for area cards on mobile
+- [ ] Sorts for areas
+- [ ] Sorts for lights, climate etc
 - [ ] Multi Floor Support
 - [ ] Summary per Home
     - [ ] Lights
@@ -25,6 +28,5 @@
   - [ ] Security
 - [ ] Add security section for areas
 - [ ] Add security overview
-- [ ] Custom sizing for area cards on mobile
 - [ ] Improved masonary/grid layout
 - [ ] Visual Editor

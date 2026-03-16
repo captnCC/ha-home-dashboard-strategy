@@ -104,6 +104,8 @@ export const computeAreasSection = function (hass: HomeAssistant, configs: Recor
   const areaCards = mapAreas<LovelaceCardConfig>(hass, configs, (area, areaId, config) => {
     if (config.hidden) return null
 
+    const size = config.size ?? 'large'
+
     const cardCompute = computeAreaTileCardConfig(hass, area.name)
 
     const filter = generateEntityFilter(hass, {
@@ -112,34 +114,36 @@ export const computeAreasSection = function (hass: HomeAssistant, configs: Recor
       domain: ['light'],
     })
 
-    const overviewCards = Object.keys(hass.states)
-      .filter(filter)
-      .map(
-        entity => ({
-          ...cardCompute(entity),
-          features_position: 'inline',
-        }),
-      )
+    const overviewCards = size === 'large'
+      ? Object.keys(hass.states)
+          .filter(filter)
+          .map(
+            entity => ({
+              ...cardCompute(entity),
+              features_position: 'inline',
+            }),
+          )
+      : []
 
-    const features
-      = overviewCards.length !== 10
-        ? [
-            {
-              type: 'area-controls',
-              controls: ['light', 'fan'],
-            },
-          ]
-        : []
+    const features = [
+      {
+        type: 'area-controls',
+        controls: ['light', 'fan'],
+      },
+    ]
 
     return {
       type: 'custom:vertical-stack-in-card',
-      column_span: 2,
+      column_span: size === 'large' ? 2 : 1,
+      grid_options: {
+        columns: size === 'large' ? 12 : 6,
+      },
       cards: [
         {
           type: 'area',
           area: areaId,
           features,
-          features_position: 'inline',
+          features_position: size === 'large' ? 'inline' : 'bottom',
           display_type: 'compact',
           alert_classes: ['motion', 'moisture'],
           sensor_classes: ['temperature', 'humidity'],

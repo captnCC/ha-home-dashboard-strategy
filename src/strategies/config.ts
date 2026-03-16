@@ -16,6 +16,7 @@ export type HasBadgesConfig = {
 
 export type AreaConfig = HasLightsConfig & HasBadgesConfig & {
   hidden?: boolean
+  size?: 'small' | 'large'
 }
 
 export type OverviewConfig = HasLightsConfig & HasBadgesConfig & {
