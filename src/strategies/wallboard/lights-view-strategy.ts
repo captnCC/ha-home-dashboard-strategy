@@ -1,8 +1,11 @@
-import type {LovelaceViewConfig,} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
+import type {
+  LovelaceStrategyViewConfig,
+  LovelaceViewConfig,
+} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
 import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
 import {computeAreaTileCardConfig, extendLastCard, mapAreas,} from "../helpers/cards";
 import type {LovelaceCardConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/card";
-import {AreaConfig, HasAreasConfig, HasLightsConfig} from "../config";
+import {type Config, HasAreasConfig, HasLightsConfig} from "../config";
 import {computeBadge} from "../helpers/badges";
 import {EntityBadgeConfig} from "home-assistant-frontend-types/frontend/panels/lovelace/badges/types";
 import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
@@ -11,6 +14,24 @@ export type WallboardLightsViewStrategyConfig = {
   type: "custom:wallboard-lights";
 } & HasLightsConfig["lights"] & HasAreasConfig;
 
+const icon = "mdi:lightbulb-group";
+
+export const registerView = function (config: Config): LovelaceStrategyViewConfig {
+
+  const strategy: WallboardLightsViewStrategyConfig = {
+    type: "custom:wallboard-lights",
+    areas: config.areas,
+    ...config.overview?.lights
+  };
+
+  return {
+    icon,
+    path: "lights",
+    title: "Lights",
+    strategy,
+    theme: config.theme,
+  };
+};
 
 class LightsViewStrategy extends HTMLElement {
   static async generate(config: WallboardLightsViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
@@ -69,7 +90,7 @@ class LightsViewStrategy extends HTMLElement {
       header: {
         card: {
           type: "markdown",
-          content: "# <ha-icon icon=\"mdi:home-lightbulb-outline\"></ha-icon> Lights",
+          content: `# <ha-icon icon="${icon}"></ha-icon> Lights`,
           text_only: true,
         },
         layout: "responsive",

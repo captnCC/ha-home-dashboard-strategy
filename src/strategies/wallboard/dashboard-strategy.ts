@@ -2,6 +2,12 @@ import type { HomeAssistant } from "home-assistant-frontend-types/frontend/types
 import type { LovelaceConfig } from "home-assistant-frontend-types/frontend/data/lovelace/config/types";
 import type { LovelaceViewRawConfig } from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
 import type { Config } from "../config";
+import * as overview from "./overview-view-strategy";
+import * as room from "./room-view-strategy";
+import * as lights from "./lights-view-strategy";
+import * as climate from "./climate-view-strategy";
+import * as security from "./security-view-strategy";
+import * as media from "./media-view-strategy";
 
 export type WallboardDashboardStrategyConfig = {
   type: "custom:wallboard";
@@ -13,72 +19,16 @@ class DashboardStrategy extends  HTMLElement {
     hass: HomeAssistant
   ): Promise<LovelaceConfig> {
 
-    const areas: LovelaceViewRawConfig[] = Object.entries(hass.areas).map(
-      ([areaId, area]) => ({
-        path: `areas-${areaId}`,
-        title: area.name,
-        subview: true,
-        theme: config.theme,
-        strategy: {
-          type: "custom:wallboard-room",
-          area: areaId,
-          ...config.areas?.[areaId],
-        },
-      })
+    const areas: LovelaceViewRawConfig[] = Object.values(hass.areas).map(
+      (area) => room.registerView(config, area)
     );
 
     const views: LovelaceViewRawConfig[] = [
-      {
-        icon: "mdi:home",
-        path: "overview",
-        strategy: {
-          type: "custom:wallboard-overview",
-          areas: config.areas,
-          ...config.overview,
-        },
-        theme: config.theme,
-      },
-      {
-        icon: "mdi:home-lightbulb-outline",
-        path: "lights",
-        title: "Lights",
-        strategy: {
-          type: "custom:wallboard-lights",
-          areas: config.areas,
-          ...config.overview?.lights
-        },
-        theme: config.theme,
-      },
-      {
-        icon: "mdi:home-thermometer-outline",
-        path: "climate",
-        title: "Climate",
-        strategy: {
-          type: "custom:wallboard-climate",
-          areas: config.areas,
-        },
-        theme: config.theme,
-      },
-      {
-        icon: "mdi:home-lock-open",
-        path: "security",
-        title: "Security",
-        strategy: {
-          type: "custom:wallboard-security",
-          areas: config.areas,
-        },
-        theme: config.theme,
-      },
-      {
-        icon: "mdi:play",
-        path: "media",
-        title: "Media",
-        strategy: {
-          type: "custom:wallboard-media",
-          areas: config.areas,
-        },
-        theme: config.theme,
-      },
+      overview.registerView(config),
+      lights.registerView(config),
+      climate.registerView(config),
+      security.registerView(config),
+      media.registerView(config),
       ...areas,
     ];
 

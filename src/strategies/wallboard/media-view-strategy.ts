@@ -1,13 +1,27 @@
-import type {LovelaceViewConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
+import type {LovelaceStrategyViewConfig, LovelaceViewConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
 import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
 import {computeAreaTileCardConfig, extendLastCard, mapAreas} from "../helpers/cards";
 import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
-import {HasAreasConfig} from "../config";
+import {Config, HasAreasConfig} from "../config";
 
 export type WallboardMediaViewStrategyConfig = {
   type: "custom:wallboard-media";
 } & HasAreasConfig;
 
+const icon = "mdi:play";
+
+export const registerView = function (config: Config): LovelaceStrategyViewConfig {
+  return {
+    icon,
+    path: "media",
+    title: "Media",
+    strategy: {
+      type: "custom:wallboard-media",
+      areas: config.areas,
+    },
+    theme: config.theme,
+  };
+};
 
 class MediaViewStrategy extends HTMLElement {
   static async generate(_config: WallboardMediaViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
@@ -56,7 +70,7 @@ class MediaViewStrategy extends HTMLElement {
       header: {
         card: {
           type: "markdown",
-          content: "# <ha-icon icon=\"mdi:play\"></ha-icon> Media",
+          content: `# <ha-icon icon="${icon}"></ha-icon> Media`,
           text_only: true,
         },
         layout: "start",

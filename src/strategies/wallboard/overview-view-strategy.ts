@@ -1,17 +1,29 @@
-import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
-import type {LovelaceViewConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
+import type {LovelaceStrategyViewConfig, LovelaceViewConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
 import {computeAreaTileCardConfig, mapAreas} from "../helpers/cards";
 import type {LovelaceCardConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/card";
 import {computeBadge} from "../helpers/badges";
 import {EntityBadgeConfig} from "home-assistant-frontend-types/frontend/panels/lovelace/badges/types";
 import {StateCondition} from "home-assistant-frontend-types/frontend/panels/lovelace/common/validate-condition";
 import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
-import {AreaConfig, HasAreasConfig, OverviewConfig} from "../config";
+import {AreaConfig, Config, HasAreasConfig, OverviewConfig} from "../config";
 
 
 export type WallboardOverviewViewStrategyConfig = {
   type: "custom:wallboard-overview";
 } & OverviewConfig & HasAreasConfig;
+
+export const registerView = function (config: Config): LovelaceStrategyViewConfig {
+  return {
+    icon: "mdi:home",
+    path: "overview",
+    strategy: {
+      type: "custom:wallboard-overview",
+      areas: config.areas,
+      ...config.overview,
+    },
+    theme: config.theme,
+  };
+};
 
 class OverviewViewStrategy extends HTMLElement {
   static async generate(

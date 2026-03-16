@@ -1,4 +1,5 @@
 import type {
+  LovelaceStrategyViewConfig,
   LovelaceViewConfig,
   LovelaceViewHeaderConfig,
 } from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
@@ -7,7 +8,7 @@ import type {AreaRegistryEntry} from "home-assistant-frontend-types/frontend/dat
 import {computeAreaTileCardConfig, extendLastCard} from "../helpers/cards";
 import type {LovelaceBadgeConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/badge";
 import {computeBadge} from "../helpers/badges";
-import {AreaConfig, HasLightsConfig} from "../config";
+import {AreaConfig, Config, HasLightsConfig} from "../config";
 import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
 import {EntityBadgeConfig} from "home-assistant-frontend-types/frontend/panels/lovelace/badges/types";
 
@@ -15,6 +16,20 @@ export type WallboardRoomViewStrategyConfig = {
   type: "custom:wallboard-room";
   area: string;
 } & AreaConfig;
+
+export const registerView = function (config: Config, area: AreaRegistryEntry): LovelaceStrategyViewConfig {
+  return {
+    path: `areas-${area.area_id}`,
+    title: area.name,
+    subview: true,
+    theme: config.theme,
+    strategy: {
+      type: "custom:wallboard-room",
+      area: area.area_id,
+      ...config.areas?.[area.area_id],
+    },
+  };
+};
 
 class RoomViewStrategy extends HTMLElement {
   static async generate(

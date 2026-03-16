@@ -1,13 +1,28 @@
-import type {LovelaceViewConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
+import type {LovelaceStrategyViewConfig, LovelaceViewConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
 import {computeAreaTileCardConfig, mapAreas} from "../helpers/cards";
 import type {LovelaceBadgeConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/badge";
 import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
 import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
-import {HasAreasConfig} from "../config";
+import {Config, HasAreasConfig} from "../config";
 
 export type WallboardClimateViewStrategyConfig = {
   type: "custom:wallboard-climate";
 } & HasAreasConfig;
+
+const icon = "mdi:thermometer";
+
+export const registerView = function (config: Config): LovelaceStrategyViewConfig {
+  return {
+    icon,
+    path: "climate",
+    title: "Climate",
+    strategy: {
+      type: "custom:wallboard-climate",
+      areas: config.areas,
+    },
+    theme: config.theme,
+  };
+};
 
 class ClimateViewStrategy extends HTMLElement {
   static async generate(_config: WallboardClimateViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
@@ -78,7 +93,7 @@ class ClimateViewStrategy extends HTMLElement {
       header: {
         card: {
           type: "markdown",
-          content: "# <ha-icon icon=\"mdi:home-thermometer-outline\"></ha-icon> Climate",
+          content: `# <ha-icon icon="${icon}"></ha-icon> Climate`,
           text_only: true,
         },
         layout: "start",
