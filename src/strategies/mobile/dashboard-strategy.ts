@@ -3,13 +3,13 @@ import type { LovelaceConfig } from 'home-assistant-frontend-types/frontend/data
 import type { LovelaceViewRawConfig } from 'home-assistant-frontend-types/frontend/data/lovelace/config/view'
 
 import type { Config } from '../config'
-import * as area from '../wallboard/area-view-strategy'
-import * as lights from '../wallboard/lights-view-strategy'
-import * as climate from '../wallboard/climate-view-strategy'
-import * as security from '../wallboard/security-view-strategy'
-import * as media from '../wallboard/media-view-strategy'
-import * as utilities from '../wallboard/utilities-view-strategy'
 
+import * as security from './security-view-strategy'
+import * as utilities from './utilities-view-strategy'
+import * as media from './media-view-strategy'
+import * as climate from './climate-view-strategy'
+import * as lights from './lights-view-strategy'
+import * as area from './area-view-strategy'
 import * as overview from './overview-view-strategy'
 
 export type MobileDashboardStrategyConfig = {

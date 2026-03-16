@@ -7,15 +7,15 @@ import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types
 import { type Config } from '../config'
 import { computeUtilityAreas } from '../helpers/utilities'
 
-export type WallboardUtilitiesViewStrategyConfig = {
-  type: 'custom:wallboard-utilities'
+export type MobileUtilitiesViewStrategyConfig = {
+  type: 'custom:mobile-utilities'
 }
 
 const icon = 'mdi:cog'
 
 export const registerView = function (config: Config): LovelaceStrategyViewConfig {
-  const strategy: WallboardUtilitiesViewStrategyConfig = {
-    type: 'custom:wallboard-utilities',
+  const strategy: MobileUtilitiesViewStrategyConfig = {
+    type: 'custom:mobile-utilities',
   }
 
   return {
@@ -28,7 +28,7 @@ export const registerView = function (config: Config): LovelaceStrategyViewConfi
 }
 
 class UtilitiesViewStrategy extends HTMLElement {
-  static async generate(_config: WallboardUtilitiesViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
+  static async generate(_config: MobileUtilitiesViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
     const areas = computeUtilityAreas(hass)
     return {
       type: 'sections',
@@ -42,10 +42,10 @@ class UtilitiesViewStrategy extends HTMLElement {
         badges_position: 'bottom',
         badges_wrap: 'wrap',
       },
-      max_columns: 3,
+      max_columns: 1,
       sections: areas,
     }
   }
 }
 
-customElements.define('ll-strategy-view-wallboard-utilities', UtilitiesViewStrategy)
+customElements.define('ll-strategy-view-mobile-utilities', UtilitiesViewStrategy)

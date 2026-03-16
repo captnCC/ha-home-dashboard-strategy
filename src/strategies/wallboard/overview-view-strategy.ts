@@ -32,7 +32,7 @@ class OverviewViewStrategy extends HTMLElement {
   ): Promise<LovelaceViewConfig> {
     return {
       type: 'sections',
-      max_columns: 4,
+      max_columns: 3,
       header: {
         card: computeHeaderCard(config.weather || null),
         layout: 'responsive',

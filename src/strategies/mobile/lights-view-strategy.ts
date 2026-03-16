@@ -7,15 +7,15 @@ import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types
 import { type Config, type HasAreasConfig, type HasLightsConfig } from '../config'
 import { computeLightAreas, computeLightBadges } from '../helpers/lights'
 
-export type WallboardLightsViewStrategyConfig = {
-  type: 'custom:wallboard-lights'
+export type MobileLightsViewStrategyConfig = {
+  type: 'custom:mobile-lights'
 } & HasLightsConfig['lights'] & HasAreasConfig
 
 const icon = 'mdi:lightbulb-group'
 
 export const registerView = function (config: Config): LovelaceStrategyViewConfig {
-  const strategy: WallboardLightsViewStrategyConfig = {
-    type: 'custom:wallboard-lights',
+  const strategy: MobileLightsViewStrategyConfig = {
+    type: 'custom:mobile-lights',
     areas: config.areas,
     ...config.overview?.lights,
   }
@@ -30,7 +30,7 @@ export const registerView = function (config: Config): LovelaceStrategyViewConfi
 }
 
 class LightsViewStrategy extends HTMLElement {
-  static async generate(config: WallboardLightsViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
+  static async generate(config: MobileLightsViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
     const badges = computeLightBadges(hass, config)
     const areas = computeLightAreas(hass, config.areas)
 
@@ -47,10 +47,10 @@ class LightsViewStrategy extends HTMLElement {
         badges_wrap: 'scroll',
       },
       badges,
-      max_columns: 3,
+      max_columns: 1,
       sections: [...areas],
     }
   }
 }
 
-customElements.define('ll-strategy-view-wallboard-lights', LightsViewStrategy)
+customElements.define('ll-strategy-view-mobile-lights', LightsViewStrategy)

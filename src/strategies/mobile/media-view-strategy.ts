@@ -7,15 +7,15 @@ import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types
 import { type Config, type HasAreasConfig } from '../config'
 import { computeMediaAreas } from '../helpers/media'
 
-export type WallboardMediaViewStrategyConfig = {
-  type: 'custom:wallboard-media'
+export type MobileMediaViewStrategyConfig = {
+  type: 'custom:mobile-media'
 } & HasAreasConfig
 
 const icon = 'mdi:play'
 
 export const registerView = function (config: Config): LovelaceStrategyViewConfig {
-  const strategy: WallboardMediaViewStrategyConfig = {
-    type: 'custom:wallboard-media',
+  const strategy: MobileMediaViewStrategyConfig = {
+    type: 'custom:mobile-media',
     areas: config.areas,
   }
 
@@ -29,7 +29,7 @@ export const registerView = function (config: Config): LovelaceStrategyViewConfi
 }
 
 class MediaViewStrategy extends HTMLElement {
-  static async generate(_config: WallboardMediaViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
+  static async generate(_config: MobileMediaViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
     const areas = computeMediaAreas(hass)
     return {
       type: 'sections',
@@ -41,12 +41,12 @@ class MediaViewStrategy extends HTMLElement {
         },
         layout: 'start',
         badges_position: 'bottom',
-        badges_wrap: 'wrap',
+        badges_wrap: 'scroll',
       },
-      max_columns: 3,
+      max_columns: 1,
       sections: areas,
     }
   }
 }
 
-customElements.define('ll-strategy-view-wallboard-media', MediaViewStrategy)
+customElements.define('ll-strategy-view-mobile-media', MediaViewStrategy)

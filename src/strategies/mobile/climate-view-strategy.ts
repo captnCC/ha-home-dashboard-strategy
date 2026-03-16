@@ -7,16 +7,16 @@ import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types
 import { type Config, type HasAreasConfig } from '../config'
 import { computeClimateAreas } from '../helpers/climate'
 
-export type WallboardClimateViewStrategyConfig = {
-  type: 'custom:wallboard-climate'
+export type MobileClimateViewStrategyConfig = {
+  type: 'custom:mobile-climate'
 } & HasAreasConfig
 
 export const icon = 'mdi:thermometer'
 export const path = 'climate'
 
 export const registerView = function (config: Config): LovelaceStrategyViewConfig {
-  const strategy: WallboardClimateViewStrategyConfig = {
-    type: 'custom:wallboard-climate',
+  const strategy: MobileClimateViewStrategyConfig = {
+    type: 'custom:mobile-climate',
     areas: config.areas,
   }
 
@@ -30,7 +30,7 @@ export const registerView = function (config: Config): LovelaceStrategyViewConfi
 }
 
 class ClimateViewStrategy extends HTMLElement {
-  static async generate(_config: WallboardClimateViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
+  static async generate(_config: MobileClimateViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
     const areas = computeClimateAreas(hass)
 
     return {
@@ -43,12 +43,12 @@ class ClimateViewStrategy extends HTMLElement {
         },
         layout: 'start',
         badges_position: 'bottom',
-        badges_wrap: 'wrap',
+        badges_wrap: 'scroll',
       },
-      max_columns: 3,
+      max_columns: 1,
       sections: areas,
     }
   }
 }
 
-customElements.define('ll-strategy-view-wallboard-climate', ClimateViewStrategy)
+customElements.define('ll-strategy-view-mobile-climate', ClimateViewStrategy)

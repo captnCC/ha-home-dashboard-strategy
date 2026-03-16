@@ -10,14 +10,14 @@ import { type AreaConfig, type Config } from '../config'
 import * as areaHelpers from '../helpers/area'
 import { areaPath } from '../helpers/area'
 
-export type WallboardAreaViewStrategyConfig = {
-  type: 'custom:wallboard-area'
+export type MobileAreaViewStrategyConfig = {
+  type: 'custom:mobile-area'
   area: string
 } & AreaConfig
 
 export const registerView = function (config: Config, area: AreaRegistryEntry): LovelaceStrategyViewConfig {
-  const strategy: WallboardAreaViewStrategyConfig = {
-    type: 'custom:wallboard-area',
+  const strategy: MobileAreaViewStrategyConfig = {
+    type: 'custom:mobile-area',
     area: area.area_id,
     ...config.areas?.[area.area_id],
   }
@@ -33,7 +33,7 @@ export const registerView = function (config: Config, area: AreaRegistryEntry): 
 
 class AreaViewStrategy extends HTMLElement {
   static async generate(
-    config: WallboardAreaViewStrategyConfig,
+    config: MobileAreaViewStrategyConfig,
     hass: HomeAssistant,
   ): Promise<LovelaceViewConfig> {
     const area = hass.areas[config.area]
@@ -46,14 +46,10 @@ class AreaViewStrategy extends HTMLElement {
       },
       layout: 'start',
       badges_position: 'bottom',
-      badges_wrap: 'wrap',
+      badges_wrap: 'scroll',
     }
 
     const badges = areaHelpers.computeBadges(hass, area, config)
-
-    if (config.badges) {
-      badges.push(...config.badges)
-    }
 
     const sections = [
       ...areaHelpers.computeLightSection(hass, area, config.lights || {}),
@@ -63,7 +59,7 @@ class AreaViewStrategy extends HTMLElement {
 
     return {
       type: 'sections',
-      max_columns: 3,
+      max_columns: 1,
       header,
       badges,
       sections,
@@ -71,4 +67,4 @@ class AreaViewStrategy extends HTMLElement {
   }
 }
 
-customElements.define('ll-strategy-view-wallboard-area', AreaViewStrategy)
+customElements.define('ll-strategy-view-mobile-area', AreaViewStrategy)
