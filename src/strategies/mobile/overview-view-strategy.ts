@@ -1,14 +1,15 @@
 import type { HomeAssistant } from "home-assistant-frontend-types/frontend/types";
-import type { LovelaceViewConfig } from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
+import type {
+  LovelaceStrategyViewConfig,
+  LovelaceViewConfig
+} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
 import { computeAreaTileCardConfig, mapAreas } from "../helpers/cards";
 import type { LovelaceCardConfig } from "home-assistant-frontend-types/frontend/data/lovelace/config/card";
 import { computeBadge } from "../helpers/badges";
 import {EntityBadgeConfig} from "home-assistant-frontend-types/frontend/panels/lovelace/badges/types";
 import {StateCondition} from "home-assistant-frontend-types/frontend/panels/lovelace/common/validate-condition";
 import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
-import {AreaConfig} from "../config";
-
-
+import {AreaConfig, Config} from "../config";
 
 export interface MobileOverviewViewStrategyConfig {
   type: "custom:mobile-overview";
@@ -18,6 +19,21 @@ export interface MobileOverviewViewStrategyConfig {
     all?: string;
   };
 }
+
+export const registerView = function (config: Config): LovelaceStrategyViewConfig {
+  const strategy: MobileOverviewViewStrategyConfig = {
+    type: "custom:mobile-overview",
+    areas: config.areas,
+    ...config.overview,
+  };
+
+  return {
+    strategy,
+    icon: "mdi:home",
+    path: "overview",
+    theme: config.theme,
+  };
+};
 
 class MobileOverviewViewStrategy extends  HTMLElement {
   static async generate(
