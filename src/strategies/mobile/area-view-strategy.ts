@@ -9,6 +9,7 @@ import type { AreaRegistryEntry } from 'home-assistant-frontend-types/frontend/d
 import { type AreaConfig, type Config } from '../config'
 import * as areaHelpers from '../helpers/area'
 import { areaPath } from '../helpers/area'
+import { mobileHeader } from '../helpers/header'
 
 export type MobileAreaViewStrategyConfig = {
   type: 'custom:mobile-area'
@@ -44,9 +45,7 @@ class AreaViewStrategy extends HTMLElement {
         content: `# <ha-icon icon="${area.icon}"></ha-icon> ${area.name}`,
         text_only: true,
       },
-      layout: 'start',
-      badges_position: 'bottom',
-      badges_wrap: 'scroll',
+      ...mobileHeader,
     }
 
     const badges = areaHelpers.computeBadges(hass, area, config)

@@ -6,6 +6,7 @@ import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types
 
 import { type Config, type HasAreasConfig, type HasLightsConfig } from '../config'
 import { computeLightAreas, computeLightBadges } from '../helpers/lights'
+import { mobileHeader } from '../helpers/header'
 
 export type MobileLightsViewStrategyConfig = {
   type: 'custom:mobile-lights'
@@ -42,9 +43,7 @@ class LightsViewStrategy extends HTMLElement {
           content: `# <ha-icon icon="${icon}"></ha-icon> Lights`,
           text_only: true,
         },
-        layout: 'start',
-        badges_position: 'bottom',
-        badges_wrap: 'scroll',
+        ...mobileHeader,
       },
       badges,
       max_columns: 1,

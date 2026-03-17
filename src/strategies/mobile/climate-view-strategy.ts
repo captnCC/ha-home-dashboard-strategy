@@ -4,12 +4,13 @@ import type {
 } from 'home-assistant-frontend-types/frontend/data/lovelace/config/view'
 import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
 
-import { type Config, type HasAreasConfig } from '../config'
+import { type Config, type HasAreasConfig, type HasClimateConfig } from '../config'
 import { computeClimateAreas } from '../helpers/climate'
+import { mobileHeader } from '../helpers/header'
 
 export type MobileClimateViewStrategyConfig = {
   type: 'custom:mobile-climate'
-} & HasAreasConfig
+} & HasAreasConfig & HasClimateConfig
 
 export const icon = 'mdi:thermometer'
 export const path = 'climate'
@@ -30,8 +31,8 @@ export const registerView = function (config: Config): LovelaceStrategyViewConfi
 }
 
 class ClimateViewStrategy extends HTMLElement {
-  static async generate(_config: MobileClimateViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
-    const areas = computeClimateAreas(hass)
+  static async generate(config: MobileClimateViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
+    const areas = computeClimateAreas(hass, config.areas)
 
     return {
       type: 'sections',
@@ -41,9 +42,7 @@ class ClimateViewStrategy extends HTMLElement {
           content: `# <ha-icon icon="${icon}"></ha-icon> Climate`,
           text_only: true,
         },
-        layout: 'start',
-        badges_position: 'bottom',
-        badges_wrap: 'scroll',
+        ...mobileHeader,
       },
       max_columns: 1,
       sections: areas,

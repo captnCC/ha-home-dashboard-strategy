@@ -6,6 +6,7 @@ import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types
 
 import { type Config, type HasAreasConfig } from '../config'
 import { computeMediaAreas } from '../helpers/media'
+import { mobileHeader } from '../helpers/header'
 
 export type MobileMediaViewStrategyConfig = {
   type: 'custom:mobile-media'
@@ -39,9 +40,7 @@ class MediaViewStrategy extends HTMLElement {
           content: `# <ha-icon icon="${icon}"></ha-icon> Media`,
           text_only: true,
         },
-        layout: 'start',
-        badges_position: 'bottom',
-        badges_wrap: 'scroll',
+        ...mobileHeader,
       },
       max_columns: 1,
       sections: areas,

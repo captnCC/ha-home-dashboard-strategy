@@ -14,6 +14,7 @@ import {
 } from '../config'
 import { computeBadges, computeFloorSection, computePlayingSection } from '../helpers/overview'
 import { mapFloors } from '../helpers/mapping'
+import { mobileHeader } from '../helpers/header'
 
 export type MobileOverviewViewStrategyConfig = {
   type: 'custom:mobile-overview'
@@ -43,9 +44,7 @@ class MobileOverviewViewStrategy extends HTMLElement {
       type: 'sections',
       max_columns: 1,
       header: {
-        layout: 'responsive',
-        badges_position: 'bottom',
-        badges_wrap: 'scroll',
+        ...mobileHeader,
       },
       badges: computeBadges(hass, config),
       sections: [

@@ -10,22 +10,35 @@
 - [x] Custom sizing for area cards on mobile
 - [x] Sorts for lights
 - [x] Sorts for climate etc
-- [ ] Multi Floor Support
+- [x] Multi Floor Support
+- [ ] Floor Order
+- [ ] Settings overlay/split -> overview, floors
+- [ ] Light Shortcuts -> on/off/toggle like default dashboard
+- [ ] Docs extends configs
+- [ ] Needed Labels
 - [ ] Summary per Home
     - [ ] Lights
     - [ ] Climate
     - [ ] Media
     - [ ] Security
+    - [ ] Unavailable
+    - [ ] Battery empty
 - [ ] Summary per floor
   - [ ] Lights
   - [ ] Climate
   - [ ] Media
   - [ ] Security
+  - [ ] Unavailable
+  - [ ] Battery empty
 - [ ] Summary per area
   - [ ] Lights 
   - [ ] Climate
   - [ ] Media
   - [ ] Security
+  - [ ] Unavailable
+  - [ ] Battery empty
+- [ ] Settings to disable views -> lights/climate/media/security/utilities
+- [ ] Add switches support -> handle all the useless ones
 - [ ] Add covers support
 - [ ] Add security section for areas
 - [ ] Add security overview

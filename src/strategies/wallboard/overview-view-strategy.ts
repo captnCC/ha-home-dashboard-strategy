@@ -8,6 +8,7 @@ import { type HomeAssistant } from 'home-assistant-frontend-types/frontend/types
 import { computeBadges, computeFloorSection, computePlayingSection } from '../helpers/overview'
 import { type Config, type HasAreasConfig, type OverviewConfig } from '../config'
 import { mapFloors } from '../helpers/mapping'
+import { wallboardHeader } from '../helpers/header'
 
 export type WallboardOverviewViewStrategyConfig = {
   type: 'custom:wallboard-overview'
@@ -36,9 +37,7 @@ class OverviewViewStrategy extends HTMLElement {
       max_columns: 3,
       header: {
         card: computeHeaderCard(config.weather || null),
-        layout: 'responsive',
-        badges_position: 'bottom',
-        badges_wrap: 'scroll',
+        ...wallboardHeader,
       },
       badges: computeBadges(hass, config),
       sections: [

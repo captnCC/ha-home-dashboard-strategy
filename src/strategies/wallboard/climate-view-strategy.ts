@@ -6,6 +6,7 @@ import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types
 
 import { type Config, type HasAreasConfig } from '../config'
 import { computeClimateAreas } from '../helpers/climate'
+import { wallboardHeader } from '../helpers/header'
 
 export type WallboardClimateViewStrategyConfig = {
   type: 'custom:wallboard-climate'
@@ -41,9 +42,7 @@ class ClimateViewStrategy extends HTMLElement {
           content: `# <ha-icon icon="${icon}"></ha-icon> Climate`,
           text_only: true,
         },
-        layout: 'start',
-        badges_position: 'bottom',
-        badges_wrap: 'wrap',
+        ...wallboardHeader,
       },
       max_columns: 3,
       sections: areas,

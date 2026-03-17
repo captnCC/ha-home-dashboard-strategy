@@ -9,7 +9,7 @@ import { tapNavigate } from './navigate'
 import { areaPath } from './area'
 import { mapAreas } from './mapping'
 
-export const computeClimateAreas = (hass: HomeAssistant, config: Record<string, AreaConfig>) => {
+export const computeClimateAreas = (hass: HomeAssistant, config: Record<string, AreaConfig> = {}) => {
   return mapAreas(hass, config, (hass, area, areaId, config) => {
     const computeTileCard = computeAreaTileCardConfig(hass, area.name)
     const devicesFilter = generateEntityFilter(hass, {

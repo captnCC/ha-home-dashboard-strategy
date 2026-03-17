@@ -8,6 +8,7 @@ import type { FloorRegistryEntry } from 'home-assistant-frontend-types/frontend/
 
 import { type AreaConfig, type Config } from '../config'
 import { computeAreasSection, floorPath } from '../helpers/floor'
+import { wallboardHeader } from '../helpers/header'
 
 export type WallboardFloorViewStrategyConfig = {
   type: 'custom:wallboard-floor'
@@ -44,9 +45,7 @@ class FloorViewStrategy extends HTMLElement {
         content: `# <ha-icon icon="${floor.icon || 'mdi:floor-plan'}"></ha-icon> ${floor.name}`,
         text_only: true,
       },
-      layout: 'start',
-      badges_position: 'bottom',
-      badges_wrap: 'wrap',
+      ...wallboardHeader,
     }
 
     return {

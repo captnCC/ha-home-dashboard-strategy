@@ -6,6 +6,7 @@ import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types
 
 import { type Config, type HasAreasConfig } from '../config'
 import { computeMediaAreas } from '../helpers/media'
+import { wallboardHeader } from '../helpers/header'
 
 export type WallboardMediaViewStrategyConfig = {
   type: 'custom:wallboard-media'
@@ -39,9 +40,7 @@ class MediaViewStrategy extends HTMLElement {
           content: `# <ha-icon icon="${icon}"></ha-icon> Media`,
           text_only: true,
         },
-        layout: 'start',
-        badges_position: 'bottom',
-        badges_wrap: 'wrap',
+        ...wallboardHeader,
       },
       max_columns: 3,
       sections: areas,

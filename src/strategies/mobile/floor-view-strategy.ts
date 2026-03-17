@@ -8,6 +8,7 @@ import type { FloorRegistryEntry } from 'home-assistant-frontend-types/frontend/
 
 import { type Config, type FloorConfig, type HasAreasConfig } from '../config'
 import { computeAreasSection, computeBadges, floorPath } from '../helpers/floor'
+import { mobileHeader } from '../helpers/header'
 
 export type MobileFloorViewStrategyConfig = {
   type: 'custom:mobile-floor'
@@ -43,9 +44,7 @@ class FloorViewStrategy extends HTMLElement {
         content: `# <ha-icon icon="${floor.icon}"></ha-icon> ${floor.name}`,
         text_only: true,
       },
-      layout: 'start',
-      badges_position: 'bottom',
-      badges_wrap: 'scroll',
+      ...mobileHeader,
     }
 
     return {

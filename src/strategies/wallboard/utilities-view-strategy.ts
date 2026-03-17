@@ -6,6 +6,7 @@ import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types
 
 import { type Config } from '../config'
 import { computeUtilityAreas } from '../helpers/utilities'
+import { wallboardHeader } from '../helpers/header'
 
 export type WallboardUtilitiesViewStrategyConfig = {
   type: 'custom:wallboard-utilities'
@@ -38,9 +39,7 @@ class UtilitiesViewStrategy extends HTMLElement {
           content: `# <ha-icon icon="${icon}"></ha-icon> Utilties`,
           text_only: true,
         },
-        layout: 'start',
-        badges_position: 'bottom',
-        badges_wrap: 'wrap',
+        ...wallboardHeader,
       },
       max_columns: 3,
       sections: areas,
