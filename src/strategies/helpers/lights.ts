@@ -7,8 +7,9 @@ import { type AreaConfig, type HasAreasConfig, type HasLightsConfig } from '../c
 
 import { computeBadge } from './badges'
 import { tapNavigate } from './navigate'
-import { computeAreaTileCardConfig, extendLastCard, generateCardSort, mapAreas } from './cards'
+import { computeAreaTileCardConfig, extendLastCard, generateCardSort } from './cards'
 import { areaPath } from './area'
+import { mapAreas } from './mapping'
 
 export const computeLightBadges = (hass: HomeAssistant, config: HasLightsConfig['lights'] & HasAreasConfig = {}) => {
   const badges: EntityBadgeConfig[] = []
@@ -33,7 +34,7 @@ export const computeLightBadges = (hass: HomeAssistant, config: HasLightsConfig[
 
 export const computeLightAreas = (hass: HomeAssistant, areas: Record<string, AreaConfig> = {}) => {
   const states = Object.keys(hass.states)
-  return mapAreas<LovelaceCardConfig>(hass, areas, (area, _id, config) => {
+  return mapAreas<LovelaceCardConfig>(hass, areas, (hass, area, _id, config) => {
     const computeTileCard = computeAreaTileCardConfig(hass, area.name)
 
     const areaFilter = generateEntityFilter(hass, {

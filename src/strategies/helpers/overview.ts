@@ -2,14 +2,18 @@ import { type HomeAssistant } from 'home-assistant-frontend-types/frontend/types
 import { type LovelaceCardConfig } from 'home-assistant-frontend-types/frontend/data/lovelace/config/card'
 import { type StateCondition } from 'home-assistant-frontend-types/frontend/panels/lovelace/common/validate-condition'
 import { type EntityBadgeConfig } from 'home-assistant-frontend-types/frontend/panels/lovelace/badges/types'
+import { type AreaRegistryEntry } from 'home-assistant-frontend-types/frontend/data/area/area_registry'
+import { type FloorRegistryEntry } from 'home-assistant-frontend-types/frontend/data/floor_registry'
 
 import { generateEntityFilter } from '../../homeassistant/common/entity/entity_filter'
-import { type AreaConfig, type OverviewConfig } from '../config'
+import { type AreaConfig, type FloorConfig, type HasAreasConfig, type OverviewConfig } from '../config'
 
-import { computeAreaTileCardConfig, generateCardSort, mapAreas } from './cards'
+import { computeAreaTileCardConfig, generateCardSort } from './cards'
 import { computeBadge } from './badges'
 import { areaPath } from './area'
-import { navigate } from './navigate'
+import { navigate, tapNavigate } from './navigate'
+import { floorPath } from './floor'
+import { type FloorCallback, mapAreas } from './mapping'
 
 export const computeBadges = function (hass: HomeAssistant, config: OverviewConfig): EntityBadgeConfig[] {
   const states = Object.keys(hass.states)
@@ -100,71 +104,78 @@ export const computePlayingSection = function (hass: HomeAssistant): LovelaceCar
   }
 }
 
-export const computeAreasSection = function (hass: HomeAssistant, configs: Record<string, AreaConfig>) {
-  const areaCards = mapAreas<LovelaceCardConfig>(hass, configs, (area, areaId, config) => {
-    if (config.hidden) return null
+export const computeAreaCard = (hass: HomeAssistant, area: AreaRegistryEntry, areaId: string, config: AreaConfig) => {
+  if (config.hidden) return null
 
-    const size = config.size ?? 'large'
+  const size = config.size ?? 'large'
 
-    const cardCompute = computeAreaTileCardConfig(hass, area.name)
+  const cardCompute = computeAreaTileCardConfig(hass, area.name)
 
-    const filter = generateEntityFilter(hass, {
-      area: areaId,
-      label: 'overview',
-      domain: ['light'],
-    })
+  const filter = generateEntityFilter(hass, {
+    area: areaId,
+    label: 'overview',
+    domain: ['light'],
+  })
 
-    const sort = generateCardSort(config.lights?.order)
+  const sort = generateCardSort(config.lights?.order)
 
-    const overviewCards = size === 'large'
-      ? Object.keys(hass.states)
-          .filter(filter)
-          .sort(sort)
-          .map(
-            entity => ({
-              ...cardCompute(entity),
-              features_position: 'inline',
-            }),
-          )
-      : []
+  const overviewCards = size === 'large'
+    ? Object.keys(hass.states)
+        .filter(filter)
+        .sort(sort)
+        .map(
+          entity => ({
+            ...cardCompute(entity),
+            features_position: 'inline',
+          }),
+        )
+    : []
 
-    const features = [
+  const features = [
+    {
+      type: 'area-controls',
+      controls: ['light', 'fan'],
+    },
+  ]
+
+  return {
+    type: 'custom:vertical-stack-in-card',
+    column_span: size === 'large' ? 2 : 1,
+    grid_options: {
+      columns: size === 'large' ? 12 : 6,
+    },
+    cards: [
       {
-        type: 'area-controls',
-        controls: ['light', 'fan'],
-      },
-    ]
-
-    return {
-      type: 'custom:vertical-stack-in-card',
-      column_span: size === 'large' ? 2 : 1,
-      grid_options: {
-        columns: size === 'large' ? 12 : 6,
-      },
-      cards: [
-        {
-          type: 'area',
-          area: areaId,
-          features,
-          features_position: size === 'large' ? 'inline' : 'bottom',
-          display_type: 'compact',
-          alert_classes: ['motion', 'moisture'],
-          sensor_classes: ['temperature', 'humidity'],
-          navigation_path: navigate(areaPath(areaId)),
-          card_mod: {
-            style: `
+        type: 'area',
+        area: areaId,
+        features,
+        features_position: size === 'large' ? 'inline' : 'bottom',
+        display_type: 'compact',
+        alert_classes: ['motion', 'moisture'],
+        sensor_classes: ['temperature', 'humidity'],
+        navigation_path: navigate(areaPath(areaId)),
+        card_mod: {
+          style: `
               ha-card {
                 background: none;
                 box-shadow: none;
                 border: none;
               }
             }`,
-          },
         },
-        ...overviewCards,
-      ],
-    }
-  })
+      },
+      ...overviewCards,
+    ],
+  }
+}
+
+export const computeFloorSection: FloorCallback<LovelaceCardConfig> = function (hass: HomeAssistant, floor: FloorRegistryEntry, config: FloorConfig & HasAreasConfig) {
+  const areaCards = mapAreas<LovelaceCardConfig>(
+    hass,
+    config.areas ?? {},
+    computeAreaCard,
+    ([_id, area]) => area.floor_id === floor.floor_id
+  )
 
   return {
     type: 'grid',
@@ -172,9 +183,10 @@ export const computeAreasSection = function (hass: HomeAssistant, configs: Recor
     cards: [
       {
         type: 'heading',
-        heading: 'Areas',
+        heading: floor.name,
         heading_style: 'title',
-        icon: 'mdi:floor-plan',
+        icon: floor.icon ?? 'mdi:home',
+        tap_action: tapNavigate(floorPath(floor.floor_id)),
       },
       ...areaCards,
     ],

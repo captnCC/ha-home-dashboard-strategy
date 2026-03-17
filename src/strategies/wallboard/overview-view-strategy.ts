@@ -5,8 +5,9 @@ import type {
 import type { LovelaceCardConfig } from 'home-assistant-frontend-types/frontend/data/lovelace/config/card'
 import { type HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
 
-import { computeAreasSection, computeBadges, computePlayingSection } from '../helpers/overview'
+import { computeBadges, computeFloorSection, computePlayingSection } from '../helpers/overview'
 import { type Config, type HasAreasConfig, type OverviewConfig } from '../config'
+import { mapFloors } from '../helpers/mapping'
 
 export type WallboardOverviewViewStrategyConfig = {
   type: 'custom:wallboard-overview'
@@ -42,7 +43,7 @@ class OverviewViewStrategy extends HTMLElement {
       badges: computeBadges(hass, config),
       sections: [
         computePlayingSection(hass),
-        computeAreasSection(hass, config.areas || {}),
+        ...mapFloors<LovelaceCardConfig>(hass, config, computeFloorSection),
       ],
     }
   }

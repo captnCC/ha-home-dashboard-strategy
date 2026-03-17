@@ -2,12 +2,13 @@ import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types
 
 import { generateEntityFilter } from '../../homeassistant/common/entity/entity_filter'
 
-import { computeAreaTileCardConfig, extendLastCard, mapAreas } from './cards'
+import { computeAreaTileCardConfig, extendLastCard } from './cards'
 import { tapNavigate } from './navigate'
 import { areaPath } from './area'
+import { mapAreas } from './mapping'
 
 export const computeMediaAreas = (hass: HomeAssistant) => {
-  return mapAreas(hass, {}, (area) => {
+  return mapAreas(hass, {}, (hass, area) => {
     const computeTileCard = computeAreaTileCardConfig(hass, area.name)
     const devicesFilter = generateEntityFilter(hass, {
       area: area.area_id,

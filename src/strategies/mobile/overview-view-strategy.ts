@@ -3,13 +3,21 @@ import type {
   LovelaceStrategyViewConfig,
   LovelaceViewConfig,
 } from 'home-assistant-frontend-types/frontend/data/lovelace/config/view'
+import type { LovelaceCardConfig } from 'home-assistant-frontend-types/frontend/data/lovelace/config/card'
 
-import { type Config, type HasAreasConfig, type HasBadgesConfig, type HasLightsConfig } from '../config'
-import { computeAreasSection, computeBadges, computePlayingSection } from '../helpers/overview'
+import {
+  type Config,
+  type HasAreasConfig,
+  type HasBadgesConfig,
+  type HasFloorsConfig,
+  type HasLightsConfig,
+} from '../config'
+import { computeBadges, computeFloorSection, computePlayingSection } from '../helpers/overview'
+import { mapFloors } from '../helpers/mapping'
 
 export type MobileOverviewViewStrategyConfig = {
   type: 'custom:mobile-overview'
-} & HasAreasConfig & HasLightsConfig & HasBadgesConfig
+} & HasFloorsConfig & HasAreasConfig & HasLightsConfig & HasBadgesConfig
 
 export const registerView = function (config: Config): LovelaceStrategyViewConfig {
   const strategy: MobileOverviewViewStrategyConfig = {
@@ -42,7 +50,7 @@ class MobileOverviewViewStrategy extends HTMLElement {
       badges: computeBadges(hass, config),
       sections: [
         computePlayingSection(hass),
-        computeAreasSection(hass, config.areas || {}),
+        ...mapFloors<LovelaceCardConfig>(hass, config, computeFloorSection),
       ],
     }
   }

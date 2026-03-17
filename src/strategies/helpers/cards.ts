@@ -1,21 +1,8 @@
 import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
 import type { LovelaceCardConfig } from 'home-assistant-frontend-types/frontend/data/lovelace/config/card'
-import type { AreaRegistryEntry } from 'home-assistant-frontend-types/frontend/data/area/area_registry'
 
 import { computeStateName } from '../../homeassistant/common/entity/compute_state_name'
 import { computeDomain } from '../../homeassistant/common/entity/compute_domain'
-import { type AreaConfig } from '../config'
-
-type AreaCallback<T> = (area: AreaRegistryEntry, areaId: string, config: AreaConfig) => T | null
-
-export const mapAreas = <T>(
-  hass: HomeAssistant,
-  configs: Record<string, AreaConfig>,
-  callback: AreaCallback<T>,
-): NonNullable<T>[] =>
-  Object.entries(hass.areas)
-    .map(([areaId, area]) => callback(area, areaId, configs?.[areaId] || {}))
-    .filter(val => val !== null) as NonNullable<T>[]
 
 export const computeAreaTileCardConfig
   = (hass: HomeAssistant, prefix: string) =>

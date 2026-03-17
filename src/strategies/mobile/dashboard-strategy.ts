@@ -10,6 +10,7 @@ import * as media from './media-view-strategy'
 import * as climate from './climate-view-strategy'
 import * as lights from './lights-view-strategy'
 import * as area from './area-view-strategy'
+import * as floor from './floor-view-strategy'
 import * as overview from './overview-view-strategy'
 
 export type MobileDashboardStrategyConfig = {
@@ -21,6 +22,10 @@ class DashboardStrategy extends HTMLElement {
     config: MobileDashboardStrategyConfig,
     hass: HomeAssistant,
   ): Promise<LovelaceConfig> {
+    const floors: LovelaceViewRawConfig[] = Object.values(hass.floors).map(
+      f => floor.registerView(config, f),
+    )
+
     const areas: LovelaceViewRawConfig[] = Object.values(hass.areas).map(
       a => area.registerView(config, a),
     )
@@ -32,6 +37,7 @@ class DashboardStrategy extends HTMLElement {
       security.registerView(config),
       media.registerView(config),
       utilities.registerView(config),
+      ...floors,
       ...areas,
     ]
 

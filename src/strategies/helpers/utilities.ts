@@ -2,13 +2,14 @@ import { type HomeAssistant } from 'home-assistant-frontend-types/frontend/types
 
 import { generateEntityFilter } from '../../homeassistant/common/entity/entity_filter'
 
-import { computeAreaTileCardConfig, mapAreas } from './cards'
+import { computeAreaTileCardConfig } from './cards'
 import { tapNavigate } from './navigate'
 import { areaPath } from './area'
+import { mapAreas } from './mapping'
 
 export const computeUtilityAreas = (hass: HomeAssistant) => {
   const states = Object.keys(hass.states)
-  return mapAreas(hass, {}, (area) => {
+  return mapAreas(hass, {}, (hass, area) => {
     const computeTileCard = computeAreaTileCardConfig(hass, area.name)
 
     const vacuums = states

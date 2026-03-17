@@ -4,12 +4,13 @@ import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types
 import { generateEntityFilter } from '../../homeassistant/common/entity/entity_filter'
 import { type AreaConfig } from '../config'
 
-import { computeAreaTileCardConfig, generateCardSort, mapAreas } from './cards'
+import { computeAreaTileCardConfig, generateCardSort } from './cards'
 import { tapNavigate } from './navigate'
 import { areaPath } from './area'
+import { mapAreas } from './mapping'
 
 export const computeClimateAreas = (hass: HomeAssistant, config: Record<string, AreaConfig>) => {
-  return mapAreas(hass, config, (area, areaId, config) => {
+  return mapAreas(hass, config, (hass, area, areaId, config) => {
     const computeTileCard = computeAreaTileCardConfig(hass, area.name)
     const devicesFilter = generateEntityFilter(hass, {
       area: areaId,
