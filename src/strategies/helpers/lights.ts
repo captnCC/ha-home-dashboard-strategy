@@ -43,7 +43,10 @@ export const computeLightAreas = (hass: HomeAssistant, areas: Record<string, Are
     })
 
     const cards = extendLastCard(
-      states.filter(areaFilter).sort(generateCardSort(config.lights?.order)).map(computeTileCard)
+      states
+        .filter(areaFilter)
+        .sort(generateCardSort(config.lights?.order))
+        .map(computeTileCard)
     )
 
     if (cards.length === 0) return null

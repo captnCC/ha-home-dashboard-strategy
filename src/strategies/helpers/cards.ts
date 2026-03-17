@@ -16,7 +16,7 @@ export const computeAreaTileCardConfig
         [domain, ...deviceClass],
       )
 
-      const features = computeTileFeatures(domain, stateObj.attributes.device_class)
+      const features = computeTileFeatures(domain, stateObj.attributes)
 
       return {
         type: 'tile',
@@ -48,10 +48,13 @@ export const stripSuffix = (name: string, suffix: string | string[]) => {
   )
 }
 
-export const computeTileFeatures = (domain: string, deviceClass: string | null = null) => {
+export const computeTileFeatures = (domain: string, attributes: Record<string, unknown>) => {
   switch (domain) {
     case 'light':
-      return [{ type: 'light-brightness' }]
+      if (typeof attributes['brightness'] !== 'undefined') {
+        return [{ type: 'light-brightness' }]
+      }
+      return [{ type: 'toggle' }]
     case 'climate':
       return [
         { type: 'target-temperature' },
@@ -62,7 +65,7 @@ export const computeTileFeatures = (domain: string, deviceClass: string | null =
     case 'media_player':
       return [{ type: 'media-player-playback' }]
     case 'sensor':
-      switch (deviceClass) {
+      switch (attributes.device_class ?? '') {
         case 'battery':
           return []
         default:
