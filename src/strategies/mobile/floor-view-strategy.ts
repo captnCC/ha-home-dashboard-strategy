@@ -7,7 +7,7 @@ import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types
 import type { FloorRegistryEntry } from 'home-assistant-frontend-types/frontend/data/floor_registry'
 
 import { type Config, type FloorConfig, type HasAreasConfig } from '../config'
-import { computeAreasSection, floorPath } from '../helpers/floor'
+import { computeAreasSection, computeBadges, floorPath } from '../helpers/floor'
 
 export type MobileFloorViewStrategyConfig = {
   type: 'custom:mobile-floor'
@@ -52,6 +52,7 @@ class FloorViewStrategy extends HTMLElement {
       type: 'sections',
       max_columns: 1,
       header,
+      badges: computeBadges(hass, floor, config),
       sections: [
         computeAreasSection(hass, floor, config),
       ],

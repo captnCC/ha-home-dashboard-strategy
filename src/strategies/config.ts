@@ -1,11 +1,5 @@
 import { type EntityBadgeConfig } from 'home-assistant-frontend-types/frontend/panels/lovelace/badges/types'
 
-export type FloorConfig = object
-
-export type HasFloorsConfig = {
-  floors?: Record<string, FloorConfig>
-}
-
 export type HasAreasConfig = {
   areas?: Record<string, AreaConfig>
 }
@@ -29,6 +23,12 @@ export type HasLightsConfig = {
 
 export type HasBadgesConfig = {
   badges?: EntityBadgeConfig[]
+}
+
+export type FloorConfig = HasLightsConfig & HasBadgesConfig
+
+export type HasFloorsConfig = {
+  floors?: Record<string, FloorConfig>
 }
 
 export type AreaConfig = HasLightsConfig & HasBadgesConfig & HasClimateConfig & {
