@@ -21,6 +21,7 @@ export const registerView = function (config: Config): LovelaceStrategyViewConfi
     strategy: {
       type: 'custom:wallboard-overview',
       areas: config.areas,
+      floors: config.floors,
       ...config.overview,
     },
     theme: config.theme,
@@ -42,7 +43,11 @@ class OverviewViewStrategy extends HTMLElement {
       badges: computeBadges(hass, config),
       sections: [
         computePlayingSection(hass),
-        ...mapFloors<LovelaceCardConfig>(hass, config, computeFloorSection),
+        ...mapFloors<LovelaceCardConfig>(
+          hass,
+          config,
+          computeFloorSection,
+        ),
       ],
     }
   }

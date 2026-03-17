@@ -24,6 +24,7 @@ export const registerView = function (config: Config): LovelaceStrategyViewConfi
   const strategy: MobileOverviewViewStrategyConfig = {
     type: 'custom:mobile-overview',
     areas: config.areas,
+    floors: config.floors,
     ...config.overview,
   }
 

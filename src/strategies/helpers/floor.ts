@@ -15,6 +15,10 @@ export const floorPath = (floorId: string) => `floors-${floorId}`
 export const computeBadges = (hass: HomeAssistant, floor: FloorRegistryEntry, config: FloorConfig) => {
   const badges: LovelaceBadgeConfig[] = []
 
+  if (config.lights?.all) {
+    badges.push(computeBadge(config.lights.all))
+  }
+
   const sceneFilter = generateEntityFilter(hass, {
     floor: floor.floor_id,
     domain: ['scene'],

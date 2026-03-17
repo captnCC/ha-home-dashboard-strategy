@@ -177,6 +177,12 @@ export const computeFloorSection: FloorCallback<LovelaceCardConfig> = function (
     ([_id, area]) => area.floor_id === floor.floor_id
   )
 
+  const badges: EntityBadgeConfig[] = []
+
+  if (config.lights?.all) {
+    badges.push(computeBadge(config.lights?.all))
+  }
+
   return {
     type: 'grid',
     column_span: 4,
@@ -187,6 +193,7 @@ export const computeFloorSection: FloorCallback<LovelaceCardConfig> = function (
         heading_style: 'title',
         icon: floor.icon ?? 'mdi:home',
         tap_action: tapNavigate(floorPath(floor.floor_id)),
+        badges,
       },
       ...areaCards,
     ],

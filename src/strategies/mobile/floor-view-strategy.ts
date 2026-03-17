@@ -20,6 +20,7 @@ export const registerView = function (config: Config, floor: FloorRegistryEntry)
     type: 'custom:mobile-floor',
     floor: floor.floor_id,
     areas: config.areas,
+    ...config.floors?.[floor.floor_id],
   }
 
   return {

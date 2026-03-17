@@ -6,21 +6,21 @@ import type {
 import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
 import type { FloorRegistryEntry } from 'home-assistant-frontend-types/frontend/data/floor_registry'
 
-import { type AreaConfig, type Config } from '../config'
-import { computeAreasSection, floorPath } from '../helpers/floor'
+import { type Config, type FloorConfig, type HasAreasConfig } from '../config'
+import { computeAreasSection, computeBadges, floorPath } from '../helpers/floor'
 import { wallboardHeader } from '../helpers/header'
 
 export type WallboardFloorViewStrategyConfig = {
   type: 'custom:wallboard-floor'
   floor: string
-  areas?: Record<string, AreaConfig>
-}
+} & FloorConfig & HasAreasConfig
 
 export const registerView = function (config: Config, floor: FloorRegistryEntry): LovelaceStrategyViewConfig {
   const strategy: WallboardFloorViewStrategyConfig = {
     type: 'custom:wallboard-floor',
     floor: floor.floor_id,
     areas: config.areas,
+    ...config.floors?.[floor.floor_id],
   }
 
   return {
@@ -52,6 +52,7 @@ class FloorViewStrategy extends HTMLElement {
       type: 'sections',
       max_columns: 3,
       header,
+      badges: computeBadges(hass, floor, config),
       sections: [
         computeAreasSection(hass, floor, config),
       ],
