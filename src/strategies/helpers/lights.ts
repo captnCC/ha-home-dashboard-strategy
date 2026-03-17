@@ -3,18 +3,31 @@ import type { EntityBadgeConfig } from 'home-assistant-frontend-types/frontend/p
 import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
 
 import { generateEntityFilter } from '../../homeassistant/common/entity/entity_filter'
-import { type AreaConfig, type HasLightsConfig } from '../config'
+import { type AreaConfig, type HasAreasConfig, type HasLightsConfig } from '../config'
 
 import { computeBadge } from './badges'
 import { tapNavigate } from './navigate'
 import { computeAreaTileCardConfig, extendLastCard, generateCardSort, mapAreas } from './cards'
 import { areaPath } from './area'
 
-export const computeLightBadges = (hass: HomeAssistant, config: HasLightsConfig['lights'] = {}) => {
+export const computeLightBadges = (hass: HomeAssistant, config: HasLightsConfig['lights'] & HasAreasConfig = {}) => {
   const badges: EntityBadgeConfig[] = []
   if (config.all) {
     badges.push(computeBadge(config.all))
   }
+
+  const areaConfigs = config.areas ?? {}
+  Object.values(hass.areas).forEach((area) => {
+    const config = areaConfigs[area.area_id] || undefined
+    if (config?.lights?.all) {
+      badges.push({
+        ...computeBadge(config.lights?.all),
+        name: area.name,
+        icon: area.icon ?? undefined,
+      })
+    }
+  })
+
   return badges
 }
 

@@ -42,7 +42,7 @@ class LightsViewStrategy extends HTMLElement {
           content: `# <ha-icon icon="${icon}"></ha-icon> Lights`,
           text_only: true,
         },
-        layout: 'responsive',
+        layout: 'start',
         badges_position: 'bottom',
         badges_wrap: 'scroll',
       },
