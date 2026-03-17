@@ -1,8 +1,12 @@
 # Home Dashboard Strategy
 
-A dashboard strategy for Home Assistant.
+[![GitHub Release](https://img.shields.io/github/v/release/captnCC/ha-home-dashboard-strategy?style=flat-square)](https://github.com/captnCC/ha-home-dashboard-strategy/releases)
+
+
 
 ## Installation
+
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=captnCC&repository=ha-home-dashboard-strategy&category=plugin)
 
 ### Requirements
 
