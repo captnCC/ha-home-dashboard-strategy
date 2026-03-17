@@ -8,7 +8,6 @@
   - [x] Vacuums
   - [x] Batteries
 - [x] Custom sizing for area cards on mobile
-- [ ] Sorts for areas
 - [x] Sorts for lights
 - [x] Sorts for climate etc
 - [ ] Multi Floor Support

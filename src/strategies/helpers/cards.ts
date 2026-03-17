@@ -14,7 +14,7 @@ export const mapAreas = <T>(
   callback: AreaCallback<T>,
 ): NonNullable<T>[] =>
   Object.entries(hass.areas)
-    .map(([areaId, area]) => callback(area, areaId, configs[areaId] || {}))
+    .map(([areaId, area]) => callback(area, areaId, configs?.[areaId] || {}))
     .filter(val => val !== null) as NonNullable<T>[]
 
 export const computeAreaTileCardConfig
