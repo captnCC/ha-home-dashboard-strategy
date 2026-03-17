@@ -37,7 +37,7 @@
   - [ ] Security
   - [ ] Unavailable
   - [ ] Battery empty
-- [ ] Settings to disable views -> lights/climate/media/security/utilities
+- [x] Settings to disable views -> lights/climate/media/security/utilities
 - [ ] Add switches support -> handle all the useless ones
 - [ ] Add covers support
 - [ ] Add security section for areas

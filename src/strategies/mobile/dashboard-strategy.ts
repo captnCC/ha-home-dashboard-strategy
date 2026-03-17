@@ -22,24 +22,33 @@ class DashboardStrategy extends HTMLElement {
     config: MobileDashboardStrategyConfig,
     hass: HomeAssistant,
   ): Promise<LovelaceConfig> {
-    const floors: LovelaceViewRawConfig[] = Object.values(hass.floors).map(
+    const views: LovelaceViewRawConfig[] = [
+      overview.registerView(config),
+    ]
+
+    if (!(config.lights?.hidden === true))
+      views.push(lights.registerView(config))
+    if (!(config.climate?.hidden === true))
+      views.push(climate.registerView(config))
+    if (!(config.security?.hidden === true))
+      views.push(security.registerView(config))
+    if (!(config.media?.hidden === true))
+      views.push(media.registerView(config))
+    if (!(config.utility?.hidden === true))
+      views.push(utilities.registerView(config))
+
+    const floors = Object.values(hass.floors).map(
       f => floor.registerView(config, f),
     )
 
-    const areas: LovelaceViewRawConfig[] = Object.values(hass.areas).map(
+    const areas = Object.values(hass.areas).map(
       a => area.registerView(config, a),
     )
 
-    const views: LovelaceViewRawConfig[] = [
-      overview.registerView(config),
-      lights.registerView(config),
-      climate.registerView(config),
-      security.registerView(config),
-      media.registerView(config),
-      utilities.registerView(config),
+    views.push(
       ...floors,
       ...areas,
-    ]
+    )
 
     return {
       views,

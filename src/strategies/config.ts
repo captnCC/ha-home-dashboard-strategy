@@ -5,6 +5,7 @@ export type HasAreasConfig = {
 }
 
 export type ClimateConfig = {
+  hidden?: boolean
   order?: Record<string, number>
 }
 
@@ -12,7 +13,35 @@ export type HasClimateConfig = {
   climate?: ClimateConfig
 }
 
+export type MediaConfig = {
+  hidden?: boolean
+  order?: Record<string, number>
+}
+
+export type HasMediaConfig = {
+  media?: MediaConfig
+}
+
+export type SecurityConfig = {
+  hidden?: boolean
+  order?: Record<string, number>
+}
+
+export type HasSecurityConfig = {
+  security?: SecurityConfig
+}
+
+export type UtilityConfig = {
+  hidden?: boolean
+  order?: Record<string, number>
+}
+
+export type HasUtilityConfig = {
+  utility?: UtilityConfig
+}
+
 export type LightsConfig = {
+  hidden?: boolean
   all?: string
   order?: Record<string, number>
 }
@@ -40,7 +69,14 @@ export type OverviewConfig = HasLightsConfig & HasBadgesConfig & {
   weather?: string
 }
 
-export type Config = HasFloorsConfig & HasAreasConfig & {
+export type Config = {
   theme?: string
   overview?: OverviewConfig
 }
+& HasFloorsConfig
+& HasAreasConfig
+& HasLightsConfig
+& HasClimateConfig
+& HasMediaConfig
+& HasSecurityConfig
+& HasUtilityConfig
