@@ -5,14 +5,14 @@ import type {
 import type { LovelaceCardConfig } from 'home-assistant-frontend-types/frontend/data/lovelace/config/card'
 import { type HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
 
-import { computeBadges, computeFloorSection, computePlayingSection } from '../helpers/overview'
-import { type Config, type HasAreasConfig, type OverviewConfig } from '../config'
-import { mapFloors } from '../helpers/mapping'
+import { computeAreaCard, computeBadges, computeFloorSection, computePlayingSection } from '../helpers/overview'
+import { type Config, type HasAreasConfig, type HasFloorsConfig, type OverviewConfig } from '../config'
+import { mapAreas, mapFloors } from '../helpers/mapping'
 import { wallboardHeader } from '../helpers/header'
 
 export type WallboardOverviewViewStrategyConfig = {
   type: 'custom:wallboard-overview'
-} & OverviewConfig & HasAreasConfig
+} & OverviewConfig & HasAreasConfig & HasFloorsConfig
 
 export const registerView = function (config: Config): LovelaceStrategyViewConfig {
   return {
@@ -33,6 +33,36 @@ class OverviewViewStrategy extends HTMLElement {
     config: WallboardOverviewViewStrategyConfig,
     hass: HomeAssistant,
   ): Promise<LovelaceViewConfig> {
+    const sections = [computePlayingSection(hass)]
+
+    if (config.floors !== false) {
+      sections.push(...mapFloors<LovelaceCardConfig>(
+        hass,
+        config,
+        computeFloorSection,
+      ))
+    }
+    else {
+      const card = {
+        type: 'grid',
+        column_span: 4,
+        cards: [
+          {
+            type: 'heading',
+            heading: 'Areas',
+            heading_style: 'title',
+            icon: 'mdi:floor-plan',
+          },
+          ...mapAreas<LovelaceCardConfig>(
+            hass,
+            config.areas ?? {},
+            computeAreaCard,
+          ),
+        ],
+      }
+      sections.push(card)
+    }
+
     return {
       type: 'sections',
       max_columns: 3,
@@ -41,14 +71,7 @@ class OverviewViewStrategy extends HTMLElement {
         ...wallboardHeader,
       },
       badges: computeBadges(hass, config),
-      sections: [
-        computePlayingSection(hass),
-        ...mapFloors<LovelaceCardConfig>(
-          hass,
-          config,
-          computeFloorSection,
-        ),
-      ],
+      sections,
     }
   }
 }

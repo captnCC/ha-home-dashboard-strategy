@@ -12,8 +12,8 @@ import {
   type HasFloorsConfig,
   type HasLightsConfig,
 } from '../config'
-import { computeBadges, computeFloorSection, computePlayingSection } from '../helpers/overview'
-import { mapFloors } from '../helpers/mapping'
+import { computeAreaCard, computeBadges, computeFloorSection, computePlayingSection } from '../helpers/overview'
+import { mapAreas, mapFloors } from '../helpers/mapping'
 import { mobileHeader } from '../helpers/header'
 
 export type MobileOverviewViewStrategyConfig = {
@@ -41,6 +41,36 @@ class MobileOverviewViewStrategy extends HTMLElement {
     config: MobileOverviewViewStrategyConfig,
     hass: HomeAssistant,
   ): Promise<LovelaceViewConfig> {
+    const sections = [computePlayingSection(hass)]
+
+    if (config.floors !== false) {
+      sections.push(...mapFloors<LovelaceCardConfig>(
+        hass,
+        config,
+        computeFloorSection,
+      ))
+    }
+    else {
+      const card = {
+        type: 'grid',
+        column_span: 4,
+        cards: [
+          {
+            type: 'heading',
+            heading: 'Areas',
+            heading_style: 'title',
+            icon: 'mdi:floor-plan',
+          },
+          ...mapAreas<LovelaceCardConfig>(
+            hass,
+            config.areas ?? {},
+            computeAreaCard,
+          ),
+        ],
+      }
+      sections.push(card)
+    }
+
     return {
       type: 'sections',
       max_columns: 1,
@@ -48,10 +78,7 @@ class MobileOverviewViewStrategy extends HTMLElement {
         ...mobileHeader,
       },
       badges: computeBadges(hass, config),
-      sections: [
-        computePlayingSection(hass),
-        ...mapFloors<LovelaceCardConfig>(hass, config, computeFloorSection),
-      ],
+      sections,
     }
   }
 }

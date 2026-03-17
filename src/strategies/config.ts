@@ -57,7 +57,7 @@ export type HasBadgesConfig = {
 export type FloorConfig = HasLightsConfig & HasBadgesConfig
 
 export type HasFloorsConfig = {
-  floors?: Record<string, FloorConfig>
+  floors?: false | Record<string, FloorConfig>
 }
 
 export type AreaConfig = HasLightsConfig & HasBadgesConfig & HasClimateConfig & {

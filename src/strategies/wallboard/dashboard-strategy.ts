@@ -37,18 +37,18 @@ class DashboardStrategy extends HTMLElement {
     if (!(config.utility?.hidden === true))
       views.push(utilities.registerView(config))
 
-    const floors = Object.values(hass.floors).map(
-      f => floor.registerView(config, f),
-    )
+    if (config.floors !== false) {
+      const floors = Object.values(hass.floors).map(
+        f => floor.registerView(config, f),
+      )
+      views.push(...floors)
+    }
 
     const areas = Object.values(hass.areas).map(
       a => area.registerView(config, a),
     )
 
-    views.push(
-      ...floors,
-      ...areas,
-    )
+    views.push(...areas)
 
     return {
       views,
