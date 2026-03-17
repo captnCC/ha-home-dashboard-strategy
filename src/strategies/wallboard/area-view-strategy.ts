@@ -57,7 +57,7 @@ class AreaViewStrategy extends HTMLElement {
 
     const sections = [
       ...areaHelpers.computeLightSection(hass, area, config.lights || {}),
-      ...areaHelpers.computeClimateSection(hass, area),
+      ...areaHelpers.computeClimateSection(hass, area, config.climate || {}),
       ...areaHelpers.computeMediaSection(hass, area),
     ]
 

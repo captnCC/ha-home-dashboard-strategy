@@ -3,7 +3,7 @@ import { type AreaRegistryEntry } from 'home-assistant-frontend-types/frontend/d
 import { type LovelaceBadgeConfig } from 'home-assistant-frontend-types/frontend/data/lovelace/config/badge'
 import { type EntityBadgeConfig } from 'home-assistant-frontend-types/frontend/panels/lovelace/badges/types'
 
-import { type AreaConfig, type HasLightsConfig, type LightsConfig } from '../config'
+import { type AreaConfig, type ClimateConfig, type HasLightsConfig, type LightsConfig } from '../config'
 import { generateEntityFilter } from '../../homeassistant/common/entity/entity_filter'
 
 import { tapNavigate } from './navigate'
@@ -63,7 +63,7 @@ const climateHeading = () => ({
   tap_action: tapNavigate('climate'),
 })
 
-const computeClimateCards = (hass: HomeAssistant, area: AreaRegistryEntry) => {
+const computeClimateCards = (hass: HomeAssistant, area: AreaRegistryEntry, config: ClimateConfig) => {
   const computeTileCard = computeAreaTileCardConfig(hass, area.name)
 
   const devicesFilter = generateEntityFilter(hass, {
@@ -77,23 +77,28 @@ const computeClimateCards = (hass: HomeAssistant, area: AreaRegistryEntry) => {
     device_class: ['temperature', 'humidity', 'pm25', 'co2', 'aqi'],
   })
 
-  const allEntities = Object.keys(hass.states)
+  const states = Object.keys(hass.states)
   return extendLastCard(
     [
-      ...allEntities.filter(devicesFilter),
-      ...allEntities.filter(sensorFilter),
-    ].map(computeTileCard),
+      ...states.filter(devicesFilter),
+      ...states.filter(sensorFilter),
+    ]
+      .sort(generateCardSort(config.order))
+      .map(computeTileCard),
   )
 }
 
-export const computeClimateSection = (hass: HomeAssistant, area: AreaRegistryEntry) => {
-  const cards = extendLastCard(computeClimateCards(hass, area))
+export const computeClimateSection = (hass: HomeAssistant, area: AreaRegistryEntry, config: ClimateConfig) => {
+  const cards = computeClimateCards(hass, area, config)
 
   if (cards.length === 0) return []
   return [
     {
       type: 'grid',
-      cards: [climateHeading(), ...cards],
+      cards: [
+        climateHeading(),
+        ...cards,
+      ],
     },
   ]
 }

@@ -2,30 +2,36 @@ import type { LovelaceBadgeConfig } from 'home-assistant-frontend-types/frontend
 import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
 
 import { generateEntityFilter } from '../../homeassistant/common/entity/entity_filter'
+import { type AreaConfig } from '../config'
 
-import { computeAreaTileCardConfig, mapAreas } from './cards'
+import { computeAreaTileCardConfig, generateCardSort, mapAreas } from './cards'
 import { tapNavigate } from './navigate'
 import { areaPath } from './area'
 
-export const computeClimateAreas = (hass: HomeAssistant) => {
-  return mapAreas(hass, {}, (area) => {
+export const computeClimateAreas = (hass: HomeAssistant, config: Record<string, AreaConfig>) => {
+  return mapAreas(hass, config, (area, areaId, config) => {
     const computeTileCard = computeAreaTileCardConfig(hass, area.name)
     const devicesFilter = generateEntityFilter(hass, {
-      area: area.area_id,
+      area: areaId,
       domain: ['climate', 'fan'],
     })
 
     const sensorFilter = generateEntityFilter(hass, {
-      area: area.area_id,
+      area: areaId,
       domain: ['sensor'],
       device_class: ['temperature', 'humidity', 'pm25', 'co2', 'aqi'],
     })
 
-    const allEntities = Object.keys(hass.states)
-    const devices = allEntities.filter(devicesFilter).map(computeTileCard)
-    const sensors = allEntities.filter(sensorFilter).map(computeTileCard)
+    const states = Object.keys(hass.states)
 
-    if (devices.length + sensors.length === 0) return null
+    const cards = [
+      ...states.filter(devicesFilter),
+      ...states.filter(sensorFilter),
+    ]
+      .sort(generateCardSort(config.climate?.order))
+      .map(computeTileCard)
+
+    if (cards.length === 0) return null
 
     const badges: LovelaceBadgeConfig[] = []
 
@@ -55,11 +61,10 @@ export const computeClimateAreas = (hass: HomeAssistant) => {
           heading: area.name,
           heading_style: 'title',
           icon: area.icon,
-          tap_action: tapNavigate(areaPath(area.area_id)),
+          tap_action: tapNavigate(areaPath(areaId)),
           badges,
         },
-        ...devices,
-        ...sensors,
+        ...cards,
       ],
     }
   })

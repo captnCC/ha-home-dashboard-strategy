@@ -4,6 +4,14 @@ export type HasAreasConfig = {
   areas?: Record<string, AreaConfig>
 }
 
+export type ClimateConfig = {
+  order?: Record<string, number>
+}
+
+export type HasClimateConfig = {
+  climate?: ClimateConfig
+}
+
 export type LightsConfig = {
   all?: string
   order?: Record<string, number>
@@ -17,7 +25,7 @@ export type HasBadgesConfig = {
   badges?: EntityBadgeConfig[]
 }
 
-export type AreaConfig = HasLightsConfig & HasBadgesConfig & {
+export type AreaConfig = HasLightsConfig & HasBadgesConfig & HasClimateConfig & {
   hidden?: boolean
   size?: 'small' | 'large'
 }
