@@ -27,7 +27,6 @@ export const mapFloors = <T>(
   callback: FloorCallback<T>,
 ): NonNullable<T>[] =>
   Object.entries(hass.floors)
-    .sort(([, a], [, b]) => (a.level ?? 0) - (b.level ?? 0))
     .map(([, floor]) => callback(
       hass,
       floor,

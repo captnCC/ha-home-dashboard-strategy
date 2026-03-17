@@ -11,7 +11,7 @@
 - [x] Sorts for lights
 - [x] Sorts for climate etc
 - [x] Multi Floor Support
-- [ ] Floor Order
+- [x] Floor Order
 - [ ] Settings overlay/split -> overview, floors
 - [ ] Light Shortcuts -> on/off/toggle like default dashboard
 - [ ] Docs extends configs
