@@ -25,14 +25,16 @@ export const mapFloors = <T>(
   hass: HomeAssistant,
   config: HasFloorsConfig & HasAreasConfig,
   callback: FloorCallback<T>,
-): NonNullable<T>[] =>
-  Object.entries(hass.floors)
+): NonNullable<T>[] => {
+  const floorConfigs = typeof config.floors === 'object' ? config.floors : {}
+  return Object.entries(hass.floors)
     .map(([, floor]) => callback(
       hass,
       floor,
       {
-        ...config.floors?.[floor.floor_id] ?? {},
+        ...(floorConfigs[floor.floor_id] ?? {}),
         areas: (config.areas ?? {}),
       }
     ))
     .filter(val => val !== null) as NonNullable<T>[]
+}
