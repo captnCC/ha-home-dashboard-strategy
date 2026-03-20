@@ -143,6 +143,7 @@ export const computeAreaCard = (hass: HomeAssistant, area: AreaRegistryEntry, ar
     column_span: size === 'large' ? 2 : 1,
     grid_options: {
       columns: size === 'large' ? 12 : 6,
+      rows: overviewCards.length + 1 + (size === 'large' ? 0 : 1),
     },
     cards: [
       {
