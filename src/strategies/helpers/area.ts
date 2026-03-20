@@ -20,7 +20,7 @@ const lightsHeading = (config: NonNullable<HasLightsConfig['lights']>) => {
   return ({
     type: 'heading',
     heading: 'Lights',
-    heading_style: 'subtitle',
+    heading_style: 'heading',
     icon: 'mdi:lightbulb-group',
     tap_action: tapNavigate('lights'),
     badges,
@@ -58,7 +58,7 @@ export const computeLightSection = (hass: HomeAssistant, area: AreaRegistryEntry
 const climateHeading = () => ({
   type: 'heading',
   heading: 'Climate',
-  heading_style: 'subtitle',
+  heading_style: 'heading',
   icon: 'mdi:home-thermometer',
   tap_action: tapNavigate('climate'),
 })
@@ -106,7 +106,7 @@ export const computeClimateSection = (hass: HomeAssistant, area: AreaRegistryEnt
 const mediaHeading = () => ({
   type: 'heading',
   heading: 'Media',
-  heading_style: 'subtitle',
+  heading_style: 'heading',
   icon: 'mdi:play',
   tap_action: tapNavigate('media'),
 })
