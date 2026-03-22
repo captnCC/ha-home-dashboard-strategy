@@ -1,4 +1,4 @@
-import { css } from 'lit'
+import { css } from "lit";
 
 export const iconColorCSS = css`
   ha-state-icon[data-domain="alarm_control_panel"][data-state="pending"],
@@ -24,4 +24,4 @@ export const iconColorCSS = css`
   ha-state-icon[data-state="unavailable"] {
     color: var(--state-unavailable-color);
   }
-`
+`;

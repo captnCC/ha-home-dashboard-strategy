@@ -1,63 +1,66 @@
+import type {FloorRegistryEntry} from "home-assistant-frontend-types/frontend/data/floor_registry";
 import type {
   LovelaceStrategyViewConfig,
   LovelaceViewConfig,
   LovelaceViewHeaderConfig,
-} from 'home-assistant-frontend-types/frontend/data/lovelace/config/view'
-import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
-import type { FloorRegistryEntry } from 'home-assistant-frontend-types/frontend/data/floor_registry'
+} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
+import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
 
-import { type Config, type FloorConfig, type HasAreasConfig } from '../config'
-import { computeAreasSection, computeBadges, floorPath } from '../helpers/floor'
-import { mobileHeader } from '../helpers/header'
+import type {Config, FloorConfig, HasAreasConfig} from "../config";
+
+import {computeAreasSection, computeBadges, getFloorConfig} from "../helpers/floor";
+import {mobileHeader} from "../helpers/header";
+import {floorPath} from "../helpers/paths";
 
 export type MobileFloorViewStrategyConfig = {
-  type: 'custom:mobile-floor'
-  floor: string
-} & FloorConfig & HasAreasConfig
+  type: "custom:mobile-floor";
+  floor: string;
+} & FloorConfig &
+  HasAreasConfig;
 
-export const registerView = function (config: Config, floor: FloorRegistryEntry): LovelaceStrategyViewConfig {
+export const registerView = function registerView(
+  config: Config,
+  floor: FloorRegistryEntry,
+): LovelaceStrategyViewConfig {
+  const floorCfg = getFloorConfig(config, floor.floor_id);
+
   const strategy: MobileFloorViewStrategyConfig = {
-    type: 'custom:mobile-floor',
-    floor: floor.floor_id,
     areas: config.areas,
-    ...config.floors?.[floor.floor_id],
-  }
+    floor: floor.floor_id,
+    type: "custom:mobile-floor",
+    ...floorCfg,
+  };
 
   return {
-    strategy,
     path: floorPath(floor.floor_id),
-    title: floor.name,
+    strategy,
     subview: true,
     theme: config.theme,
-  }
-}
+    title: floor.name,
+  };
+};
 
 class FloorViewStrategy extends HTMLElement {
-  static async generate(
-    config: MobileFloorViewStrategyConfig,
-    hass: HomeAssistant,
-  ): Promise<LovelaceViewConfig> {
-    const floor = hass.floors[config.floor]
+  static generate(config: MobileFloorViewStrategyConfig, hass: HomeAssistant): LovelaceViewConfig {
+    const floor = hass.floors[config.floor];
 
     const header: LovelaceViewHeaderConfig = {
       card: {
-        type: 'markdown',
         content: `# <ha-icon icon="${floor.icon}"></ha-icon> ${floor.name}`,
         text_only: true,
+        type: "markdown",
       },
       ...mobileHeader,
-    }
+    };
 
     return {
-      type: 'sections',
-      max_columns: 1,
-      header,
       badges: computeBadges(hass, floor, config),
-      sections: [
-        computeAreasSection(hass, floor, config),
-      ],
-    }
+      header,
+      max_columns: 1,
+      sections: [computeAreasSection(hass, floor, config)],
+      type: "sections",
+    };
   }
 }
 
-customElements.define('ll-strategy-view-mobile-floor', FloorViewStrategy)
+customElements.define("ll-strategy-view-mobile-floor", FloorViewStrategy);

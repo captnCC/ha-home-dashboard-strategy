@@ -1,69 +1,70 @@
+import type {AreaRegistryEntry} from "home-assistant-frontend-types/frontend/data/area/area_registry";
 import type {
   LovelaceStrategyViewConfig,
   LovelaceViewConfig,
   LovelaceViewHeaderConfig,
-} from 'home-assistant-frontend-types/frontend/data/lovelace/config/view'
-import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
-import type { AreaRegistryEntry } from 'home-assistant-frontend-types/frontend/data/area/area_registry'
+} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
+import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
 
-import { type AreaConfig, type Config } from '../config'
-import * as areaHelpers from '../helpers/area'
-import { areaPath } from '../helpers/area'
-import { mobileHeader } from '../helpers/header'
+import type {AreaConfig, Config} from "../config";
+
+import {computeBadges, computeClimateSection, computeLightSection, computeMediaSection} from "../helpers/area";
+import {mobileHeader} from "../helpers/header";
+import {areaPath} from "../helpers/paths";
 
 export type MobileAreaViewStrategyConfig = {
-  type: 'custom:mobile-area'
-  area: string
-} & AreaConfig
+  type: "custom:mobile-area";
+  area: string;
+} & AreaConfig;
 
-export const registerView = function (config: Config, area: AreaRegistryEntry): LovelaceStrategyViewConfig {
+export const registerView = function registerView(
+  config: Config,
+  area: AreaRegistryEntry,
+): LovelaceStrategyViewConfig {
   const strategy: MobileAreaViewStrategyConfig = {
-    type: 'custom:mobile-area',
     area: area.area_id,
+    type: "custom:mobile-area",
     ...config.areas?.[area.area_id],
-  }
+  };
 
   return {
-    strategy,
     path: areaPath(area.area_id),
-    title: area.name,
+    strategy,
     subview: true,
     theme: config.theme,
-  }
-}
+    title: area.name,
+  };
+};
 
 class AreaViewStrategy extends HTMLElement {
-  static async generate(
-    config: MobileAreaViewStrategyConfig,
-    hass: HomeAssistant,
-  ): Promise<LovelaceViewConfig> {
-    const area = hass.areas[config.area]
+  static generate(config: MobileAreaViewStrategyConfig, hass: HomeAssistant): LovelaceViewConfig {
+    const area = hass.areas[config.area];
 
     const header: LovelaceViewHeaderConfig = {
       card: {
-        type: 'markdown',
         content: `# <ha-icon icon="${area.icon}"></ha-icon> ${area.name}`,
         text_only: true,
+        type: "markdown",
       },
       ...mobileHeader,
-    }
+    };
 
-    const badges = areaHelpers.computeBadges(hass, area, config)
+    const badges = computeBadges(hass, area, config);
 
     const sections = [
-      ...areaHelpers.computeLightSection(hass, area, config.lights || {}),
-      ...areaHelpers.computeClimateSection(hass, area, config.climate || {}),
-      ...areaHelpers.computeMediaSection(hass, area),
-    ]
+      ...computeLightSection(hass, area, config.lights || {}),
+      ...computeClimateSection(hass, area, config.climate || {}),
+      ...computeMediaSection(hass, area),
+    ];
 
     return {
-      type: 'sections',
-      max_columns: 1,
-      header,
       badges,
+      header,
+      max_columns: 1,
       sections,
-    }
+      type: "sections",
+    };
   }
 }
 
-customElements.define('ll-strategy-view-mobile-area', AreaViewStrategy)
+customElements.define("ll-strategy-view-mobile-area", AreaViewStrategy);

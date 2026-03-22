@@ -1,51 +1,52 @@
 import type {
   LovelaceStrategyViewConfig,
   LovelaceViewConfig,
-} from 'home-assistant-frontend-types/frontend/data/lovelace/config/view'
-import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
+} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
+import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
 
-import { type Config, type HasAreasConfig } from '../config'
-import { computeMediaAreas } from '../helpers/media'
-import { mobileHeader } from '../helpers/header'
+import type {Config, HasAreasConfig} from "../config";
+
+import {mobileHeader} from "../helpers/header";
+import {computeMediaAreas} from "../helpers/media";
 
 export type MobileMediaViewStrategyConfig = {
-  type: 'custom:mobile-media'
-} & HasAreasConfig
+  type: "custom:mobile-media";
+} & HasAreasConfig;
 
-const icon = 'mdi:play'
+const icon = "mdi:play";
 
-export const registerView = function (config: Config): LovelaceStrategyViewConfig {
+export const registerView = function registerView(config: Config): LovelaceStrategyViewConfig {
   const strategy: MobileMediaViewStrategyConfig = {
-    type: 'custom:mobile-media',
     areas: config.areas,
-  }
+    type: "custom:mobile-media",
+  };
 
   return {
     icon,
+    path: "media",
     strategy,
-    path: 'media',
-    title: 'Media',
     theme: config.theme,
-  }
-}
+    title: "Media",
+  };
+};
 
 class MediaViewStrategy extends HTMLElement {
-  static async generate(_config: MobileMediaViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
-    const areas = computeMediaAreas(hass)
+  static generate(_config: MobileMediaViewStrategyConfig, hass: HomeAssistant): LovelaceViewConfig {
+    const areas = computeMediaAreas(hass);
     return {
-      type: 'sections',
       header: {
         card: {
-          type: 'markdown',
           content: `# <ha-icon icon="${icon}"></ha-icon> Media`,
           text_only: true,
+          type: "markdown",
         },
         ...mobileHeader,
       },
       max_columns: 1,
       sections: areas,
-    }
+      type: "sections",
+    };
   }
 }
 
-customElements.define('ll-strategy-view-mobile-media', MediaViewStrategy)
+customElements.define("ll-strategy-view-mobile-media", MediaViewStrategy);

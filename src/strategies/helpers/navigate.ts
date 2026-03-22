@@ -1,10 +1,6 @@
-export const navigate = (url: string) => {
-  return `${url}?historyBack=1`
-}
+export const navigate = (url: string): string => `${url}?historyBack=1`;
 
-export const tapNavigate = function (url: string) {
-  return {
-    action: 'navigate',
-    navigation_path: navigate(url),
-  }
-}
+export const tapNavigate = (url: string): object => ({
+  action: "navigate",
+  navigation_path: navigate(url),
+});

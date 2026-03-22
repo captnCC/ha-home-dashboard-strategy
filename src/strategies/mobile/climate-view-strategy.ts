@@ -1,53 +1,58 @@
 import type {
   LovelaceStrategyViewConfig,
   LovelaceViewConfig,
-} from 'home-assistant-frontend-types/frontend/data/lovelace/config/view'
-import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
+} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
+import type { HomeAssistant } from "home-assistant-frontend-types/frontend/types";
 
-import { type Config, type HasAreasConfig, type HasClimateConfig } from '../config'
-import { computeClimateAreas } from '../helpers/climate'
-import { mobileHeader } from '../helpers/header'
+import type { Config, HasAreasConfig, HasClimateConfig } from "../config";
+
+import { computeClimateAreas } from "../helpers/climate";
+import { mobileHeader } from "../helpers/header";
 
 export type MobileClimateViewStrategyConfig = {
-  type: 'custom:mobile-climate'
-} & HasAreasConfig & HasClimateConfig
+  type: "custom:mobile-climate";
+} & HasAreasConfig &
+  HasClimateConfig;
 
-export const icon = 'mdi:thermometer'
-export const path = 'climate'
+export const icon = "mdi:thermometer";
+export const path = "climate";
 
-export const registerView = function (config: Config): LovelaceStrategyViewConfig {
+export const registerView = function registerView(config: Config): LovelaceStrategyViewConfig {
   const strategy: MobileClimateViewStrategyConfig = {
-    type: 'custom:mobile-climate',
     areas: config.areas,
-  }
+    type: "custom:mobile-climate",
+  };
 
   return {
     icon,
-    strategy,
     path,
-    title: 'Climate',
+    strategy,
     theme: config.theme,
-  }
-}
+    title: "Climate",
+  };
+};
 
 class ClimateViewStrategy extends HTMLElement {
-  static async generate(config: MobileClimateViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
-    const areas = computeClimateAreas(hass, config.areas)
+  static generate(
+    config: MobileClimateViewStrategyConfig,
+    hass: HomeAssistant,
+  ): LovelaceViewConfig {
+    const areas = computeClimateAreas(hass, config.areas);
 
     return {
-      type: 'sections',
       header: {
         card: {
-          type: 'markdown',
           content: `# <ha-icon icon="${icon}"></ha-icon> Climate`,
           text_only: true,
+          type: "markdown",
         },
         ...mobileHeader,
       },
       max_columns: 1,
       sections: areas,
-    }
+      type: "sections",
+    };
   }
 }
 
-customElements.define('ll-strategy-view-mobile-climate', ClimateViewStrategy)
+customElements.define("ll-strategy-view-mobile-climate", ClimateViewStrategy);

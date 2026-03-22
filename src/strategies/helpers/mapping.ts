@@ -1,10 +1,17 @@
-import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
-import { type AreaRegistryEntry } from 'home-assistant-frontend-types/frontend/data/area/area_registry'
-import { type FloorRegistryEntry } from 'home-assistant-frontend-types/frontend/data/floor_registry'
+// oxlint-disable max-params
+// oxlint-disable id-length
+import type {AreaRegistryEntry} from "home-assistant-frontend-types/frontend/data/area/area_registry";
+import type {FloorRegistryEntry} from "home-assistant-frontend-types/frontend/data/floor_registry";
 
-import { type AreaConfig, type FloorConfig, type HasAreasConfig, type HasFloorsConfig } from '../config'
+import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
 
-export type AreaCallback<T> = (hass: HomeAssistant, area: AreaRegistryEntry, areaId: string, config: AreaConfig) => T | null
+import type {AreaConfig, FloorConfig, HasAreasConfig, HasFloorsConfig} from "../config";
+
+export type AreaCallback<T> = (
+  hass: HomeAssistant,
+  area: AreaRegistryEntry,
+  config: AreaConfig,
+) => T | null;
 
 export const mapAreas = <T>(
   hass: HomeAssistant,
@@ -13,28 +20,28 @@ export const mapAreas = <T>(
   filter?: (area: [string, AreaRegistryEntry]) => boolean,
 ): NonNullable<T>[] =>
   Object.entries(hass.areas)
-    .filter(filter ?? (() => true))
-    .map(([areaId, area]) => {
-      return callback(hass, area, areaId, configs?.[areaId] || {})
-    })
-    .filter(val => val !== null) as NonNullable<T>[]
+    .filter(filter ?? ((): true => true))
+    .map(([areaId, area]) => callback(hass, area, configs?.[areaId] || {}))
+    .filter((val) => val !== null) as NonNullable<T>[];
 
-export type FloorCallback<T> = (hass: HomeAssistant, floor: FloorRegistryEntry, config: FloorConfig & HasAreasConfig) => T | null
+export type FloorCallback<T> = (
+  hass: HomeAssistant,
+  floor: FloorRegistryEntry,
+  config: FloorConfig & HasAreasConfig,
+) => T | null;
 
 export const mapFloors = <T>(
   hass: HomeAssistant,
   config: HasFloorsConfig & HasAreasConfig,
   callback: FloorCallback<T>,
 ): NonNullable<T>[] => {
-  const floorConfigs = typeof config.floors === 'object' ? config.floors : {}
+  const floorConfigs = typeof config.floors === "object" ? config.floors : {};
   return Object.entries(hass.floors)
-    .map(([, floor]) => callback(
-      hass,
-      floor,
-      {
-        ...(floorConfigs[floor.floor_id] ?? {}),
-        areas: (config.areas ?? {}),
-      }
-    ))
-    .filter(val => val !== null) as NonNullable<T>[]
-}
+    .map(([, floor]) =>
+      callback(hass, floor, {
+        ...floorConfigs[floor.floor_id],
+        areas: config.areas ?? {},
+      }),
+    )
+    .filter((val) => val !== null) as NonNullable<T>[];
+};

@@ -1,53 +1,57 @@
 import type {
   LovelaceStrategyViewConfig,
   LovelaceViewConfig,
-} from 'home-assistant-frontend-types/frontend/data/lovelace/config/view'
-import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
+} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
+import type { HomeAssistant } from "home-assistant-frontend-types/frontend/types";
 
-import { type Config, type HasAreasConfig } from '../config'
-import { computeClimateAreas } from '../helpers/climate'
-import { wallboardHeader } from '../helpers/header'
+import type { Config, HasAreasConfig } from "../config";
+
+import { computeClimateAreas } from "../helpers/climate";
+import { wallboardHeader } from "../helpers/header";
 
 export type WallboardClimateViewStrategyConfig = {
-  type: 'custom:wallboard-climate'
-} & HasAreasConfig
+  type: "custom:wallboard-climate";
+} & HasAreasConfig;
 
-export const icon = 'mdi:thermometer'
-export const path = 'climate'
+export const icon = "mdi:thermometer";
+export const path = "climate";
 
-export const registerView = function (config: Config): LovelaceStrategyViewConfig {
+export const registerView = function registerView(config: Config): LovelaceStrategyViewConfig {
   const strategy: WallboardClimateViewStrategyConfig = {
-    type: 'custom:wallboard-climate',
     areas: config.areas,
-  }
+    type: "custom:wallboard-climate",
+  };
 
   return {
     icon,
-    strategy,
     path,
-    title: 'Climate',
+    strategy,
     theme: config.theme,
-  }
-}
+    title: "Climate",
+  };
+};
 
 class ClimateViewStrategy extends HTMLElement {
-  static async generate(_config: WallboardClimateViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
-    const areas = computeClimateAreas(hass)
+  static generate(
+    _config: WallboardClimateViewStrategyConfig,
+    hass: HomeAssistant,
+  ): LovelaceViewConfig {
+    const areas = computeClimateAreas(hass);
 
     return {
-      type: 'sections',
       header: {
         card: {
-          type: 'markdown',
           content: `# <ha-icon icon="${icon}"></ha-icon> Climate`,
           text_only: true,
+          type: "markdown",
         },
         ...wallboardHeader,
       },
       max_columns: 3,
       sections: areas,
-    }
+      type: "sections",
+    };
   }
 }
 
-customElements.define('ll-strategy-view-wallboard-climate', ClimateViewStrategy)
+customElements.define("ll-strategy-view-wallboard-climate", ClimateViewStrategy);

@@ -1,4 +1,3 @@
-const validServiceId = /^(\w+)\.(\w+)$/
+const validServiceId = /^(\w+)\.(\w+)$/;
 
-export const isValidServiceId = (actionId: string) =>
-  validServiceId.test(actionId)
+export const isValidServiceId = (actionId: string) => validServiceId.test(actionId);

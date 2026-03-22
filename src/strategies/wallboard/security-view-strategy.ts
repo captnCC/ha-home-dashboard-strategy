@@ -1,39 +1,42 @@
 import type {
   LovelaceStrategyViewConfig,
   LovelaceViewConfig,
-} from 'home-assistant-frontend-types/frontend/data/lovelace/config/view'
-import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
+} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
+import type { HomeAssistant } from "home-assistant-frontend-types/frontend/types";
 
-import { type Config, type HasAreasConfig } from '../config'
+import type { Config, HasAreasConfig } from "../config";
 
 export type WallboardSecurityViewStrategyConfig = {
-  type: 'custom:wallboard-security'
-} & HasAreasConfig
+  type: "custom:wallboard-security";
+} & HasAreasConfig;
 
-const icon = 'mdi:lock-open'
+const icon = "mdi:lock-open";
 
-export const registerView = function (config: Config): LovelaceStrategyViewConfig {
+export const registerView = function registerView(config: Config): LovelaceStrategyViewConfig {
   const strategy: WallboardSecurityViewStrategyConfig = {
-    type: 'custom:wallboard-security',
     areas: config.areas,
-  }
+    type: "custom:wallboard-security",
+  };
 
   return {
     icon,
+    path: "security",
     strategy,
-    path: 'security',
-    title: 'Security',
     theme: config.theme,
-  }
-}
+    title: "Security",
+  };
+};
 
 class SecurityViewStrategy extends HTMLElement {
-  static async generate(_config: WallboardSecurityViewStrategyConfig, _hass: HomeAssistant): Promise<LovelaceViewConfig> {
+  static generate(
+    _config: WallboardSecurityViewStrategyConfig,
+    _hass: HomeAssistant,
+  ): LovelaceViewConfig {
     return {
-      type: 'sections',
       sections: [],
-    }
+      type: "sections",
+    };
   }
 }
 
-customElements.define('ll-strategy-view-wallboard-security', SecurityViewStrategy)
+customElements.define("ll-strategy-view-wallboard-security", SecurityViewStrategy);

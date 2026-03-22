@@ -3,7 +3,7 @@
 - [x] Weather Support on the overview page
 - [x] Fix vertical card stack area card borders
 - [x] Add area scenes badges
-- [x] Add media overview 
+- [x] Add media overview
 - [x] Add utilities pages
   - [x] Vacuums
   - [x] Batteries
@@ -17,12 +17,12 @@
 - [ ] Docs extends configs
 - [ ] Needed Labels
 - [ ] Summary per Home
-    - [ ] Lights
-    - [ ] Climate
-    - [ ] Media
-    - [ ] Security
-    - [ ] Unavailable
-    - [ ] Battery empty
+  - [ ] Lights
+  - [ ] Climate
+  - [ ] Media
+  - [ ] Security
+  - [ ] Unavailable
+  - [ ] Battery empty
 - [ ] Summary per floor
   - [ ] Lights
   - [ ] Climate
@@ -31,7 +31,7 @@
   - [ ] Unavailable
   - [ ] Battery empty
 - [ ] Summary per area
-  - [ ] Lights 
+  - [ ] Lights
   - [ ] Climate
   - [ ] Media
   - [ ] Security

@@ -1,5 +1,5 @@
-import { stripDiacritics } from '../strip-diacritics'
-import { fuzzyScore } from './filter'
+import { stripDiacritics } from "../strip-diacritics";
+import { fuzzyScore } from "./filter";
 
 /**
  * Determine whether a sequence of letters exists in another string,
@@ -11,11 +11,8 @@ import { fuzzyScore } from './filter'
  * @return {number} Score representing how well the word matches the filter. Return of 0 means no match.
  */
 
-export const fuzzySequentialMatch = (
-  filter: string,
-  item: ScorableTextItem,
-) => {
-  let topScore = Number.NEGATIVE_INFINITY
+export const fuzzySequentialMatch = (filter: string, item: ScorableTextItem) => {
+  let topScore = Number.NEGATIVE_INFINITY;
 
   for (const word of item.strings) {
     const scores = fuzzyScore(
@@ -26,28 +23,28 @@ export const fuzzySequentialMatch = (
       stripDiacritics(word.toLowerCase()),
       0,
       true,
-    )
+    );
 
     if (!scores) {
-      continue
+      continue;
     }
 
     // The VS Code implementation of filter returns a 0 for a weak match.
     // But if .filter() sees a "0", it considers that a failed match and will remove it.
     // So, we set score to 1 in these cases so the match will be included, and mostly respect correct ordering.
-    const score = scores[0] === 0 ? 1 : scores[0]
+    const score = scores[0] === 0 ? 1 : scores[0];
 
     if (score > topScore) {
-      topScore = score
+      topScore = score;
     }
   }
 
   if (topScore === Number.NEGATIVE_INFINITY) {
-    return undefined
+    return undefined;
   }
 
-  return topScore
-}
+  return topScore;
+};
 
 /**
  * An interface that objects must extend in order to use the fuzzy sequence matcher
@@ -63,22 +60,19 @@ export const fuzzySequentialMatch = (
  */
 
 export interface ScorableTextItem {
-  score?: number
-  strings: string[]
+  score?: number;
+  strings: string[];
 }
 
-type FuzzyFilterSort = <T extends ScorableTextItem>(
-  filter: string,
-  items: T[],
-) => T[]
+type FuzzyFilterSort = <T extends ScorableTextItem>(filter: string, items: T[]) => T[];
 
 export const fuzzyFilterSort: FuzzyFilterSort = (filter, items) =>
   items
     .map((item) => {
-      item.score = fuzzySequentialMatch(filter, item)
-      return item
+      item.score = fuzzySequentialMatch(filter, item);
+      return item;
     })
-    .filter(item => item.score !== undefined)
+    .filter((item) => item.score !== undefined)
     .sort(({ score: scoreA = 0 }, { score: scoreB = 0 }) =>
       scoreA > scoreB ? -1 : scoreA < scoreB ? 1 : 0,
-    )
+    );

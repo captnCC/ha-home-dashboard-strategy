@@ -1,0 +1,35 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "import", "promise", "unicorn"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "pedantic": "warn",
+    "perf": "error",
+    "style": "error",
+    "restriction": "error"
+  },
+  "rules": {
+    "import/group-exports": "off",
+    "import/no-named-export": "off",
+    "import/no-default-export": "off",
+    "import/prefer-default-export": "off",
+    "import/exports-last": "off",
+    "import/no-relative-parent-imports": "off",
+    "sort-imports": "off",
+    "no-duplicate-imports": "off",
+    "unicorn/no-array-callback-reference": "off",
+    "typescript/explicit-module-boundary-types": "off",
+    "no-magic-numbers": "off",
+    "promise/prefer-await-to-callbacks": "off",
+    "no-ternary": "off",
+    "unicorn/no-null": "off"
+  },
+  "settings": {},
+  "env": {
+    "builtin": true,
+    "browser": true
+  },
+  "globals": {},
+  "ignorePatterns": ["node_modules", "dist", "src/homeassistant"]
+}

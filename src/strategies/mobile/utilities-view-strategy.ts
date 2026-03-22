@@ -1,50 +1,54 @@
 import type {
   LovelaceStrategyViewConfig,
   LovelaceViewConfig,
-} from 'home-assistant-frontend-types/frontend/data/lovelace/config/view'
-import type { HomeAssistant } from 'home-assistant-frontend-types/frontend/types'
+} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
+import type { HomeAssistant } from "home-assistant-frontend-types/frontend/types";
 
-import { type Config } from '../config'
-import { computeUtilityAreas } from '../helpers/utilities'
-import { mobileHeader } from '../helpers/header'
+import type { Config } from "../config";
 
-export type MobileUtilitiesViewStrategyConfig = {
-  type: 'custom:mobile-utilities'
+import { mobileHeader } from "../helpers/header";
+import { computeUtilityAreas } from "../helpers/utilities";
+
+export interface MobileUtilitiesViewStrategyConfig {
+  type: "custom:mobile-utilities";
 }
 
-const icon = 'mdi:cog'
+const icon = "mdi:cog";
 
-export const registerView = function (config: Config): LovelaceStrategyViewConfig {
+export const registerView = function registerView(config: Config): LovelaceStrategyViewConfig {
   const strategy: MobileUtilitiesViewStrategyConfig = {
-    type: 'custom:mobile-utilities',
-  }
+    type: "custom:mobile-utilities",
+  };
 
   return {
     icon,
+    path: "utilities",
     strategy,
-    path: 'utilities',
-    title: 'Utilities',
     theme: config.theme,
-  }
-}
+    title: "Utilities",
+  };
+};
 
 class UtilitiesViewStrategy extends HTMLElement {
-  static async generate(_config: MobileUtilitiesViewStrategyConfig, hass: HomeAssistant): Promise<LovelaceViewConfig> {
-    const areas = computeUtilityAreas(hass)
+  static generate(
+    _config: MobileUtilitiesViewStrategyConfig,
+    hass: HomeAssistant,
+  ): LovelaceViewConfig {
+    const areas = computeUtilityAreas(hass);
     return {
-      type: 'sections',
       header: {
         card: {
-          type: 'markdown',
           content: `# <ha-icon icon="${icon}"></ha-icon> Utilties`,
           text_only: true,
+          type: "markdown",
         },
         ...mobileHeader,
       },
       max_columns: 1,
       sections: areas,
-    }
+      type: "sections",
+    };
   }
 }
 
-customElements.define('ll-strategy-view-mobile-utilities', UtilitiesViewStrategy)
+customElements.define("ll-strategy-view-mobile-utilities", UtilitiesViewStrategy);
