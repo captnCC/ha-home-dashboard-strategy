@@ -1,4 +1,4 @@
-import type { EntityBadgeConfig } from "home-assistant-frontend-types/frontend/panels/lovelace/badges/types";
+import type { EntityBadgeConfig } from "@ha/panels/lovelace/badges/types";
 
 export interface HasAreasConfig {
   areas?: Record<string, AreaConfig>;

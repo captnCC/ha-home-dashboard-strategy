@@ -1,21 +1,22 @@
 // oxlint-disable max-statements
 // oxlint-disable max-lines-per-function
-import type {LovelaceBadgeConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/badge";
-import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
+import type { LovelaceBadgeConfig } from "@ha/data/lovelace/config/badge";
+import type { HomeAssistant } from "@ha/types";
 
-import type {AreaConfig} from "../config";
+import { generateEntityFilter } from "@ha/common/entity/entity_filter";
 
-import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
-import {computeAreaTileCardConfig, generateCardSort} from "./cards";
-import {mapAreas} from "./mapping";
-import {tapNavigate} from "./navigate";
-import {areaPath} from "./paths";
+import type { AreaConfig } from "../config";
+
+import { computeAreaTileCardConfig, generateCardSort } from "./cards";
+import { mapAreas } from "./mapping";
+import { tapNavigate } from "./navigate";
+import { areaPath } from "./paths";
 
 export const computeClimateAreas = (
   hass: HomeAssistant,
   configs: Record<string, AreaConfig> = {},
 ): LovelaceBadgeConfig[] =>
-  mapAreas(hass, configs, (_hass, area, config): LovelaceBadgeConfig|null => {
+  mapAreas(hass, configs, (_hass, area, config): LovelaceBadgeConfig | null => {
     const computeTileCard = computeAreaTileCardConfig(hass, area.name);
     const devicesFilter = generateEntityFilter(hass, {
       area: area.area_id,

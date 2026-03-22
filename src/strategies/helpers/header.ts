@@ -1,4 +1,4 @@
-import type { LovelaceViewHeaderConfig } from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
+import type { LovelaceViewHeaderConfig } from "@ha/data/lovelace/config/view";
 
 export const mobileHeader: Partial<LovelaceViewHeaderConfig> = {
   badges_position: "bottom",

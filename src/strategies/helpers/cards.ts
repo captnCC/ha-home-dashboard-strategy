@@ -1,8 +1,8 @@
-import type {LovelaceCardConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/card";
-import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
+import type { LovelaceCardConfig } from "@ha/data/lovelace/config/card";
+import type { HomeAssistant } from "@ha/types";
 
-import {computeDomain} from "../../homeassistant/common/entity/compute_domain";
-import {computeStateName} from "../../homeassistant/common/entity/compute_state_name";
+import { computeDomain } from "@ha/common/entity/compute_domain";
+import { computeStateName } from "@ha/common/entity/compute_state_name";
 
 export const stripPrefix = (name: string, prefix: string): string =>
   name.replace(new RegExp(`^${prefix} `, "i"), "");

@@ -1,15 +1,16 @@
-import type {AreaRegistryEntry} from "home-assistant-frontend-types/frontend/data/area/area_registry";
-import type {LovelaceBadgeConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/badge";
-import type {LovelaceCardConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/card";
-import type {EntityBadgeConfig} from "home-assistant-frontend-types/frontend/panels/lovelace/badges/types";
-import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
+import type { AreaRegistryEntry } from "@ha/data/area/area_registry";
+import type { LovelaceBadgeConfig } from "@ha/data/lovelace/config/badge";
+import type { LovelaceCardConfig } from "@ha/data/lovelace/config/card";
+import type { EntityBadgeConfig } from "@ha/panels/lovelace/badges/types";
+import type { HomeAssistant } from "@ha/types";
 
-import type {AreaConfig, ClimateConfig, HasLightsConfig, LightsConfig} from "../config";
+import { generateEntityFilter } from "@ha/common/entity/entity_filter";
 
-import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
-import {computeBadge} from "./badges";
-import {computeAreaTileCardConfig, extendLastCard, generateCardSort} from "./cards";
-import {tapNavigate} from "./navigate";
+import type { AreaConfig, ClimateConfig, HasLightsConfig, LightsConfig } from "../config";
+
+import { computeBadge } from "./badges";
+import { computeAreaTileCardConfig, extendLastCard, generateCardSort } from "./cards";
+import { tapNavigate } from "./navigate";
 
 const lightsHeading = (config: NonNullable<HasLightsConfig["lights"]>): LovelaceCardConfig => {
   const badges: EntityBadgeConfig[] = [];
@@ -200,5 +201,3 @@ export const computeBadges = (
 
   return badges;
 };
-
-

@@ -1,5 +1,7 @@
+// oxlint-disable import/no-nodejs-modules
 // oxlint-disable max-lines-per-function
-import { defineConfig, loadEnv } from "vite";
+import {resolve} from "node:path";
+import {defineConfig, loadEnv} from "vite";
 
 const moduleName = "ha-home-dashboard-strategy";
 
@@ -17,7 +19,7 @@ export default defineConfig(({ mode }) => {
         name: "HomeDashboardStrategy",
       },
       rolldownOptions: {
-        external: ["home-assistant-js-websocket", "lit", /^home-assistant-frontend-types\/.*/],
+        external: ["home-assistant-js-websocket", "lit"],
       },
     },
     plugins: [
@@ -40,6 +42,12 @@ export default defineConfig(({ mode }) => {
         name: "home-assistant",
       },
     ],
+    resolve: {
+      alias: {
+        // oxlint-disable-next-line unicorn/prefer-module
+        "@ha": resolve(__dirname, "homeassistant/src"),
+      },
+    },
     server: {
       cors: true,
       hmr: {
@@ -54,7 +62,7 @@ export default defineConfig(({ mode }) => {
           target,
           ws: true,
         },
-        "^(?!/(src|@vite|@fs|node_modules)).*": {
+        "^(?!/(src|@vite|@fs|node_modules|homeassistant)).*": {
           changeOrigin: true,
           configure: (proxy): void => {
             proxy.on("proxyRes", (proxyRes, req, res) => {

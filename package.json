@@ -19,7 +19,6 @@
   "devDependencies": {
     "@types/node": "^25.5.0",
     "globals": "^17.4.0",
-    "home-assistant-frontend-types": "^2026.1.28",
     "oxfmt": "^0.41.0",
     "oxlint": "^1.56.0",
     "typescript": "^5.9.3",

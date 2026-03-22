@@ -1,15 +1,15 @@
-import type {FloorRegistryEntry} from "home-assistant-frontend-types/frontend/data/floor_registry";
-import type {LovelaceBadgeConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/badge";
-import type {LovelaceCardConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/card";
-import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
+import type { FloorRegistryEntry } from "@ha/data/floor_registry";
+import type { LovelaceBadgeConfig } from "@ha/data/lovelace/config/badge";
+import type { LovelaceCardConfig } from "@ha/data/lovelace/config/card";
+import type { HomeAssistant } from "@ha/types";
 
-import type {FloorConfig, HasAreasConfig, HasFloorsConfig} from "../config";
+import { generateEntityFilter } from "@ha/common/entity/entity_filter";
 
-import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
-import {computeBadge} from "./badges";
-import {mapAreas} from "./mapping";
-import {computeAreaCard} from "./overview";
+import type { FloorConfig, HasAreasConfig, HasFloorsConfig } from "../config";
 
+import { computeBadge } from "./badges";
+import { mapAreas } from "./mapping";
+import { computeAreaCard } from "./overview";
 
 export const getFloorConfig = (config: HasFloorsConfig, floorId: string): FloorConfig | null => {
   if (config.floors === false) {

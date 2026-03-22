@@ -31,5 +31,5 @@
     "browser": true
   },
   "globals": {},
-  "ignorePatterns": ["node_modules", "dist", "src/homeassistant"]
+  "ignorePatterns": ["node_modules", "dist", "homeassistant"]
 }

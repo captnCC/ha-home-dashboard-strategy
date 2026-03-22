@@ -1,13 +1,12 @@
-import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
+import type { LovelaceCardConfig } from "@ha/data/lovelace/config/card";
+import type { HomeAssistant } from "@ha/types";
 
-import type {LovelaceCardConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/card";
+import { generateEntityFilter } from "@ha/common/entity/entity_filter";
 
-import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
-
-import {computeAreaTileCardConfig} from "./cards";
-import {mapAreas} from "./mapping";
-import {tapNavigate} from "./navigate";
-import {areaPath} from "./paths";
+import { computeAreaTileCardConfig } from "./cards";
+import { mapAreas } from "./mapping";
+import { tapNavigate } from "./navigate";
+import { areaPath } from "./paths";
 
 export const computeUtilityAreas = (hass: HomeAssistant): LovelaceCardConfig[] => {
   const states = Object.keys(hass.states);

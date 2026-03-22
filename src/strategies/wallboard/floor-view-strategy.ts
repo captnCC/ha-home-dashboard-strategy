@@ -1,16 +1,16 @@
-import type {FloorRegistryEntry} from "home-assistant-frontend-types/frontend/data/floor_registry";
+import type { FloorRegistryEntry } from "@ha/data/floor_registry";
 import type {
   LovelaceStrategyViewConfig,
   LovelaceViewConfig,
   LovelaceViewHeaderConfig,
-} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
-import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
+} from "@ha/data/lovelace/config/view";
+import type { HomeAssistant } from "@ha/types";
 
-import type {Config, FloorConfig, HasAreasConfig} from "../config";
+import type { Config, FloorConfig, HasAreasConfig } from "../config";
 
-import {computeAreasSection, computeBadges, getFloorConfig} from "../helpers/floor";
-import {wallboardHeader} from "../helpers/header";
-import {floorPath} from "../helpers/paths";
+import { computeAreasSection, computeBadges, getFloorConfig } from "../helpers/floor";
+import { wallboardHeader } from "../helpers/header";
+import { floorPath } from "../helpers/paths";
 
 export type WallboardFloorViewStrategyConfig = {
   type: "custom:wallboard-floor";

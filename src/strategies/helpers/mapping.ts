@@ -1,11 +1,10 @@
 // oxlint-disable max-params
 // oxlint-disable id-length
-import type {AreaRegistryEntry} from "home-assistant-frontend-types/frontend/data/area/area_registry";
-import type {FloorRegistryEntry} from "home-assistant-frontend-types/frontend/data/floor_registry";
+import type { AreaRegistryEntry } from "@ha/data/area/area_registry";
+import type { FloorRegistryEntry } from "@ha/data/floor_registry";
+import type { HomeAssistant } from "@ha/types";
 
-import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
-
-import type {AreaConfig, FloorConfig, HasAreasConfig, HasFloorsConfig} from "../config";
+import type { AreaConfig, FloorConfig, HasAreasConfig, HasFloorsConfig } from "../config";
 
 export type AreaCallback<T> = (
   hass: HomeAssistant,

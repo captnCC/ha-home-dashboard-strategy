@@ -1,16 +1,21 @@
-import type {AreaRegistryEntry} from "home-assistant-frontend-types/frontend/data/area/area_registry";
+import type { AreaRegistryEntry } from "@ha/data/area/area_registry";
 import type {
   LovelaceStrategyViewConfig,
   LovelaceViewConfig,
   LovelaceViewHeaderConfig,
-} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
-import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
+} from "@ha/data/lovelace/config/view";
+import type { HomeAssistant } from "@ha/types";
 
-import type {AreaConfig, Config} from "../config";
+import type { AreaConfig, Config } from "../config";
 
-import {computeBadges, computeClimateSection, computeLightSection, computeMediaSection} from "../helpers/area";
-import {wallboardHeader} from "../helpers/header";
-import {areaPath} from "../helpers/paths";
+import {
+  computeBadges,
+  computeClimateSection,
+  computeLightSection,
+  computeMediaSection,
+} from "../helpers/area";
+import { wallboardHeader } from "../helpers/header";
+import { areaPath } from "../helpers/paths";
 
 export type WallboardAreaViewStrategyConfig = {
   type: "custom:wallboard-area";

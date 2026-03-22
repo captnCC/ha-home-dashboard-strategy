@@ -1,13 +1,10 @@
-import type {
-  LovelaceStrategyViewConfig,
-  LovelaceViewConfig,
-} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
-import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
+import type { LovelaceStrategyViewConfig, LovelaceViewConfig } from "@ha/data/lovelace/config/view";
+import type { HomeAssistant } from "@ha/types";
 
-import type {Config, HasAreasConfig} from "../config";
+import type { Config, HasAreasConfig } from "../config";
 
-import {mobileHeader} from "../helpers/header";
-import {computeMediaAreas} from "../helpers/media";
+import { mobileHeader } from "../helpers/header";
+import { computeMediaAreas } from "../helpers/media";
 
 export type MobileMediaViewStrategyConfig = {
   type: "custom:mobile-media";

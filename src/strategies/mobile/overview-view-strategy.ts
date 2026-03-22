@@ -1,9 +1,6 @@
-import type { LovelaceCardConfig } from "home-assistant-frontend-types/frontend/data/lovelace/config/card";
-import type {
-  LovelaceStrategyViewConfig,
-  LovelaceViewConfig,
-} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
-import type { HomeAssistant } from "home-assistant-frontend-types/frontend/types";
+import type { LovelaceCardConfig } from "@ha/data/lovelace/config/card";
+import type { LovelaceStrategyViewConfig, LovelaceViewConfig } from "@ha/data/lovelace/config/view";
+import type { HomeAssistant } from "@ha/types";
 
 import type {
   Config,

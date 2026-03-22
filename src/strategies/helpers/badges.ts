@@ -1,6 +1,6 @@
-import type { EntityBadgeConfig } from "home-assistant-frontend-types/frontend/panels/lovelace/badges/types";
+import type { EntityBadgeConfig } from "@ha/panels/lovelace/badges/types";
 
-import { computeDomain } from "../../homeassistant/common/entity/compute_domain";
+import { computeDomain } from "@ha/common/entity/compute_domain";
 
 const domainOptions: Record<string, Partial<EntityBadgeConfig>> = {
   light: {

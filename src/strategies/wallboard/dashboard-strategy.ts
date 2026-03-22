@@ -1,12 +1,11 @@
 // oxlint-disable import/max-dependencies
 // oxlint-disable import/no-namespace
 // oxlint-disable max-statements
-import type {LovelaceConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/types";
-import type {LovelaceViewRawConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/view";
+import type { LovelaceConfig } from "@ha/data/lovelace/config/types";
+import type { LovelaceViewRawConfig } from "@ha/data/lovelace/config/view";
+import type { HomeAssistant } from "@ha/types";
 
-import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
-
-import type {Config} from "../config";
+import type { Config } from "../config";
 
 import * as area from "./area-view-strategy";
 import * as climate from "./climate-view-strategy";
@@ -43,13 +42,13 @@ class DashboardStrategy extends HTMLElement {
 
     if (config.floors !== false) {
       const floors = Object.values(hass.floors).map((floorEntry) =>
-          floor.registerView(config, floorEntry),
+        floor.registerView(config, floorEntry),
       );
       views.push(...floors);
     }
 
     const areas = Object.values(hass.areas).map((areaEntry) =>
-        area.registerView(config, areaEntry),
+      area.registerView(config, areaEntry),
     );
 
     views.push(...areas);

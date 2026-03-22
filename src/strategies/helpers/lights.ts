@@ -1,16 +1,17 @@
 // oxlint-disable max-statements
-import type {LovelaceCardConfig} from "home-assistant-frontend-types/frontend/data/lovelace/config/card";
-import type {EntityBadgeConfig} from "home-assistant-frontend-types/frontend/panels/lovelace/badges/types";
-import type {HomeAssistant} from "home-assistant-frontend-types/frontend/types";
+import type { LovelaceCardConfig } from "@ha/data/lovelace/config/card";
+import type { EntityBadgeConfig } from "@ha/panels/lovelace/badges/types";
+import type { HomeAssistant } from "@ha/types";
 
-import type {AreaConfig, HasAreasConfig, HasLightsConfig} from "../config";
+import { generateEntityFilter } from "@ha/common/entity/entity_filter";
 
-import {generateEntityFilter} from "../../homeassistant/common/entity/entity_filter";
-import {computeBadge} from "./badges";
-import {computeAreaTileCardConfig, extendLastCard, generateCardSort} from "./cards";
-import {mapAreas} from "./mapping";
-import {tapNavigate} from "./navigate";
-import {areaPath} from "./paths";
+import type { AreaConfig, HasAreasConfig, HasLightsConfig } from "../config";
+
+import { computeBadge } from "./badges";
+import { computeAreaTileCardConfig, extendLastCard, generateCardSort } from "./cards";
+import { mapAreas } from "./mapping";
+import { tapNavigate } from "./navigate";
+import { areaPath } from "./paths";
 
 export const computeLightBadges = (
   hass: HomeAssistant,
