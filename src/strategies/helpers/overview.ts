@@ -1,22 +1,22 @@
 // oxlint-disable import/max-dependencies
 // oxlint-disable max-lines-per-function
-import type { AreaRegistryEntry } from "@ha/data/area/area_registry";
-import type { FloorRegistryEntry } from "@ha/data/floor_registry";
-import type { LovelaceCardConfig } from "@ha/data/lovelace/config/card";
-import type { EntityBadgeConfig } from "@ha/panels/lovelace/badges/types";
-import type { StateCondition } from "@ha/panels/lovelace/common/validate-condition";
-import type { HomeAssistant } from "@ha/types";
+import type {AreaRegistryEntry} from "@ha/data/area/area_registry";
+import type {FloorRegistryEntry} from "@ha/data/floor_registry";
+import type {LovelaceCardConfig} from "@ha/data/lovelace/config/card";
+import type {EntityBadgeConfig} from "@ha/panels/lovelace/badges/types";
+import type {StateCondition} from "@ha/panels/lovelace/common/validate-condition";
+import type {HomeAssistant} from "@ha/types";
 
-import { generateEntityFilter } from "@ha/common/entity/entity_filter";
+import {generateEntityFilter} from "@ha/common/entity/entity_filter";
 
-import type { AreaConfig, FloorConfig, HasAreasConfig, OverviewConfig } from "../config";
-import type { FloorCallback } from "./mapping";
+import type {AreaConfig, FloorConfig, HasAreasConfig, OverviewConfig} from "../config";
+import type {FloorCallback} from "./mapping";
+import {mapAreas} from "./mapping";
 
-import { computeBadge } from "./badges";
-import { computeAreaTileCardConfig, generateCardSort } from "./cards";
-import { mapAreas } from "./mapping";
-import { navigate, tapNavigate } from "./navigate";
-import { areaPath, floorPath } from "./paths";
+import {computeBadge} from "./badges";
+import {computeAreaTileCardConfig, generateCardSort} from "./cards";
+import {navigate, tapNavigate} from "./navigate";
+import {areaPath, floorPath} from "./paths";
 
 export const computeBadges = function computeBadges(
   hass: HomeAssistant,
@@ -156,15 +156,6 @@ export const computeAreaCard = (
       {
         alert_classes: ["motion", "moisture"],
         area: area.area_id,
-        card_mod: {
-          style: `
-              ha-card {
-                background: none;
-                box-shadow: none;
-                border: none;
-              }
-            }`,
-        },
         display_type: "compact",
         features,
         features_position: size === "large" ? "inline" : "bottom",
@@ -179,7 +170,7 @@ export const computeAreaCard = (
       columns: size === "large" ? 12 : 6,
       rows: overviewCards.length + 1 + (size === "large" ? 0 : 1),
     },
-    type: "custom:vertical-stack-in-card",
+    type: "custom:vertical-stack-in-card-2",
   };
 };
 
