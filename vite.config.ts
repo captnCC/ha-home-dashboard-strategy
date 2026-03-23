@@ -20,6 +20,12 @@ export default defineConfig(({ mode }) => {
       },
       rolldownOptions: {
         external: ["home-assistant-js-websocket", "lit"],
+        output: {
+          globals: {
+            "home-assistant-js-websocket": "homeAssistantJsWebsocket",
+            "lit": "Lit",
+          },
+        },
       },
     },
     plugins: [
@@ -62,7 +68,7 @@ export default defineConfig(({ mode }) => {
           target,
           ws: true,
         },
-        "^(?!/(src|@vite|@fs|node_modules|homeassistant)).*": {
+        "^(?!/(src|@vite|@fs|@id|node_modules|homeassistant)).*": {
           changeOrigin: true,
           configure: (proxy): void => {
             proxy.on("proxyRes", (proxyRes, req, res) => {
