@@ -170,7 +170,7 @@ export const computeAreaCard = (
       columns: size === "large" ? 12 : 6,
       rows: overviewCards.length + 1 + (size === "large" ? 0 : 1),
     },
-    type: "custom:vertical-stack-in-card-2",
+    type: "custom:vertical-grid-in-card",
   };
 };
 

@@ -2,7 +2,7 @@
 // oxlint-disable import/no-unassigned-import
 import "./strategies/wallboard/dashboard-strategy";
 import "./strategies/mobile/dashboard-strategy";
-import "./cards/vertical-stack-in-card";
+import "./cards/vertical-grid-in-card";
 
 declare global {
   interface Window {
