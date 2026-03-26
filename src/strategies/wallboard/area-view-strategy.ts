@@ -8,13 +8,7 @@ import type { HomeAssistant } from "@ha/types";
 
 import type { AreaConfig, Config } from "../config";
 
-import {
-  computeBadges,
-  computeClimateSection,
-  computeLightSection,
-  computeMediaSection,
-  computeSecuritySection,
-} from "../helpers/area";
+import { AreaGenerator } from "../helpers/area";
 import { WALLBOARD_HEADER } from "../helpers/header";
 import { areaPath } from "../helpers/paths";
 
@@ -58,17 +52,15 @@ class AreaViewStrategy extends HTMLElement {
       ...WALLBOARD_HEADER,
     };
 
-    const badges = computeBadges(hass, area, config);
+    const generator = new AreaGenerator(hass, area, config);
 
-    if (config.badges) {
-      badges.push(...config.badges);
-    }
+    const badges = generator.computeBadges();
 
     const sections = [
-      ...computeLightSection(hass, area, config.lights || {}),
-      ...computeClimateSection(hass, area, config.climate || {}),
-      ...computeMediaSection(hass, area),
-      ...computeSecuritySection(hass, area),
+      ...generator.computeLightSection(),
+      ...generator.computeClimateSection(),
+      ...generator.computeMediaSection(),
+      ...generator.computeSecuritySection(),
     ];
 
     return {

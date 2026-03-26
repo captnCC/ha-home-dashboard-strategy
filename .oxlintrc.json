@@ -23,7 +23,8 @@
     "no-magic-numbers": "off",
     "promise/prefer-await-to-callbacks": "off",
     "no-ternary": "off",
-    "unicorn/no-null": "off"
+    "unicorn/no-null": "off",
+    "class-methods-use-this": "off"
   },
   "settings": {},
   "env": {
