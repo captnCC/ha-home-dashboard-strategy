@@ -35,7 +35,7 @@ class UtilitiesViewStrategy extends HTMLElement {
     return {
       header: {
         card: {
-          content: `# <ha-icon icon="${icon}"></ha-icon> Utilties`,
+          content: `# <ha-icon icon="${icon}"></ha-icon> Utilities`,
           text_only: true,
           type: "markdown",
         },

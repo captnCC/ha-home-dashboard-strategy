@@ -13,6 +13,7 @@ import {
   computeClimateSection,
   computeLightSection,
   computeMediaSection,
+  computeSecuritySection,
 } from "../helpers/area";
 import { mobileHeader } from "../helpers/header";
 import { areaPath } from "../helpers/paths";
@@ -60,6 +61,7 @@ class AreaViewStrategy extends HTMLElement {
       ...computeLightSection(hass, area, config.lights || {}),
       ...computeClimateSection(hass, area, config.climate || {}),
       ...computeMediaSection(hass, area),
+      ...computeSecuritySection(hass, area),
     ];
 
     return {

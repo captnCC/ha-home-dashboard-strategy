@@ -10,8 +10,7 @@ import type { AreaConfig, HasAreasConfig, HasLightsConfig } from "../config";
 import { computeBadge } from "./badges";
 import { computeAreaTileCardConfig, extendLastCard, generateCardSort } from "./cards";
 import { mapAreas } from "./mapping";
-import { tapNavigate } from "./navigate";
-import { areaPath } from "./paths";
+import { generateAreaHeading } from "./sections";
 
 export const computeLightBadges = (
   hass: HomeAssistant,
@@ -70,17 +69,7 @@ export const computeLightAreas = (
     }
 
     return {
-      cards: [
-        {
-          badges,
-          heading: area.name,
-          heading_style: "title",
-          icon: area.icon,
-          tap_action: tapNavigate(areaPath(area.area_id)),
-          type: "heading",
-        },
-        ...cards,
-      ],
+      cards: [generateAreaHeading(area, badges), ...cards],
       type: "grid",
     };
   });

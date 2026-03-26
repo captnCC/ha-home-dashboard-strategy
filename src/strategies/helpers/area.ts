@@ -1,3 +1,4 @@
+// oxlint-disable import/max-dependencies
 import type { AreaRegistryEntry } from "@ha/data/area/area_registry";
 import type { LovelaceBadgeConfig } from "@ha/data/lovelace/config/badge";
 import type { LovelaceCardConfig } from "@ha/data/lovelace/config/card";
@@ -11,6 +12,7 @@ import type { AreaConfig, ClimateConfig, HasLightsConfig, LightsConfig } from ".
 import { computeBadge } from "./badges";
 import { computeAreaTileCardConfig, extendLastCard, generateCardSort } from "./cards";
 import { tapNavigate } from "./navigate";
+import { generateSecurityEntityFilters } from "./security";
 
 const lightsHeading = (config: NonNullable<HasLightsConfig["lights"]>): LovelaceCardConfig => {
   const badges: EntityBadgeConfig[] = [];
@@ -146,7 +148,38 @@ export const computeMediaSection = (
   }
   return [
     {
-      cards: [mediaHeading(), ...cards],
+      cards: [mediaHeading(), ...extendLastCard(cards)],
+      type: "grid",
+    },
+  ];
+};
+
+export const computeSecuritySection = (
+  hass: HomeAssistant,
+  area: AreaRegistryEntry,
+): LovelaceBadgeConfig[] => {
+  const states = Object.keys(hass.states);
+  const filters = generateSecurityEntityFilters(hass, area.area_id);
+  const computeTileCard = computeAreaTileCardConfig(hass, area.name);
+
+  const cards = filters.flatMap((filter) => states.filter(filter).map(computeTileCard));
+
+  if (cards.length === 0) {
+    return [];
+  }
+
+  return [
+    {
+      cards: [
+        {
+          heading: "Security",
+          heading_style: "heading",
+          icon: "mdi:lock",
+          tap_action: tapNavigate("security"),
+          type: "heading",
+        },
+        ...cards,
+      ],
       type: "grid",
     },
   ];

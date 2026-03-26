@@ -38,9 +38,9 @@
   - [ ] Unavailable
   - [ ] Battery empty
 - [x] Settings to disable views -> lights/climate/media/security/utilities
-- [ ] Add switches support -> handle all the useless ones
+- [x] Add switches support -> handle all the useless ones
 - [ ] Add covers support
-- [ ] Add security section for areas
-- [ ] Add security overview
+- [x] Add security section for areas
+- [x] Add security overview
 - [ ] Improved masonary/grid layout
 - [ ] Visual Editor

@@ -3,6 +3,9 @@ import type { HomeAssistant } from "@ha/types";
 
 import type { Config, HasAreasConfig } from "../config";
 
+import { wallboardHeader } from "../helpers/header";
+import { computeSecurityAreaSections } from "../helpers/security";
+
 export type WallboardSecurityViewStrategyConfig = {
   type: "custom:wallboard-security";
 } & HasAreasConfig;
@@ -27,10 +30,19 @@ export const registerView = function registerView(config: Config): LovelaceStrat
 class SecurityViewStrategy extends HTMLElement {
   static generate(
     _config: WallboardSecurityViewStrategyConfig,
-    _hass: HomeAssistant,
+    hass: HomeAssistant,
   ): LovelaceViewConfig {
     return {
-      sections: [],
+      header: {
+        card: {
+          content: `# <ha-icon icon="${icon}"></ha-icon> Security`,
+          text_only: true,
+          type: "markdown",
+        },
+        ...wallboardHeader,
+      },
+      max_columns: 3,
+      sections: computeSecurityAreaSections(hass),
       type: "sections",
     };
   }
