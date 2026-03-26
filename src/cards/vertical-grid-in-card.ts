@@ -1,16 +1,16 @@
 // oxlint-disable max-lines-per-function
-import type {LovelaceCardConfig} from "@ha/data/lovelace/config/card";
-import type {HuiCard} from "@ha/panels/lovelace/cards/hui-card";
-import type {LovelaceCard, LovelaceGridOptions} from "@ha/panels/lovelace/types";
-import type {HomeAssistant} from "@ha/types";
-import type {PropertyValues} from "@lit/reactive-element";
-import type {CSSResult} from "lit";
-import {css, html, LitElement, nothing} from "lit";
+import type { LovelaceCardConfig } from "@ha/data/lovelace/config/card";
+import type { HuiCard } from "@ha/panels/lovelace/cards/hui-card";
+import type { LovelaceCard, LovelaceGridOptions } from "@ha/panels/lovelace/types";
+import type { HomeAssistant } from "@ha/types";
+import type { PropertyValues } from "@lit/reactive-element";
+import type { CSSResult } from "lit";
 
-import {computeCardGridSize} from "@ha/panels/lovelace/common/compute-card-grid-size";
-import {computeCardSize} from "@ha/panels/lovelace/common/compute-card-size";
-import {customElement, property, state} from "lit/decorators.js";
-import {repeat} from "lit/directives/repeat.js";
+import { computeCardGridSize } from "@ha/panels/lovelace/common/compute-card-grid-size";
+import { computeCardSize } from "@ha/panels/lovelace/common/compute-card-size";
+import { css, html, LitElement, nothing } from "lit";
+import { customElement, property, state } from "lit/decorators.js";
+import { repeat } from "lit/directives/repeat.js";
 
 interface VerticalStackInCardConfig extends LovelaceCardConfig {
   type: "vertical-grid-in-card";
