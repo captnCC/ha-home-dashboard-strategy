@@ -9,7 +9,7 @@ import type { HomeAssistant } from "@ha/types";
 import type { Config, FloorConfig, HasAreasConfig } from "../config";
 
 import { computeAreasSection, computeBadges, getFloorConfig } from "../helpers/floor";
-import { wallboardHeader } from "../helpers/header";
+import { WALLBOARD_HEADER } from "../helpers/header";
 import { floorPath } from "../helpers/paths";
 
 export type WallboardFloorViewStrategyConfig = {
@@ -52,7 +52,7 @@ class FloorViewStrategy extends HTMLElement {
         text_only: true,
         type: "markdown",
       },
-      ...wallboardHeader,
+      ...WALLBOARD_HEADER,
     };
 
     return {

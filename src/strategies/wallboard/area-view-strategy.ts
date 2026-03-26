@@ -15,7 +15,7 @@ import {
   computeMediaSection,
   computeSecuritySection,
 } from "../helpers/area";
-import { wallboardHeader } from "../helpers/header";
+import { WALLBOARD_HEADER } from "../helpers/header";
 import { areaPath } from "../helpers/paths";
 
 export type WallboardAreaViewStrategyConfig = {
@@ -55,7 +55,7 @@ class AreaViewStrategy extends HTMLElement {
         text_only: true,
         type: "markdown",
       },
-      ...wallboardHeader,
+      ...WALLBOARD_HEADER,
     };
 
     const badges = computeBadges(hass, area, config);

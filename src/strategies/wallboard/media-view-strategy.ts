@@ -3,7 +3,7 @@ import type { HomeAssistant } from "@ha/types";
 
 import type { Config, HasAreasConfig } from "../config";
 
-import { wallboardHeader } from "../helpers/header";
+import { WALLBOARD_HEADER } from "../helpers/header";
 import { computeMediaAreas } from "../helpers/media";
 
 export type WallboardMediaViewStrategyConfig = {
@@ -40,7 +40,7 @@ class MediaViewStrategy extends HTMLElement {
           text_only: true,
           type: "markdown",
         },
-        ...wallboardHeader,
+        ...WALLBOARD_HEADER,
       },
       max_columns: 3,
       sections: areas,

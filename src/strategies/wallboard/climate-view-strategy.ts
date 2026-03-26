@@ -4,7 +4,7 @@ import type { HomeAssistant } from "@ha/types";
 import type { Config, HasAreasConfig } from "../config";
 
 import { computeClimateAreas } from "../helpers/climate";
-import { wallboardHeader } from "../helpers/header";
+import { WALLBOARD_HEADER } from "../helpers/header";
 
 export type WallboardClimateViewStrategyConfig = {
   type: "custom:wallboard-climate";
@@ -42,7 +42,7 @@ class ClimateViewStrategy extends HTMLElement {
           text_only: true,
           type: "markdown",
         },
-        ...wallboardHeader,
+        ...WALLBOARD_HEADER,
       },
       max_columns: 3,
       sections: areas,

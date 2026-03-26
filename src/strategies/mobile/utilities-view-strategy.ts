@@ -3,7 +3,7 @@ import type { HomeAssistant } from "@ha/types";
 
 import type { Config } from "../config";
 
-import { mobileHeader } from "../helpers/header";
+import { MOBILE_HEADER } from "../helpers/header";
 import { computeUtilityAreas } from "../helpers/utilities";
 
 export interface MobileUtilitiesViewStrategyConfig {
@@ -39,7 +39,7 @@ class UtilitiesViewStrategy extends HTMLElement {
           text_only: true,
           type: "markdown",
         },
-        ...mobileHeader,
+        ...MOBILE_HEADER,
       },
       max_columns: 1,
       sections: areas,

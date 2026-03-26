@@ -15,7 +15,7 @@ import {
   computeMediaSection,
   computeSecuritySection,
 } from "../helpers/area";
-import { mobileHeader } from "../helpers/header";
+import { MOBILE_HEADER } from "../helpers/header";
 import { areaPath } from "../helpers/paths";
 
 export type MobileAreaViewStrategyConfig = {
@@ -52,7 +52,7 @@ class AreaViewStrategy extends HTMLElement {
         text_only: true,
         type: "markdown",
       },
-      ...mobileHeader,
+      ...MOBILE_HEADER,
     };
 
     const badges = computeBadges(hass, area, config);

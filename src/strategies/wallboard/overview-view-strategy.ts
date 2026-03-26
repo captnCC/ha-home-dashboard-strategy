@@ -4,7 +4,7 @@ import type { HomeAssistant } from "@ha/types";
 
 import type { Config, HasAreasConfig, HasFloorsConfig, OverviewConfig } from "../config";
 
-import { wallboardHeader } from "../helpers/header";
+import { WALLBOARD_HEADER } from "../helpers/header";
 import { mapAreas, mapFloors } from "../helpers/mapping";
 import {
   computeAreaCard,
@@ -111,7 +111,7 @@ class OverviewViewStrategy extends HTMLElement {
       badges: computeBadges(hass, config),
       header: {
         card: computeHeaderCard(config.weather || null),
-        ...wallboardHeader,
+        ...WALLBOARD_HEADER,
       },
       max_columns: 3,
       sections,

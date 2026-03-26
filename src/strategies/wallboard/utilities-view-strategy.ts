@@ -3,7 +3,7 @@ import type { HomeAssistant } from "@ha/types";
 
 import type { Config } from "../config";
 
-import { wallboardHeader } from "../helpers/header";
+import { WALLBOARD_HEADER } from "../helpers/header";
 import { computeUtilityAreas } from "../helpers/utilities";
 
 export interface WallboardUtilitiesViewStrategyConfig {
@@ -39,7 +39,7 @@ class UtilitiesViewStrategy extends HTMLElement {
           text_only: true,
           type: "markdown",
         },
-        ...wallboardHeader,
+        ...WALLBOARD_HEADER,
       },
       max_columns: 3,
       sections: areas,

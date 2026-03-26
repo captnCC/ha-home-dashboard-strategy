@@ -10,7 +10,7 @@ import type {
   HasLightsConfig,
 } from "../config";
 
-import { mobileHeader } from "../helpers/header";
+import { MOBILE_HEADER } from "../helpers/header";
 import { mapAreas, mapFloors } from "../helpers/mapping";
 import {
   computeAreaCard,
@@ -71,7 +71,7 @@ class MobileOverviewViewStrategy extends HTMLElement {
     return {
       badges: computeBadges(hass, config),
       header: {
-        ...mobileHeader,
+        ...MOBILE_HEADER,
       },
       max_columns: 1,
       sections,

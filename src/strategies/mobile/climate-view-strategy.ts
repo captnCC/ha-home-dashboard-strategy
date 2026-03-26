@@ -4,7 +4,7 @@ import type { HomeAssistant } from "@ha/types";
 import type { Config, HasAreasConfig, HasClimateConfig } from "../config";
 
 import { computeClimateAreas } from "../helpers/climate";
-import { mobileHeader } from "../helpers/header";
+import { MOBILE_HEADER } from "../helpers/header";
 
 export type MobileClimateViewStrategyConfig = {
   type: "custom:mobile-climate";
@@ -43,7 +43,7 @@ class ClimateViewStrategy extends HTMLElement {
           text_only: true,
           type: "markdown",
         },
-        ...mobileHeader,
+        ...MOBILE_HEADER,
       },
       max_columns: 1,
       sections: areas,

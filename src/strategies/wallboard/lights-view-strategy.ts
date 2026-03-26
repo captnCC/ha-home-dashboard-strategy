@@ -3,7 +3,7 @@ import type { HomeAssistant } from "@ha/types";
 
 import type { Config, HasAreasConfig, HasLightsConfig } from "../config";
 
-import { wallboardHeader } from "../helpers/header";
+import { WALLBOARD_HEADER } from "../helpers/header";
 import { computeLightAreas, computeLightBadges } from "../helpers/lights";
 
 export type WallboardLightsViewStrategyConfig = {
@@ -45,7 +45,7 @@ class LightsViewStrategy extends HTMLElement {
           text_only: true,
           type: "markdown",
         },
-        ...wallboardHeader,
+        ...WALLBOARD_HEADER,
       },
       max_columns: 3,
       sections: [...areas],

@@ -2,7 +2,7 @@ import type { EntityBadgeConfig } from "@ha/panels/lovelace/badges/types";
 
 import { computeDomain } from "@ha/common/entity/compute_domain";
 
-const domainOptions: Record<string, Partial<EntityBadgeConfig>> = {
+const DOMAIN_OPTIONS: Record<string, Partial<EntityBadgeConfig>> = {
   light: {
     hold_action: { action: "more-info" },
     show_name: true,
@@ -30,7 +30,7 @@ const domainOptions: Record<string, Partial<EntityBadgeConfig>> = {
 
 export const computeBadge = (entity: string): EntityBadgeConfig => {
   const domain = computeDomain(entity);
-  const options = domainOptions[domain] || {};
+  const options = DOMAIN_OPTIONS[domain] || {};
 
   return {
     entity: entity,

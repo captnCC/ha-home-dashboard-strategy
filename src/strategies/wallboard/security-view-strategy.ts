@@ -3,7 +3,7 @@ import type { HomeAssistant } from "@ha/types";
 
 import type { Config, HasAreasConfig } from "../config";
 
-import { wallboardHeader } from "../helpers/header";
+import { WALLBOARD_HEADER } from "../helpers/header";
 import { computeSecurityAreaSections } from "../helpers/security";
 
 export type WallboardSecurityViewStrategyConfig = {
@@ -39,7 +39,7 @@ class SecurityViewStrategy extends HTMLElement {
           text_only: true,
           type: "markdown",
         },
-        ...wallboardHeader,
+        ...WALLBOARD_HEADER,
       },
       max_columns: 3,
       sections: computeSecurityAreaSections(hass),

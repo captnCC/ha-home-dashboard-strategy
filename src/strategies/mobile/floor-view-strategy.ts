@@ -9,7 +9,7 @@ import type { HomeAssistant } from "@ha/types";
 import type { Config, FloorConfig, HasAreasConfig } from "../config";
 
 import { computeAreasSection, computeBadges, getFloorConfig } from "../helpers/floor";
-import { mobileHeader } from "../helpers/header";
+import { MOBILE_HEADER } from "../helpers/header";
 import { floorPath } from "../helpers/paths";
 
 export type MobileFloorViewStrategyConfig = {
@@ -50,7 +50,7 @@ class FloorViewStrategy extends HTMLElement {
         text_only: true,
         type: "markdown",
       },
-      ...mobileHeader,
+      ...MOBILE_HEADER,
     };
 
     return {

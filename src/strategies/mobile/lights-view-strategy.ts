@@ -3,7 +3,7 @@ import type { HomeAssistant } from "@ha/types";
 
 import type { Config, HasAreasConfig, LightsConfig } from "../config";
 
-import { mobileHeader } from "../helpers/header";
+import { MOBILE_HEADER } from "../helpers/header";
 import { computeLightAreas, computeLightBadges } from "../helpers/lights";
 
 export type MobileLightsViewStrategyConfig = {
@@ -42,7 +42,7 @@ class LightsViewStrategy extends HTMLElement {
           text_only: true,
           type: "markdown",
         },
-        ...mobileHeader,
+        ...MOBILE_HEADER,
       },
       max_columns: 1,
       sections: [...areas],
