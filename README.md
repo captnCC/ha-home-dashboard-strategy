@@ -2,13 +2,14 @@
 
 [![GitHub Release](https://img.shields.io/github/v/release/captnCC/ha-home-dashboard-strategy?style=flat-square)](https://github.com/captnCC/ha-home-dashboard-strategy/releases)
 
+The out-of-the-box dashboard for Home Assistant.  
+
 ## Installation
 
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=captnCC&repository=ha-home-dashboard-strategy&category=plugin)
 
 ### Requirements
 
-- [Vertical Stack In Card](https://github.com/ofekashery/vertical-stack-in-card/tree/master)
 - [Lovelace Card Mod](https://github.com/thomasloven/lovelace-card-mod)
 
 ### HACS (Recommended)
@@ -25,6 +26,15 @@
 1. Download `ha-home-dashboard-strategy.js` from the latest release.
 2. Copy it to your `www` folder in Home Assistant.
 3. Add the resource to your dashboard.
+
+## Features
+
+- Area-centric overview
+- Per-area views
+- Per-floor views
+- Category views for lights, climate, media, security and utilities
+- Multi-floor support
+- Tablet & mobile versions
 
 ## Configuration
 
