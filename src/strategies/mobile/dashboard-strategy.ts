@@ -1,7 +1,7 @@
 // oxlint-disable import/max-dependencies
 // oxlint-disable import/no-namespace
 // oxlint-disable max-statements
-import type { LovelaceConfig } from "@ha/data/lovelace/config/types";
+import type { LovelaceConfig, LovelaceDashboardBaseConfig } from "@ha/data/lovelace/config/types";
 import type { LovelaceViewRawConfig } from "@ha/data/lovelace/config/view";
 import type { HomeAssistant } from "@ha/types";
 
@@ -21,6 +21,13 @@ export type MobileDashboardStrategyConfig = {
 } & Config;
 
 class DashboardStrategy extends HTMLElement {
+  static getCreateSuggestions(_hass: HomeAssistant): Partial<LovelaceDashboardBaseConfig> {
+    return {
+      icon: "mdi:mobile",
+      title: "Mobile",
+    };
+  }
+
   static generate(config: MobileDashboardStrategyConfig, hass: HomeAssistant): LovelaceConfig {
     const views: LovelaceViewRawConfig[] = [overview.registerView(config)];
 
@@ -60,3 +67,14 @@ class DashboardStrategy extends HTMLElement {
 }
 
 customElements.define("ll-strategy-dashboard-mobile", DashboardStrategy);
+
+// oxlint-disable-next-line unicorn/prefer-global-this
+window.customStrategies = window.customStrategies || [];
+// oxlint-disable-next-line unicorn/prefer-global-this
+window.customStrategies.push({
+  description: "",
+  documentationURL: "https://github.com/captnCC/ha-home-dashboard-strategy",
+  name: "Mobile",
+  strategyType: "dashboard",
+  type: "mobile",
+});

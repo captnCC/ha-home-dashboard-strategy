@@ -13,16 +13,25 @@ export const generateUtilitiesEntityFilters = (
   hass: HomeAssistant,
   area: AreaRegistryEntry,
 ): EntityFilterFunc[] => [
-  generateEntityFilter(hass, { area: area.area_id, domain: "vacuum" }),
   generateEntityFilter(hass, {
     area: area.area_id,
     device_class: "battery",
     domain: "sensor",
   }),
+];
+
+export const generateDevicesEntityFilters = (
+  hass: HomeAssistant,
+  area: AreaRegistryEntry,
+): EntityFilterFunc[] => [
   generateEntityFilter(hass, {
     area: area.area_id,
+    domain: "vacuum",
+  }),
+  generateEntityFilter(hass, {
+    area: area.area_id,
+    device_class: "outlet",
     domain: "switch",
-    entity_category: "none",
   }),
 ];
 
@@ -31,7 +40,10 @@ export const computeUtilityAreas = (hass: HomeAssistant): LovelaceCardConfig[] =
   return mapAreas(hass, {}, (_hass, area): LovelaceCardConfig | null => {
     const computeTileCard = computeAreaTileCardConfig(hass, area.name);
 
-    const filters = generateUtilitiesEntityFilters(hass, area);
+    const filters = [
+      ...generateDevicesEntityFilters(hass, area),
+      ...generateUtilitiesEntityFilters(hass, area),
+    ];
 
     const cards = filters.flatMap((filter) => states.filter(filter)).map(computeTileCard);
 

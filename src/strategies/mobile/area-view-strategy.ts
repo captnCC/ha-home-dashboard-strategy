@@ -56,8 +56,10 @@ class AreaViewStrategy extends HTMLElement {
     const sections = [
       ...generator.computeLightSection(),
       ...generator.computeClimateSection(),
+      ...generator.computeDevicesSection(),
       ...generator.computeMediaSection(),
       ...generator.computeSecuritySection(),
+      ...generator.computeUtilitiesSection(),
     ];
 
     return {

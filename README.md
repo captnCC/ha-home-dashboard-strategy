@@ -40,59 +40,106 @@ The out-of-the-box dashboard for Home Assistant.
 
 Both `wallboard` and `mobile` strategies share the same configuration options.
 
-| Name       | Type     | Description                                             |
-| ---------- | -------- | ------------------------------------------------------- |
-| `theme`    | `string` | The theme to use for the dashboard.                     |
-| `overview` | `object` | Configuration for the overview page.                    |
-| `floors`   | `object` | Configuration for individual floors. Keyed by floor ID. |
-| `areas`    | `object` | Configuration for individual areas. Keyed by area ID.   |
-| `lights`   | `object` | Configuration for the lights view.                      |
-| `climate`  | `object` | Configuration for the climate view.                     |
-| `media`    | `object` | Configuration for the media view.                       |
-| `security` | `object` | Configuration for the security view.                    |
-| `utility`  | `object` | Configuration for the utility view.                     |
+```yaml
+type*: custom:wallboard|mobile
+theme: string # For examlpe "Mushroom Square"
+overview:
+  weather: string # Entity ID of a weather entity e.g. weather.openweathermap
+  lights:
+    all: string # Entity ID of a light group that controls all lights
+    hidden: boolean
+    order: object
+  badges: list # List of custom badges
+floors: # Optional set to false to disable multi-floor support
+  floor_id:
+    lights:
+      all: string # Entity ID of a light group that controls all lights for the floor
+      order: object
+    badges: list # List of custom badges
+  ...
+areas:
+  area_id:
+    hidden: boolean 
+    size: string # small | large
+    lights:
+      all: string
+      hidden: boolean
+      order: object
+    badges: list
+    climate:
+      hidden: boolean
+      order: object
+  ...
+lights:
+  all: string # Entity ID of a light group that controls all lights
+  hidden: boolean
+  order: object
+climate:
+  hidden: boolean
+  order: object
+media:
+  hidden: boolean
+  order: object
+security:
+  hidden: boolean
+  order: object
+utility:
+  hidden: boolean
+  order: object
+```
 
 ### Overview Configuration
 
-| Name      | Type     | Description                                     |
-| --------- | -------- | ----------------------------------------------- |
-| `weather` | `string` | Entity ID of the weather entity to display.     |
-| `lights`  | `object` | Configuration for the lights view.              |
-| `badges`  | `list`   | List of badges to display on the overview page. |
+```yaml
+[weather]: string
+[lights]:
+  [all]: string
+  [hidden]: boolean
+  [order]: object
+[badges]: list
+```
 
 ### Floor Configuration
 
-| Name     | Type     | Description                                      |
-| -------- | -------- | ------------------------------------------------ |
-| `lights` | `object` | Configuration for the lights view of this floor. |
-| `badges` | `list`   | List of badges to display for this floor.        |
+```yaml
+[lights]:
+  [all]: string
+  [hidden]: boolean
+  [order]: object
+[badges]: list
+```
 
 ### Area Configuration
 
-| Name      | Type      | Description                                       |
-| --------- | --------- | ------------------------------------------------- |
-| `hidden`  | `boolean` | Whether to hide the area from the dashboard.      |
-| `size`    | `string`  | Size of the area card. Can be `small` or `large`. |
-| `lights`  | `object`  | Configuration for the lights view of this area.   |
-| `badges`  | `list`    | List of badges to display for this area.          |
-| `climate` | `object`  | Configuration for the climate view of this area.  |
+```yaml
+[hidden]: boolean
+[size]: string # small | large
+[lights]:
+  [all]: string
+  [hidden]: boolean
+  [order]: object
+[badges]: list
+[climate]:
+  [hidden]: boolean
+  [order]: object
+```
 
 ### View Configuration
 
 All views (`lights`, `climate`, `media`, `security`, `utility`) share these options:
 
-| Name     | Type      | Description                                                 |
-| -------- | --------- | ----------------------------------------------------------- |
-| `hidden` | `boolean` | Whether to hide the view from the dashboard.                |
-| `order`  | `object`  | Custom order for entities in this view. Keyed by entity ID. |
+```yaml
+[hidden]: boolean
+[order]: object
+```
 
 ### Lights Configuration
 
-| Name     | Type      | Description                                                      |
-| -------- | --------- | ---------------------------------------------------------------- |
-| `all`    | `string`  | Entity ID of a group containing all lights in the area/overview. |
-| `hidden` | `boolean` | Whether to hide the lights view.                                 |
-| `order`  | `object`  | Custom order for entities in this view. Keyed by entity ID.      |
+```yaml
+[all]: string
+[hidden]: boolean
+[order]: object
+```
 
 ### Example
 

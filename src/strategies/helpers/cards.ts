@@ -42,6 +42,12 @@ export const computeTileFeatures = (domain: string, attributes: Record<string, u
         }
       }
     }
+    case "cover": {
+      return [{ type: "cover-position-favorite" }];
+    }
+    case "switch": {
+      return [{ type: "toggle" }];
+    }
     case "vacuum": {
       return [
         {

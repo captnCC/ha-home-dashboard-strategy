@@ -20,7 +20,7 @@ export const computeClimateAreas = (
     const computeTileCard = computeAreaTileCardConfig(hass, area.name);
     const devicesFilter = generateEntityFilter(hass, {
       area: area.area_id,
-      domain: ["climate", "fan"],
+      domain: ["climate", "fan", "cover"],
     });
 
     const sensorFilter = generateEntityFilter(hass, {

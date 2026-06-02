@@ -8,6 +8,13 @@ declare global {
   interface Window {
     // oxlint-disable-next-line typescript/consistent-type-imports
     loadCardHelpers(): Promise<typeof import("@ha/panels/lovelace/custom-card-helpers")>;
+    customStrategies: {
+      type: string;
+      strategyType: string;
+      name: string;
+      description: string;
+      documentationURL: string;
+    }[];
   }
 }
 

@@ -13,6 +13,7 @@ import { computeBadge } from "./badges";
 import { computeAreaTileCardConfig, extendLastCard, generateCardSort } from "./cards";
 import { tapNavigate } from "./navigate";
 import { generateSecurityEntityFilters } from "./security";
+import { generateDevicesEntityFilters, generateUtilitiesEntityFilters } from "./utilities";
 
 export class AreaGenerator {
   private readonly hass: HomeAssistant;
@@ -77,6 +78,10 @@ export class AreaGenerator {
         .map(this.computeTileCard),
     );
 
+    if (cards.length === 0) {
+      return [];
+    }
+
     return this.createGridSection([heading as LovelaceCardConfig, ...cards]);
   }
 
@@ -85,7 +90,7 @@ export class AreaGenerator {
 
     const devicesFilter = generateEntityFilter(this.hass, {
       area: this.area.area_id,
-      domain: ["climate", "fan"],
+      domain: ["climate", "fan", "cover"],
     });
 
     const sensorFilter = generateEntityFilter(this.hass, {
@@ -101,6 +106,10 @@ export class AreaGenerator {
         .map(this.computeTileCard),
     );
 
+    if (cards.length === 0) {
+      return [];
+    }
+
     return this.createGridSection([heading as LovelaceCardConfig, ...cards]);
   }
 
@@ -114,7 +123,41 @@ export class AreaGenerator {
 
     const cards = Object.keys(this.hass.states).filter(areaFilter).map(this.computeTileCard);
 
+    if (cards.length === 0) {
+      return [];
+    }
+
     return this.createGridSection([heading, ...extendLastCard(cards)]) as LovelaceBadgeConfig[];
+  }
+
+  computeDevicesSection(): LovelaceBadgeConfig[] {
+    const heading = this.createHeading("Devices", "mdi:cog", "utilities");
+
+    const states = Object.keys(this.hass.states);
+    const filters = generateDevicesEntityFilters(this.hass, this.area);
+
+    const cards = filters.flatMap((filter) => states.filter(filter).map(this.computeTileCard));
+
+    if (cards.length === 0) {
+      return [];
+    }
+
+    return this.createGridSection([heading, ...cards]) as LovelaceBadgeConfig[];
+  }
+
+  computeUtilitiesSection(): LovelaceBadgeConfig[] {
+    const heading = this.createHeading("Utilities", "mdi:cog", "utilities");
+
+    const states = Object.keys(this.hass.states);
+    const filters = generateUtilitiesEntityFilters(this.hass, this.area);
+
+    const cards = filters.flatMap((filter) => states.filter(filter).map(this.computeTileCard));
+
+    if (cards.length === 0) {
+      return [];
+    }
+
+    return this.createGridSection([heading, ...cards]) as LovelaceBadgeConfig[];
   }
 
   computeSecuritySection(): LovelaceBadgeConfig[] {
@@ -124,6 +167,10 @@ export class AreaGenerator {
     const filters = generateSecurityEntityFilters(this.hass, this.area.area_id);
 
     const cards = filters.flatMap((filter) => states.filter(filter).map(this.computeTileCard));
+
+    if (cards.length === 0) {
+      return [];
+    }
 
     return this.createGridSection([heading, ...cards]) as LovelaceBadgeConfig[];
   }

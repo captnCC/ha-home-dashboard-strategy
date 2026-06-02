@@ -60,3 +60,14 @@ class DashboardStrategy extends HTMLElement {
 }
 
 customElements.define("ll-strategy-dashboard-wallboard", DashboardStrategy);
+
+// oxlint-disable-next-line unicorn/prefer-global-this
+window.customStrategies = window.customStrategies || [];
+// oxlint-disable-next-line unicorn/prefer-global-this
+window.customStrategies.push({
+  description: "",
+  documentationURL: "https://github.com/captnCC/ha-home-dashboard-strategy",
+  name: "Wallboard",
+  strategyType: "dashboard",
+  type: "wallboard",
+});
