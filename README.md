@@ -2,7 +2,7 @@
 
 [![GitHub Release](https://img.shields.io/github/v/release/captnCC/ha-home-dashboard-strategy?style=flat-square)](https://github.com/captnCC/ha-home-dashboard-strategy/releases)
 
-The out-of-the-box dashboard for Home Assistant.  
+The out-of-the-box dashboard for Home Assistant.
 
 ## Installation
 
@@ -59,7 +59,7 @@ floors: # Optional set to false to disable multi-floor support
   ...
 areas:
   area_id:
-    hidden: boolean 
+    hidden: boolean
     size: string # small | large
     lights:
       all: string
