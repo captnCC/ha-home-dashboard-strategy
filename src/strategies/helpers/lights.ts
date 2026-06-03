@@ -4,6 +4,7 @@ import type { ActionConfig } from "@ha/data/lovelace/config/action";
 import type { LovelaceCardConfig } from "@ha/data/lovelace/config/card";
 import type { EntityBadgeConfig, ShortcutBadgeConfig } from "@ha/panels/lovelace/badges/types";
 import type { TileCardConfig } from "@ha/panels/lovelace/cards/types";
+import type { Condition } from "@ha/panels/lovelace/common/validate-condition";
 import type { ButtonHeadingBadgeConfig } from "@ha/panels/lovelace/heading-badges/types";
 import type { HomeAssistant } from "@ha/types";
 import type { HassServiceTarget } from "home-assistant-js-websocket";
@@ -46,7 +47,7 @@ const lightsPopupAction = (lights: string[], name: string): ActionConfig =>
     service: "fire-dom-event",
   }) as ActionConfig;
 
-const buildGroupBadgeActionsVisibility = (entities: string[]) => ({
+const buildGroupBadgeActionsVisibility = (entities: string[]): Condition => ({
   condition: "or" as const,
   conditions: entities.map((entityId) => ({
     condition: "state" as const,
@@ -105,7 +106,10 @@ const computeLightsGroupBadge = (
   ];
 };
 
-export const computeHomeLightsBadge = (hass: HomeAssistant, type: "button" | "shortcut") => {
+export const computeHomeLightsBadge = (
+  hass: HomeAssistant,
+  type: "button" | "shortcut",
+): ButtonHeadingBadgeConfig[] | ShortcutBadgeConfig[] => {
   const filter = generateEntityFilter(hass, {
     domain: ["light"],
   });
