@@ -2,6 +2,7 @@
 // oxlint-disable max-lines-per-function
 import type { AreaRegistryEntry } from "@ha/data/area/area_registry";
 import type { FloorRegistryEntry } from "@ha/data/floor_registry";
+import type { LovelaceBadgeConfig } from "@ha/data/lovelace/config/badge";
 import type { LovelaceCardConfig } from "@ha/data/lovelace/config/card";
 import type { EntityBadgeConfig } from "@ha/panels/lovelace/badges/types";
 import type { StateCondition } from "@ha/panels/lovelace/common/validate-condition";
@@ -14,6 +15,7 @@ import type { FloorCallback } from "./mapping";
 
 import { computeBadge } from "./badges";
 import { computeAreaTileCardConfig, generateCardSort } from "./cards";
+import { computeFloorLightsBadge } from "./lights";
 import { mapAreas } from "./mapping";
 import { navigate, tapNavigate } from "./navigate";
 import { areaPath, floorPath } from "./paths";
@@ -186,7 +188,7 @@ export const computeFloorSection: FloorCallback<LovelaceCardConfig> = function c
     ([_id, area]) => area.floor_id === floor.floor_id,
   );
 
-  const badges: EntityBadgeConfig[] = [];
+  const badges: LovelaceBadgeConfig[] = [...computeFloorLightsBadge(hass, floor, "button")];
 
   if (config.lights?.all) {
     badges.push(computeBadge(config.lights?.all));

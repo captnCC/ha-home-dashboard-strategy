@@ -8,6 +8,7 @@ import { generateEntityFilter } from "@ha/common/entity/entity_filter";
 import type { FloorConfig, HasAreasConfig, HasFloorsConfig } from "../config";
 
 import { computeBadge } from "./badges";
+import { computeFloorLightsBadge } from "./lights";
 import { mapAreas } from "./mapping";
 import { computeAreaCard } from "./overview";
 
@@ -27,6 +28,8 @@ export const computeBadges = (
 
   if (config.lights?.all) {
     badges.push(computeBadge(config.lights.all));
+  } else {
+    badges.push(...computeFloorLightsBadge(hass, floor, "shortcut"));
   }
 
   const sceneFilter = generateEntityFilter(hass, {

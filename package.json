@@ -13,8 +13,12 @@
     "fmt:check": "oxfmt --check ."
   },
   "dependencies": {
+    "@mdi/js": "^7.4.47",
+    "color-name": "^2.1.0",
+    "culori": "^4.0.2",
     "home-assistant-js-websocket": "^9.6.0",
-    "lit": "^3.3.2"
+    "lit": "^3.3.2",
+    "memoize-one": "^6.0.0"
   },
   "devDependencies": {
     "@types/node": "^25.5.0",
