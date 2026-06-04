@@ -1,10 +1,8 @@
-// oxlint-disable import/max-dependencies
 // oxlint-disable max-lines-per-function
 import type { AreaRegistryEntry } from "@ha/data/area/area_registry";
 import type { FloorRegistryEntry } from "@ha/data/floor_registry";
 import type { LovelaceBadgeConfig } from "@ha/data/lovelace/config/badge";
 import type { LovelaceCardConfig } from "@ha/data/lovelace/config/card";
-import type { EntityBadgeConfig } from "@ha/panels/lovelace/badges/types";
 import type { StateCondition } from "@ha/panels/lovelace/common/validate-condition";
 import type { HomeAssistant } from "@ha/types";
 
@@ -13,9 +11,10 @@ import { generateEntityFilter } from "@ha/common/entity/entity_filter";
 import type { AreaConfig, FloorConfig, HasAreasConfig, OverviewConfig } from "../config";
 import type { FloorCallback } from "./mapping";
 
-import { computeBadge } from "./badges";
+import { computeEntityBadge } from "./badges";
 import { computeAreaTileCardConfig, generateCardSort } from "./cards";
-import { computeFloorLightsBadge } from "./lights";
+import { computeFloorCoversBadge, computeHomeCoversBadge } from "./covers";
+import { computeFloorLightsBadge, computeHomeLightsBadge } from "./lights";
 import { mapAreas } from "./mapping";
 import { navigate, tapNavigate } from "./navigate";
 import { areaPath, floorPath } from "./paths";
@@ -23,14 +22,18 @@ import { areaPath, floorPath } from "./paths";
 export const computeBadges = function computeBadges(
   hass: HomeAssistant,
   config: OverviewConfig,
-): EntityBadgeConfig[] {
+): LovelaceBadgeConfig[] {
   const states = Object.keys(hass.states);
 
-  const badges: EntityBadgeConfig[] = [];
+  const badges: LovelaceBadgeConfig[] = [];
 
   if (config.lights?.all) {
-    badges.push(computeBadge(config.lights.all));
+    badges.push(computeEntityBadge(config.lights.all));
+  } else {
+    badges.push(...computeHomeLightsBadge(hass, "shortcut"));
   }
+
+  badges.push(...computeHomeCoversBadge(hass, "shortcut"));
 
   const scenesFilter = generateEntityFilter(hass, {
     domain: ["scene"],
@@ -43,8 +46,8 @@ export const computeBadges = function computeBadges(
   });
 
   badges.push(
-    ...states.filter(scenesFilter).map(computeBadge),
-    ...states.filter(scriptFilter).map(computeBadge),
+    ...states.filter(scenesFilter).map(computeEntityBadge),
+    ...states.filter(scriptFilter).map(computeEntityBadge),
   );
 
   if (config.badges) {
@@ -188,10 +191,13 @@ export const computeFloorSection: FloorCallback<LovelaceCardConfig> = function c
     ([_id, area]) => area.floor_id === floor.floor_id,
   );
 
-  const badges: LovelaceBadgeConfig[] = [...computeFloorLightsBadge(hass, floor, "button")];
+  const badges: LovelaceBadgeConfig[] = [
+    ...computeFloorLightsBadge(hass, floor, "button"),
+    ...computeFloorCoversBadge(hass, floor, "button"),
+  ];
 
   if (config.lights?.all) {
-    badges.push(computeBadge(config.lights?.all));
+    badges.push(computeEntityBadge(config.lights?.all));
   }
 
   return {

@@ -1,4 +1,3 @@
-// oxlint-disable max-statements
 // oxlint-disable max-lines-per-function
 import type { LovelaceBadgeConfig } from "@ha/data/lovelace/config/badge";
 import type { HomeAssistant } from "@ha/types";
@@ -8,6 +7,7 @@ import { generateEntityFilter } from "@ha/common/entity/entity_filter";
 import type { AreaConfig } from "../config";
 
 import { computeAreaTileCardConfig, generateCardSort } from "./cards";
+import { computeAreaCoversBadge } from "./covers";
 import { mapAreas } from "./mapping";
 import { tapNavigate } from "./navigate";
 import { areaPath } from "./paths";
@@ -58,6 +58,8 @@ export const computeClimateAreas = (
         type: "entity",
       });
     }
+
+    badges.push(...computeAreaCoversBadge(hass, area, "button"));
 
     return {
       cards: [

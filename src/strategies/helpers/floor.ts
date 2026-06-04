@@ -7,7 +7,8 @@ import { generateEntityFilter } from "@ha/common/entity/entity_filter";
 
 import type { FloorConfig, HasAreasConfig, HasFloorsConfig } from "../config";
 
-import { computeBadge } from "./badges";
+import { computeEntityBadge } from "./badges";
+import { computeFloorCoversBadge } from "./covers";
 import { computeFloorLightsBadge } from "./lights";
 import { mapAreas } from "./mapping";
 import { computeAreaCard } from "./overview";
@@ -27,10 +28,12 @@ export const computeBadges = (
   const badges: LovelaceBadgeConfig[] = [];
 
   if (config.lights?.all) {
-    badges.push(computeBadge(config.lights.all));
+    badges.push(computeEntityBadge(config.lights.all));
   } else {
     badges.push(...computeFloorLightsBadge(hass, floor, "shortcut"));
   }
+
+  badges.push(...computeFloorCoversBadge(hass, floor, "shortcut"));
 
   const sceneFilter = generateEntityFilter(hass, {
     domain: ["scene"],
@@ -45,8 +48,8 @@ export const computeBadges = (
   const states = Object.keys(hass.states);
 
   badges.push(
-    ...states.filter(sceneFilter).map(computeBadge),
-    ...states.filter(scriptFilter).map(computeBadge),
+    ...states.filter(sceneFilter).map(computeEntityBadge),
+    ...states.filter(scriptFilter).map(computeEntityBadge),
     ...(config.badges ?? []),
   );
 

@@ -9,8 +9,9 @@ import { generateEntityFilter } from "@ha/common/entity/entity_filter";
 
 import type { AreaConfig } from "../config";
 
-import { computeBadge } from "./badges";
+import { computeEntityBadge } from "./badges";
 import { computeAreaTileCardConfig, extendLastCard, generateCardSort } from "./cards";
+import { computeAreaCoversBadge } from "./covers";
 import { tapNavigate } from "./navigate";
 import { generateSecurityEntityFilters } from "./security";
 import { generateDevicesEntityFilters, generateUtilitiesEntityFilters } from "./utilities";
@@ -33,7 +34,7 @@ export class AreaGenerator {
     title: string,
     icon: string,
     navigateTo: string,
-    badges: EntityBadgeConfig[] = [],
+    badges: LovelaceBadgeConfig[] = [],
   ): LovelaceCardConfig | LovelaceBadgeConfig {
     return {
       badges,
@@ -61,7 +62,7 @@ export class AreaGenerator {
     const badges: EntityBadgeConfig[] = [];
 
     if (this.config.lights?.all) {
-      badges.push(computeBadge(this.config.lights?.all));
+      badges.push(computeEntityBadge(this.config.lights?.all));
     }
 
     const heading = this.createHeading("Lights", "mdi:lightbulb-group", "lights", badges);
@@ -86,7 +87,9 @@ export class AreaGenerator {
   }
 
   computeClimateSection(): LovelaceCardConfig[] {
-    const heading = this.createHeading("Climate", "mdi:home-thermometer", "climate");
+    const heading = this.createHeading("Climate", "mdi:home-thermometer", "climate", [
+      ...computeAreaCoversBadge(this.hass, this.area, "button"),
+    ]);
 
     const devicesFilter = generateEntityFilter(this.hass, {
       area: this.area.area_id,
@@ -213,8 +216,9 @@ export class AreaGenerator {
     const states = Object.keys(this.hass.states);
 
     badges.push(
-      ...states.filter(sceneFilter).map(computeBadge),
-      ...states.filter(scriptFilter).map(computeBadge),
+      ...states.filter(sceneFilter).map(computeEntityBadge),
+      ...states.filter(scriptFilter).map(computeEntityBadge),
+      ...computeAreaCoversBadge(this.hass, this.area, "shortcut"),
       ...(this.config.badges ?? []),
     );
 

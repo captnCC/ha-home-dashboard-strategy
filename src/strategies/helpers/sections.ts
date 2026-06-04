@@ -1,13 +1,13 @@
 import type { AreaRegistryEntry } from "@ha/data/area/area_registry";
+import type { LovelaceBadgeConfig } from "@ha/data/lovelace/config/badge";
 import type { LovelaceCardConfig } from "@ha/data/lovelace/config/card";
-import type { EntityBadgeConfig } from "@ha/panels/lovelace/badges/types";
 
 import { tapNavigate } from "./navigate";
 import { areaPath } from "./paths";
 
 export const generateAreaHeading = (
   area: AreaRegistryEntry,
-  badges: EntityBadgeConfig[] = [],
+  badges: LovelaceBadgeConfig[] = [],
 ): LovelaceCardConfig => ({
   badges,
   heading: area.name,

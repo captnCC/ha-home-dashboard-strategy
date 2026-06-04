@@ -28,7 +28,7 @@ const DOMAIN_OPTIONS: Record<string, Partial<EntityBadgeConfig>> = {
   vacuum: {},
 };
 
-export const computeBadge = (entity: string): EntityBadgeConfig => {
+export const computeEntityBadge = (entity: string): EntityBadgeConfig => {
   const domain = computeDomain(entity);
   const options = DOMAIN_OPTIONS[domain] || {};
 
