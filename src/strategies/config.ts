@@ -63,6 +63,7 @@ export interface HasFloorsConfig {
 export type AreaConfig = HasLightsConfig &
   HasBadgesConfig &
   HasClimateConfig & {
+    order?: number;
     hidden?: boolean;
     size?: "small" | "large";
   };

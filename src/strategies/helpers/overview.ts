@@ -179,11 +179,11 @@ export const computeAreaCard = (
   };
 };
 
-export const computeFloorSection: FloorCallback<LovelaceCardConfig> = function computeFloorSection(
+export const computeFloorSection: FloorCallback<LovelaceCardConfig> = (
   hass: HomeAssistant,
   floor: FloorRegistryEntry,
   config: FloorConfig & HasAreasConfig,
-): LovelaceCardConfig {
+): LovelaceCardConfig => {
   const areaCards = mapAreas<LovelaceCardConfig>(
     hass,
     config.areas ?? {},

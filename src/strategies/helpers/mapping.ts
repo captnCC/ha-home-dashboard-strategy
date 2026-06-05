@@ -20,6 +20,7 @@ export const mapAreas = <T>(
 ): NonNullable<T>[] =>
   Object.entries(hass.areas)
     .filter(filter ?? ((): true => true))
+    .toSorted((a, b) => (configs[b[0]]?.order ?? 0) - (configs[a[0]]?.order ?? 0))
     .map(([areaId, area]) => callback(hass, area, configs?.[areaId] || {}))
     .filter((val) => val !== null) as NonNullable<T>[];
 
